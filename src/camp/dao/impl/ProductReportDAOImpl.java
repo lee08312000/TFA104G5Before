@@ -249,10 +249,10 @@ public class ProductReportDAOImpl implements ProductReportDAO{
 	
 	
 	
-	public static void main(String[] args) {
-		
-		ProductReportVO productReportVO = new ProductReportVO();
-		ProductReportDAO dao = new ProductReportDAOImpl();
+//	public static void main(String[] args) {
+//		
+//		ProductReportVO productReportVO = new ProductReportVO();
+//		ProductReportDAO dao = new ProductReportDAOImpl();
 		// insert 測試
 //		
 //		productReportVO.setMemberId(1);
@@ -295,7 +295,7 @@ public class ProductReportDAOImpl implements ProductReportDAO{
 //			System.out.println(p.getReportStatus());
 //			System.out.println("========================");
 //		}
-		
-	}
+//		
+//	}
 
 }

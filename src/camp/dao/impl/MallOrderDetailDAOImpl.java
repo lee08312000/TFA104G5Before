@@ -255,10 +255,10 @@ public class MallOrderDetailDAOImpl implements MallOrderDetailDAO {
 		return list;
 	}
 
-	public static void main(String[] args) {
-
-		MallOrderDetailVO mallOrderDetailVO = new MallOrderDetailVO();
-		MallOrderDetailDAO dao = new MallOrderDetailDAOImpl();
+//	public static void main(String[] args) {
+//
+//		MallOrderDetailVO mallOrderDetailVO = new MallOrderDetailVO();
+//		MallOrderDetailDAO dao = new MallOrderDetailDAOImpl();
 
 		// insert 測試
 //		mallOrderDetailVO.setMallOrderId(1);
@@ -275,7 +275,7 @@ public class MallOrderDetailDAOImpl implements MallOrderDetailDAO {
 //		mallOrderDetailVO.setProductPurchasePrice(200);
 //		mallOrderDetailVO.setProductCommentStar(3);
 //		mallOrderDetailVO.setProductComment("還可以");
-//		mallOrderDetailVO.setProductCommentTime(new Timestamp(new java.util.Date().getTime()));
+//		mallOrderDetailVO.setProductCommentTime(new Timestamp(System.currentTimeMillis()));
 //		dao.update(mallOrderDetailVO);
 
 		// delete 測試
@@ -293,19 +293,19 @@ public class MallOrderDetailDAOImpl implements MallOrderDetailDAO {
 //		System.out.println(mallOrderDetailVO.getProductCommentTime());
 		
 		// getAll 測試
-		List<MallOrderDetailVO> list = dao.getAll();
-		for (MallOrderDetailVO m : list) {
-			System.out.println(m.getMallOrderDetailId());
-			System.out.println(m.getMallOrderId());
-			System.out.println(m.getProductId());
-			System.out.println(m.getProductPurchaseQuantity());
-			System.out.println(m.getProductPurchasePrice());
-			System.out.println(m.getProductCommentStar());
-			System.out.println(m.getProductComment());
-			System.out.println(m.getProductCommentTime());
-			System.out.println("==========================");
-		}
-
-	}
+//		List<MallOrderDetailVO> list = dao.getAll();
+//		for (MallOrderDetailVO m : list) {
+//			System.out.println(m.getMallOrderDetailId());
+//			System.out.println(m.getMallOrderId());
+//			System.out.println(m.getProductId());
+//			System.out.println(m.getProductPurchaseQuantity());
+//			System.out.println(m.getProductPurchasePrice());
+//			System.out.println(m.getProductCommentStar());
+//			System.out.println(m.getProductComment());
+//			System.out.println(m.getProductCommentTime());
+//			System.out.println("==========================");
+//		}
+//
+//	}
 
 }
