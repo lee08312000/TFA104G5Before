@@ -271,10 +271,10 @@ public class MallOrderDAOImpl implements MallOrderDAO {
 		return list;
 	}
 
-	public static void main(String[] args) {
-
-		MallOrderVO mallOrderVO = new MallOrderVO();
-		MallOrderDAO dao = new MallOrderDAOImpl();
+//	public static void main(String[] args) {
+//
+//		MallOrderVO mallOrderVO = new MallOrderVO();
+//		MallOrderDAO dao = new MallOrderDAOImpl();
 
 		// insert 測試
 //		mallOrderVO.setCompanyId(2);
@@ -296,7 +296,7 @@ public class MallOrderDAOImpl implements MallOrderDAO {
 //		mallOrderVO.setReceiverName("蜥蜴");
 //		mallOrderVO.setReceiverPhone("25555555");
 //		mallOrderVO.setReceiverAddress("台北101");
-//		mallOrderVO.setMallOrderCompletedTime(new Timestamp(new java.util.Date().getTime()));
+//		mallOrderVO.setMallOrderCompletedTime(new Timestamp(System.currentTimeMillis()));
 //		mallOrderVO.setMallOrderId(3);
 //		dao.update(mallOrderVO);
 
@@ -337,6 +337,6 @@ public class MallOrderDAOImpl implements MallOrderDAO {
 //			System.out.println(m.getMallOrderCompletedTime());
 //			System.out.println("==================================");
 //		}
-	}
+//	}
 
 }
