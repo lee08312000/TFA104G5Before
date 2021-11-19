@@ -1,5 +1,6 @@
 package camp.dao.impl;
 
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,27 +9,30 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import camp.common.ProductTypeVO;
-import camp.dao.ProductTypeDAO_interface;
+import camp.common.FavoriteProdoctVO;
+import camp.dao.FavoriteProdoctDAO;
 
-public class ProductTypeJDBCDAO implements ProductTypeDAO_interface{
+
+public class FavoriteProdoctDAOImpl implements FavoriteProdoctDAO{
+	
 	String driver = "com.mysql.cj.jdbc.Driver";
 	String url = "jdbc:mysql://localhost:3306/campingParadise?serverTimezone=Asia/Taipei";
 	String userid = "David";
 	String passwd = "123456";
 
 	private static final String INSERT_STMT = 
-		"INSERT INTO product_type (product_type_name) VALUES (?)";
+		"INSERT INTO favorite_product (member_id,product_id) VALUES (?, ?)";
 	private static final String GET_ALL_STMT = 
-		"SELECT product_type_id,product_type_name FROM product_type order by product_type_id";
+		"SELECT favorite_product_id,member_id,product_id FROM favorite_product order by favorite_product_id";
 	private static final String GET_ONE_STMT = 
-		"SELECT product_type_id,product_type_name FROM product_type where product_type_id = ?";
+		"SELECT favorite_product_id,member_id,product_id FROM favorite_product where favorite_product_id = ?";
 	private static final String DELETE = 
-		"DELETE FROM product_type where product_type_id = ?";
+		"DELETE FROM favorite_product where favorite_product_id = ?";
 	private static final String UPDATE = 
-		"UPDATE product_type set product_type_name=? where product_type_id = ?";
+		"UPDATE favorite_product set member_id=?, product_id=? where favorite_product_id = ?";
+
 	@Override
-	public void insert(ProductTypeVO ProductTypeVO) {
+	public void insert(FavoriteProdoctVO FavoriteProdoctVO) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -38,7 +42,9 @@ public class ProductTypeJDBCDAO implements ProductTypeDAO_interface{
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(INSERT_STMT);
 
-			pstmt.setString(1, ProductTypeVO.getProductTypeName());
+			pstmt.setInt(1, FavoriteProdoctVO.getMemberId());
+			pstmt.setInt(2, FavoriteProdoctVO.getProductId());
+
 			pstmt.executeUpdate();
 
 			// Handle any driver errors
@@ -68,8 +74,9 @@ public class ProductTypeJDBCDAO implements ProductTypeDAO_interface{
 		}
 		
 	}
+
 	@Override
-	public void update(ProductTypeVO ProductTypeVO) {
+	public void update(FavoriteProdoctVO FavoriteProdoctVO) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -79,8 +86,9 @@ public class ProductTypeJDBCDAO implements ProductTypeDAO_interface{
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(UPDATE);
 
-			pstmt.setString(1, ProductTypeVO.getProductTypeName());
-			pstmt.setInt(2, ProductTypeVO.getProductTypeId());	
+			pstmt.setInt(1, FavoriteProdoctVO.getMemberId());
+			pstmt.setInt(2, FavoriteProdoctVO.getProductId());
+			pstmt.setInt(3, FavoriteProdoctVO.getFavoriteProductId());
 
 			pstmt.executeUpdate();
 
@@ -111,8 +119,9 @@ public class ProductTypeJDBCDAO implements ProductTypeDAO_interface{
 		}
 		
 	}
+
 	@Override
-	public void delete(Integer productTypeId) {
+	public void delete(Integer favoriteProductId) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -122,7 +131,7 @@ public class ProductTypeJDBCDAO implements ProductTypeDAO_interface{
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(DELETE);
 
-			pstmt.setInt(1, productTypeId);
+			pstmt.setInt(1, favoriteProductId);
 
 			pstmt.executeUpdate();
 
@@ -153,9 +162,10 @@ public class ProductTypeJDBCDAO implements ProductTypeDAO_interface{
 		}
 		
 	}
+
 	@Override
-	public ProductTypeVO findByPrimaryKey(Integer productTypeId) {
-		ProductTypeVO ProductTypeVO = null;
+	public FavoriteProdoctVO findByPrimaryKey(Integer favoriteProductId) {
+		FavoriteProdoctVO FavoriteProdoctVO = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -166,15 +176,16 @@ public class ProductTypeJDBCDAO implements ProductTypeDAO_interface{
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(GET_ONE_STMT);
 
-			pstmt.setInt(1, productTypeId);
+			pstmt.setInt(1, favoriteProductId);
 
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
 				// empVo 也稱為 Domain objects
-				ProductTypeVO = new ProductTypeVO();
-				ProductTypeVO.setProductTypeId(rs.getInt("product_type_id"));
-				ProductTypeVO.setProductTypeName(rs.getString("product_type_name"));		
+				FavoriteProdoctVO = new FavoriteProdoctVO();
+				FavoriteProdoctVO.setFavoriteProductId(rs.getInt("favorite_product_id"));
+				FavoriteProdoctVO.setMemberId(rs.getInt("member_id"));
+				FavoriteProdoctVO.setProductId(rs.getInt("product_id"));				
 			}
 
 			// Handle any driver errors
@@ -209,12 +220,13 @@ public class ProductTypeJDBCDAO implements ProductTypeDAO_interface{
 				}
 			}
 		}
-		return ProductTypeVO;
+		return FavoriteProdoctVO;
 	}
+
 	@Override
-	public List<ProductTypeVO> getAll() {
-		List<ProductTypeVO> list = new ArrayList<ProductTypeVO>();
-		ProductTypeVO ProductTypeVO = null;
+	public List<FavoriteProdoctVO> getAll() {
+		List<FavoriteProdoctVO> list = new ArrayList<FavoriteProdoctVO>();
+		FavoriteProdoctVO FavoriteProdoctVO = null;
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -229,10 +241,11 @@ public class ProductTypeJDBCDAO implements ProductTypeDAO_interface{
 
 			while (rs.next()) {
 				// empVO 也稱為 Domain objects
-				ProductTypeVO = new ProductTypeVO();
-				ProductTypeVO.setProductTypeId(rs.getInt("product_type_id"));
-				ProductTypeVO.setProductTypeName(rs.getString("product_type_name"));			
-				list.add(ProductTypeVO); // Store the row in the list
+				FavoriteProdoctVO = new FavoriteProdoctVO();
+				FavoriteProdoctVO.setFavoriteProductId(rs.getInt("favorite_product_id"));
+				FavoriteProdoctVO.setMemberId(rs.getInt("member_id"));
+				FavoriteProdoctVO.setProductId(rs.getInt("product_id"));				
+				list.add(FavoriteProdoctVO); // Store the row in the list
 			}
 
 			// Handle any driver errors
@@ -270,37 +283,42 @@ public class ProductTypeJDBCDAO implements ProductTypeDAO_interface{
 		return list;
 	}
 	
+	
 	public static void main(String[] args) {
 
-		ProductTypeJDBCDAO dao = new ProductTypeJDBCDAO();
+		FavoriteProdoctDAOImpl dao = new FavoriteProdoctDAOImpl();
 
 		// 新增
-//		ProductTypeVO ProductTypeVO1 = new ProductTypeVO();
-//		ProductTypeVO1.setProductTypeName("鍋具");;
-//		dao.insert(ProductTypeVO1);
+//		FavoriteProdoctVO FavoriteProdoctVO1 = new FavoriteProdoctVO();
+//		FavoriteProdoctVO1.setMemberId(4);
+//		FavoriteProdoctVO1.setProductId(4);	
+//		dao.insert(FavoriteProdoctVO1);
 
 		// 修改
-//		ProductTypeVO ProductTypeVO2 = new ProductTypeVO();
-//		ProductTypeVO2.setProductTypeId(9);
-//		ProductTypeVO2.setProductTypeName("烤肉架");
-//		dao.update(ProductTypeVO2);
+//		FavoriteProdoctVO FavoriteProdoctVO2 = new FavoriteProdoctVO();
+//		FavoriteProdoctVO2.setMemberId(3);
+//		FavoriteProdoctVO2.setProductId(3);
+//		FavoriteProdoctVO2.setFavoriteProductId(5);		
+//		dao.update(FavoriteProdoctVO2);
 //
 //		// 刪除
-//		dao.delete(10);
+//		dao.delete(5);
 //
 //		// 查詢
-//		ProductTypeVO ProductTypeVOVO3 = dao.findByPrimaryKey(5);
-//		System.out.print(ProductTypeVOVO3.getProductTypeId() + ",");
-//		System.out.print(ProductTypeVOVO3.getProductTypeName());
+//		FavoriteProdoctVO FavoriteProdoctVO3 = dao.findByPrimaryKey(4);
+//		System.out.print(FavoriteProdoctVO3.getFavoriteProductId() + ",");
+//		System.out.print(FavoriteProdoctVO3.getMemberId() + ",");
+//		System.out.print(FavoriteProdoctVO3.getProductId() + ",");
 //		System.out.println("---------------------");
 //
 //		// 查詢
-		List<ProductTypeVO> list = dao.getAll();
-		for (ProductTypeVO aPT : list) {
-			System.out.print(aPT.getProductTypeId() + ",");
-			System.out.print(aPT.getProductTypeName());
+		List<FavoriteProdoctVO> list = dao.getAll();
+		for (FavoriteProdoctVO aFP : list) {
+			System.out.print(aFP.getFavoriteProductId() + ",");
+			System.out.print(aFP.getMemberId() + ",");
+			System.out.print(aFP.getProductId() + ",");
 			System.out.println();
 		}
 	}
-	
+
 }

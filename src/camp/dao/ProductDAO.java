@@ -4,7 +4,7 @@ import java.util.List;
 
 import camp.common.ProductVO;
 
-public interface ProductDAO_interface {
+public interface ProductDAO {
 	public void insert(ProductVO ProductVO);
     public void update(ProductVO ProductVO);
     public void delete(Integer productId);

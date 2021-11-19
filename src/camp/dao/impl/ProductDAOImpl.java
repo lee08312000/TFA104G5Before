@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import camp.common.ProductVO;
-import camp.dao.ProductDAO_interface;
+import camp.dao.ProductDAO;
 
 
-public class ProductJDBCDAO implements ProductDAO_interface{
+public class ProductDAOImpl implements ProductDAO{
 	
 	String driver = "com.mysql.cj.jdbc.Driver";
 	String url = "jdbc:mysql://localhost:3306/campingParadise?serverTimezone=Asia/Taipei";
@@ -351,7 +351,7 @@ public class ProductJDBCDAO implements ProductDAO_interface{
 	
 	public static void main(String[] args) {
 
-		ProductJDBCDAO dao = new ProductJDBCDAO();
+		ProductDAOImpl dao = new ProductDAOImpl();
 
 		// 新增
 //		ProductVO ProductVO1 = new ProductVO();
