@@ -337,7 +337,7 @@ public class ProductDAOImpl implements ProductDAO{
 		// update by Lee
 		// 商城用
 		@Override
-		public List<ProductVO> getSomeProducts(Integer productTypeId, Integer orderType, Integer limitX, Integer limitY) {
+		public List<ProductVO> getProductsByType(Integer productTypeId, Integer orderType, Integer limitX, Integer limitY) {
 			String productTypeIdString = "";
 			String orderByString = " ORDER BY ";
 			String orderTypeString = "";

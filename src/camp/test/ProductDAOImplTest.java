@@ -11,7 +11,7 @@ public class ProductDAOImplTest {
 	public static void main(String[] args) {
 
 		ProductDAO dao = new ProductDAOImpl();
-		List<ProductVO> list = dao.getSomeProducts(0, 0, 0, 0);
+		List<ProductVO> list = dao.getProductsByType(0, 0, 0, 0);
 		
 		for (ProductVO ap : list) {
 			System.out.print(ap.getProductId() + ",");
