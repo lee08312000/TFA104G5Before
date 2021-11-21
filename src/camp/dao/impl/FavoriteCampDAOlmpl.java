@@ -1,5 +1,6 @@
 package camp.dao.impl;
 
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,27 +9,46 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import camp.common.ProductTypeVO;
-import camp.dao.ProductTypeDAO_interface;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 
-public class ProductTypeJDBCDAO implements ProductTypeDAO_interface{
+import camp.common.FavoriteCampVO;
+import camp.dao.FavoriteCampDAO;
+
+public class FavoriteCampDAOlmpl implements FavoriteCampDAO {
+
 	String driver = "com.mysql.cj.jdbc.Driver";
 	String url = "jdbc:mysql://localhost:3306/campingParadise?serverTimezone=Asia/Taipei";
 	String userid = "David";
 	String passwd = "123456";
+	
+//	private static DataSource ds = null;
+//	static {
+//		try {
+//			Context ctx = new InitialContext();
+//			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB2");
+//		} catch (NamingException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
-	private static final String INSERT_STMT = 
-		"INSERT INTO product_type (product_type_name) VALUES (?)";
-	private static final String GET_ALL_STMT = 
-		"SELECT product_type_id,product_type_name FROM product_type order by product_type_id";
-	private static final String GET_ONE_STMT = 
-		"SELECT product_type_id,product_type_name FROM product_type where product_type_id = ?";
-	private static final String DELETE = 
-		"DELETE FROM product_type where product_type_id = ?";
-	private static final String UPDATE = 
-		"UPDATE product_type set product_type_name=? where product_type_id = ?";
+	private static final String CLOUM_FOR_INSERT = "member_Id,camp_Id";
+	private static final String CLOUM_FOR_ALL = "favorite_camp_id,"
+			+ CLOUM_FOR_INSERT;
+	private static final String INSERT_STMT = "INSERT INTO favorite_camp ("
+			+ CLOUM_FOR_INSERT + ") " + "VALUES (?, ?)";
+	private static final String GET_ALL_STMT = "SELECT " + CLOUM_FOR_ALL
+			+ " FROM favorite_camp order by favorite_camp_id";
+	private static final String GET_ONE_STMT = "SELECT " + CLOUM_FOR_INSERT
+			+ " FROM favorite_camp where favorite_camp_id = ?";
+	private static final String DELETE = "DELETE FROM favorite_camp where favorite_camp_id = ?";
+	private static final String UPDATE = "UPDATE favorite_camp set member_Id=?,camp_Id=? where favorite_camp_id = ?";
+
 	@Override
-	public void insert(ProductTypeVO ProductTypeVO) {
+	public void insert(FavoriteCampVO favoriteCampVO) {
+
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -38,18 +58,18 @@ public class ProductTypeJDBCDAO implements ProductTypeDAO_interface{
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(INSERT_STMT);
 
-			pstmt.setString(1, ProductTypeVO.getProductTypeName());
+			pstmt.setInt(1, favoriteCampVO.getMemberId());
+			pstmt.setInt(2, favoriteCampVO.getCampId());
+
 			pstmt.executeUpdate();
 
-			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "
-					+ e.getMessage());
-			// Handle any SQL errors
+			
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
-			// Clean up JDBC resources
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		} finally {
 			if (pstmt != null) {
 				try {
@@ -66,10 +86,12 @@ public class ProductTypeJDBCDAO implements ProductTypeDAO_interface{
 				}
 			}
 		}
-		
+
 	}
+
 	@Override
-	public void update(ProductTypeVO ProductTypeVO) {
+	public void update(FavoriteCampVO favoriteCampVO) {
+
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -78,21 +100,18 @@ public class ProductTypeJDBCDAO implements ProductTypeDAO_interface{
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(UPDATE);
-
-			pstmt.setString(1, ProductTypeVO.getProductTypeName());
-			pstmt.setInt(2, ProductTypeVO.getProductTypeId());	
-
+			pstmt.setInt(1, favoriteCampVO.getMemberId());
+			pstmt.setInt(2, favoriteCampVO.getCampId());
+			pstmt.setInt(3, favoriteCampVO.getFavoriteCampId());
 			pstmt.executeUpdate();
 
-			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "
-					+ e.getMessage());
-			// Handle any SQL errors
+			
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
-			// Clean up JDBC resources
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		} finally {
 			if (pstmt != null) {
 				try {
@@ -109,10 +128,12 @@ public class ProductTypeJDBCDAO implements ProductTypeDAO_interface{
 				}
 			}
 		}
-		
+
 	}
+
 	@Override
-	public void delete(Integer productTypeId) {
+	public void delete(Integer favoriteCampId) {
+
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -122,19 +143,17 @@ public class ProductTypeJDBCDAO implements ProductTypeDAO_interface{
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(DELETE);
 
-			pstmt.setInt(1, productTypeId);
+			pstmt.setInt(1, favoriteCampId);
 
 			pstmt.executeUpdate();
 
 			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "
-					+ e.getMessage());
-			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
-			// Clean up JDBC resources
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		} finally {
 			if (pstmt != null) {
 				try {
@@ -151,11 +170,13 @@ public class ProductTypeJDBCDAO implements ProductTypeDAO_interface{
 				}
 			}
 		}
-		
+
 	}
+
 	@Override
-	public ProductTypeVO findByPrimaryKey(Integer productTypeId) {
-		ProductTypeVO ProductTypeVO = null;
+	public FavoriteCampVO findByPrimaryKey(Integer favoriteCampId) {
+
+		FavoriteCampVO favoriteCampVO = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -166,26 +187,25 @@ public class ProductTypeJDBCDAO implements ProductTypeDAO_interface{
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(GET_ONE_STMT);
 
-			pstmt.setInt(1, productTypeId);
+			pstmt.setInt(1, favoriteCampId);
 
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				// empVo 也稱為 Domain objects
-				ProductTypeVO = new ProductTypeVO();
-				ProductTypeVO.setProductTypeId(rs.getInt("product_type_id"));
-				ProductTypeVO.setProductTypeName(rs.getString("product_type_name"));		
+			
+				favoriteCampVO = new FavoriteCampVO();
+				favoriteCampVO.setCampId(rs.getInt("camp_Id"));
+				favoriteCampVO.setMemberId(rs.getInt("member_Id"));
+				favoriteCampVO.setFavoriteCampId(rs.getInt("favorite_Camp_Id"));
 			}
 
-			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "
-					+ e.getMessage());
-			// Handle any SQL errors
+		
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
-			// Clean up JDBC resources
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		} finally {
 			if (rs != null) {
 				try {
@@ -209,12 +229,20 @@ public class ProductTypeJDBCDAO implements ProductTypeDAO_interface{
 				}
 			}
 		}
-		return ProductTypeVO;
+		return favoriteCampVO;
 	}
+
+	private byte[] checkBlob(Blob blob) throws SQLException {
+		int campPic1length = blob == null ? 0 : (int) blob.length();
+		blob.free();
+		return blob.getBytes(1, campPic1length);
+
+	}
+
 	@Override
-	public List<ProductTypeVO> getAll() {
-		List<ProductTypeVO> list = new ArrayList<ProductTypeVO>();
-		ProductTypeVO ProductTypeVO = null;
+	public List<FavoriteCampVO> getAll() {
+		List<FavoriteCampVO> list = new ArrayList<FavoriteCampVO>();
+		FavoriteCampVO favoriteCampVO = null;
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -228,22 +256,21 @@ public class ProductTypeJDBCDAO implements ProductTypeDAO_interface{
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				// empVO 也稱為 Domain objects
-				ProductTypeVO = new ProductTypeVO();
-				ProductTypeVO.setProductTypeId(rs.getInt("product_type_id"));
-				ProductTypeVO.setProductTypeName(rs.getString("product_type_name"));			
-				list.add(ProductTypeVO); // Store the row in the list
+			
+				favoriteCampVO = new FavoriteCampVO();
+				favoriteCampVO.setCampId(rs.getInt("camp_Id"));
+				favoriteCampVO.setMemberId(rs.getInt("member_Id"));
+				favoriteCampVO.setFavoriteCampId(rs.getInt("favorite_Camp_Id"));
+				list.add(favoriteCampVO); // Store the row in the list
 			}
 
-			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "
-					+ e.getMessage());
-			// Handle any SQL errors
+		
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
-			// Clean up JDBC resources
+		
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		} finally {
 			if (rs != null) {
 				try {
@@ -269,38 +296,4 @@ public class ProductTypeJDBCDAO implements ProductTypeDAO_interface{
 		}
 		return list;
 	}
-	
-	public static void main(String[] args) {
-
-		ProductTypeJDBCDAO dao = new ProductTypeJDBCDAO();
-
-		// 新增
-//		ProductTypeVO ProductTypeVO1 = new ProductTypeVO();
-//		ProductTypeVO1.setProductTypeName("鍋具");;
-//		dao.insert(ProductTypeVO1);
-
-		// 修改
-//		ProductTypeVO ProductTypeVO2 = new ProductTypeVO();
-//		ProductTypeVO2.setProductTypeId(9);
-//		ProductTypeVO2.setProductTypeName("烤肉架");
-//		dao.update(ProductTypeVO2);
-//
-//		// 刪除
-//		dao.delete(10);
-//
-//		// 查詢
-//		ProductTypeVO ProductTypeVOVO3 = dao.findByPrimaryKey(5);
-//		System.out.print(ProductTypeVOVO3.getProductTypeId() + ",");
-//		System.out.print(ProductTypeVOVO3.getProductTypeName());
-//		System.out.println("---------------------");
-//
-//		// 查詢
-		List<ProductTypeVO> list = dao.getAll();
-		for (ProductTypeVO aPT : list) {
-			System.out.print(aPT.getProductTypeId() + ",");
-			System.out.print(aPT.getProductTypeName());
-			System.out.println();
-		}
-	}
-	
 }

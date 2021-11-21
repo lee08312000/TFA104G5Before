@@ -6,7 +6,7 @@ import camp.common.FavoriteProdoctVO;
 
 
 
-public interface FavoriteProdoctDAO_interface {
+public interface FavoriteProdoctDAO {
 	
 	 public void insert(FavoriteProdoctVO FavoriteProdoctVO);
      public void update(FavoriteProdoctVO FavoriteProdoctVO);

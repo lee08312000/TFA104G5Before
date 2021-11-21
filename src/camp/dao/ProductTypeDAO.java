@@ -4,7 +4,7 @@ import java.util.List;
 
 import camp.common.ProductTypeVO;
 
-public interface ProductTypeDAO_interface {
+public interface ProductTypeDAO {
 
 	public void insert(ProductTypeVO ProductTypeVO);
     public void update(ProductTypeVO ProductTypeVO);
