@@ -253,7 +253,7 @@ public class ProductReportDAOImpl implements ProductReportDAO{
 //		
 //		ProductReportVO productReportVO = new ProductReportVO();
 //		ProductReportDAO dao = new ProductReportDAOImpl();
-		// insert 測試
+//		// insert 測試
 //		
 //		productReportVO.setMemberId(1);
 //		productReportVO.setProductId(4);
