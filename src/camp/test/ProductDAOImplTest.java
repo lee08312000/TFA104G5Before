@@ -2,9 +2,9 @@ package camp.test;
 
 import java.util.List;
 
-import camp.common.ProductVO;
-import camp.dao.ProductDAO;
-import camp.dao.impl.ProductDAOImpl;
+import com.product.model.ProductDAO;
+import com.product.model.ProductDAOImpl;
+import com.product.model.ProductVO;
 
 public class ProductDAOImplTest {
 

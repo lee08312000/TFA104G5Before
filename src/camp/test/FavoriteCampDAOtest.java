@@ -1,12 +1,7 @@
 package camp.test;
 
-import java.util.List;
-
-import camp.common.CampAreaVO;
-import camp.common.CampTagVO;
-import camp.common.CampVO;
-import camp.common.FavoriteCampVO;
-import camp.dao.impl.FavoriteCampDAOlmpl;
+import com.favoriteCamp.model.FavoriteCampDAOlmpl;
+import com.favoriteCamp.model.FavoriteCampVO;
 
 public class FavoriteCampDAOtest {
 
