@@ -1,7 +1,6 @@
 package camp.test;
 
-import camp.common.CampTagVO;
-import camp.dao.impl.CampTagDAOlmpl;
+import com.campTag.model.CampTagDAOlmpl;
 
 public class CampTagDAOtest {
 
