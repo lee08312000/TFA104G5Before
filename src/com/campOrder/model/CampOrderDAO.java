@@ -1,13 +1,11 @@
 package com.campOrder.model;
 
-
-
-
 import java.util.List;
+import com.campAreaOrderDetail.model.CampAreaOrderDetailVO;
 
 public interface CampOrderDAO {
 
-	public void add(CampOrderVO campOrderVO);
+	public void add(CampOrderVO campOrderVO, CampAreaOrderDetailVO...campAreaOrderDetailVO);
 
 	public void update(CampOrderVO campOrderVO);
 

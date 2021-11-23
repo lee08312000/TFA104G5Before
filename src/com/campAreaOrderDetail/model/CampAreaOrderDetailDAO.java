@@ -1,6 +1,8 @@
 package com.campAreaOrderDetail.model;
 
+
 import java.util.List;
+
 
 public interface CampAreaOrderDetailDAO {
 	public void add(CampAreaOrderDetailVO campAreaOrderDetailVO);
