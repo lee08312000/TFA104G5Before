@@ -32,8 +32,7 @@ public class CampAreaOrderDetailDAOImpl implements CampAreaOrderDetailDAO {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try {
-
-			con = DriverManager.getConnection(Util.URL);
+			con = DriverManager.getConnection(Util.URL, Util.USER, Util.PASSWORD);
 			pstmt = con.prepareStatement(INSERT_STMT);
 			pstmt.setInt(1, campAreaOrderDetailVO.getCampAreaId());
 			pstmt.setInt(2, campAreaOrderDetailVO.getCampOrderId());
@@ -48,7 +47,6 @@ public class CampAreaOrderDetailDAOImpl implements CampAreaOrderDetailDAO {
 			System.out.println("成功更新" + suc_row + "筆");
 		} catch (SQLException se) {
 			se.printStackTrace();
-
 		} finally {
 			if (pstmt != null) {
 				try {
@@ -60,10 +58,11 @@ public class CampAreaOrderDetailDAOImpl implements CampAreaOrderDetailDAO {
 			if (con != null) {
 				try {
 					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
 				}
 			}
+
 		}
 	}
 

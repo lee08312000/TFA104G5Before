@@ -1,5 +1,6 @@
 package camp.dao;
 
+import java.sql.Connection;
 import java.util.List;
 
 import camp.common.CampAreaOrderDetailVO;
