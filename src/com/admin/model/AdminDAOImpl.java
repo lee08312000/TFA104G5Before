@@ -157,10 +157,10 @@ public class AdminDAOImpl implements AdminDAO {
 			while (rs.next()) {
 				adminVO = new AdminVO(); //物件建立的動作，建立Employee Bean,準備包裝著從資料庫查詢出來的部門資料
 				// emp.setEmpno(empno);設定後直接回傳值回去
-				adminVO.setAdminId(rs.getInt("adminId"));
-				adminVO.setAdminAccountStatus(rs.getInt("adminAccountStatus"));
-				adminVO.setAdminAccount(rs.getString("adminAccount"));
-				adminVO.setAdminPassword(rs.getString("adminPassword"));
+				adminVO.setAdminId(rs.getInt("admin_id"));
+				adminVO.setAdminAccountStatus(rs.getInt("admin_account_status"));
+				adminVO.setAdminAccount(rs.getString("admin_account"));
+				adminVO.setAdminPassword(rs.getString("admin_password"));
 			}
 			
 		} catch (SQLException se) {
@@ -210,10 +210,10 @@ public class AdminDAOImpl implements AdminDAO {
 
 			while (rs.next()) {
 				adminVO = new AdminVO();
-				adminVO.setAdminId(rs.getInt("adminId"));
-				adminVO.setAdminAccountStatus(rs.getInt("adminAccountStatus"));
-				adminVO.setAdminAccount(rs.getString("adminAccount"));
-				adminVO.setAdminPassword(rs.getString("adminPassword"));
+				adminVO.setAdminId(rs.getInt("admin_id"));
+				adminVO.setAdminAccountStatus(rs.getInt("admin_account_status"));
+				adminVO.setAdminAccount(rs.getString("admin_account"));
+				adminVO.setAdminPassword(rs.getString("admin_password"));
 				adminList.add(adminVO);
 
 			}
@@ -247,4 +247,59 @@ public class AdminDAOImpl implements AdminDAO {
 		return adminList;
 	}
 
+	
+	
+	
+	
+//	public static void main(String[] args) {
+//	
+//	ProductReportVO productReportVO = new ProductReportVO();
+//	ProductReportDAO dao = new ProductReportDAOImpl();
+//	// insert 測試
+//	
+//	productReportVO.setMemberId(1);
+//	productReportVO.setProductId(4);
+//	productReportVO.setReportReason("太醜了!!!!");
+//	
+//	dao.insert(productReportVO);
+	
+	// delete 測試
+//	dao.delete(2);
+	
+	// update 測試
+//	productReportVO.setMemberId(2);
+//	productReportVO.setProductId(2);
+//	productReportVO.setReportReason("lol");
+//	productReportVO.setReportStatus(1);
+//	productReportVO.setProductReportId(3);
+//	
+//	dao.update(productReportVO);
+
+	// findByPrimaryKey 測試
+//	productReportVO = dao.findByPrimaryKey(4);
+//	
+//	System.out.println(productReportVO.getProductReportId());
+//	System.out.println(productReportVO.getMemberId());
+//	System.out.println(productReportVO.getProductId());
+//	System.out.println(productReportVO.getReportTime());
+//	System.out.println(productReportVO.getReportReason());
+//	System.out.println(productReportVO.getReportStatus());
+	
+	// getAll 測試
+//	List<ProductReportVO> list = dao.getAll();
+//	
+//	for (ProductReportVO p : list) {
+//		System.out.println(p.getProductReportId());
+//		System.out.println(p.getMemberId());
+//		System.out.println(p.getProductId());
+//		System.out.println(p.getReportTime());
+//		System.out.println(p.getReportReason());
+//		System.out.println(p.getReportStatus());
+//		System.out.println("========================");
+//	}
+//	
+//}
+
 }
+
+

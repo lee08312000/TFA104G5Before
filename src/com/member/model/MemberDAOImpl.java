@@ -167,15 +167,15 @@ public class MemberDAOImpl implements MemberDAO {
 			while (rs.next()) {
 				memberVO = new MemberVO(); //物件建立的動作，建立Employee Bean,準備包裝著從資料庫查詢出來的部門資料
 				// emp.setEmpno(empno);設定後直接回傳值回去
-				memberVO.setMemberId(rs.getInt("memberId"));
-				memberVO.setMemberAccountStatus(rs.getInt("memberAccountStatus"));
-				memberVO.setMemberName(rs.getString("memberName"));
-				memberVO.setMemberAccount(rs.getString("memberAccount"));
-				memberVO.setMemberPassword(rs.getString("memberPassword"));
-				memberVO.setMemberEmail(rs.getString("memberEmail"));
-				memberVO.setMemberAddress(rs.getString("memberAddress"));
-				memberVO.setMemberPhone(rs.getString("memberPhone"));
-				memberVO.setMemberPic(rs.getBytes("memberPic"));
+				memberVO.setMemberId(rs.getInt("member_id"));
+				memberVO.setMemberAccountStatus(rs.getInt("member_account_status"));
+				memberVO.setMemberName(rs.getString("member_name"));
+				memberVO.setMemberAccount(rs.getString("member_account"));
+				memberVO.setMemberPassword(rs.getString("member_password"));
+				memberVO.setMemberEmail(rs.getString("member_email"));
+				memberVO.setMemberAddress(rs.getString("member_address"));
+				memberVO.setMemberPhone(rs.getString("member_phone"));
+				memberVO.setMemberPic(rs.getBytes("member_pic"));
 
 			}
 
@@ -225,15 +225,15 @@ public class MemberDAOImpl implements MemberDAO {
 
 			while (rs.next()) {
 				memberVO = new MemberVO();
-				memberVO.setMemberId(rs.getInt(1));
-				memberVO.setMemberAccountStatus(rs.getInt(2));
-				memberVO.setMemberName(rs.getString(3));
-				memberVO.setMemberAccount(rs.getString(4));
-				memberVO.setMemberPassword(rs.getString(5));
-				memberVO.setMemberEmail(rs.getString(6));
-				memberVO.setMemberAddress(rs.getString(7));
-				memberVO.setMemberPhone(rs.getString(8));
-				memberVO.setMemberPic(rs.getBytes(9));
+				memberVO.setMemberId(rs.getInt("member_id"));
+				memberVO.setMemberAccountStatus(rs.getInt("member_account_status"));
+				memberVO.setMemberName(rs.getString("member_name"));
+				memberVO.setMemberAccount(rs.getString("member_account"));
+				memberVO.setMemberPassword(rs.getString("member_password"));
+				memberVO.setMemberEmail(rs.getString("member_email"));
+				memberVO.setMemberAddress(rs.getString("member_address"));
+				memberVO.setMemberPhone(rs.getString("member_phone"));
+				memberVO.setMemberPic(rs.getBytes("member_pic"));
 				memberList.add(memberVO);
 				
 			}
@@ -266,5 +266,57 @@ public class MemberDAOImpl implements MemberDAO {
 		}
 		return memberList;
 	}
+	
+	
+	
+	
+//	public static void main(String[] args) {
+//	
+//	ProductReportVO productReportVO = new ProductReportVO();
+//	ProductReportDAO dao = new ProductReportDAOImpl();
+//	// insert 測試
+//	
+//	productReportVO.setMemberId(1);
+//	productReportVO.setProductId(4);
+//	productReportVO.setReportReason("太醜了!!!!");
+//	
+//	dao.insert(productReportVO);
+	
+	// delete 測試
+//	dao.delete(2);
+	
+	// update 測試
+//	productReportVO.setMemberId(2);
+//	productReportVO.setProductId(2);
+//	productReportVO.setReportReason("lol");
+//	productReportVO.setReportStatus(1);
+//	productReportVO.setProductReportId(3);
+//	
+//	dao.update(productReportVO);
+
+	// findByPrimaryKey 測試
+//	productReportVO = dao.findByPrimaryKey(4);
+//	
+//	System.out.println(productReportVO.getProductReportId());
+//	System.out.println(productReportVO.getMemberId());
+//	System.out.println(productReportVO.getProductId());
+//	System.out.println(productReportVO.getReportTime());
+//	System.out.println(productReportVO.getReportReason());
+//	System.out.println(productReportVO.getReportStatus());
+	
+	// getAll 測試
+//	List<ProductReportVO> list = dao.getAll();
+//	
+//	for (ProductReportVO p : list) {
+//		System.out.println(p.getProductReportId());
+//		System.out.println(p.getMemberId());
+//		System.out.println(p.getProductId());
+//		System.out.println(p.getReportTime());
+//		System.out.println(p.getReportReason());
+//		System.out.println(p.getReportStatus());
+//		System.out.println("========================");
+//	}
+//	
+//}
 
 }

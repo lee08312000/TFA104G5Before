@@ -171,17 +171,17 @@ public class CompanyDAOImpl implements CompanyDAO {
 			while (rs.next()) {
 				companyVO = new CompanyVO(); //物件建立的動作，建立Employee Bean,準備包裝著從資料庫查詢出來的部門資料
 				// emp.setEmpno(empno);設定後直接回傳值回去
-				companyVO.setCompanyId(rs.getInt("companyId"));
-				companyVO.setCompanyStatus(rs.getInt("companyStatus"));
-				companyVO.setHeadName(rs.getString("headName"));
-				companyVO.setCompanyName(rs.getString("companyName"));
-				companyVO.setCompanyAccount(rs.getString("companyAccount"));
-				companyVO.setCompanyPassword(rs.getString("companyPassword"));
-				companyVO.setCompanyEmail(rs.getString("companyEmail"));
-				companyVO.setCompanyTel(rs.getString("companyTel"));
-				companyVO.setCompanyBankAccount(rs.getString("companyBankAccount"));
-				companyVO.setCompanyAddress(rs.getString("companyAddress"));
-				companyVO.setCompanyRegisterTime(rs.getTimestamp("companyRegisterTime"));
+				companyVO.setCompanyId(rs.getInt("company_id"));
+				companyVO.setCompanyStatus(rs.getInt("company_status"));
+				companyVO.setHeadName(rs.getString("head_name"));
+				companyVO.setCompanyName(rs.getString("company_name"));
+				companyVO.setCompanyAccount(rs.getString("company_account"));
+				companyVO.setCompanyPassword(rs.getString("company_password"));
+				companyVO.setCompanyEmail(rs.getString("company_email"));
+				companyVO.setCompanyTel(rs.getString("company_tel"));
+				companyVO.setCompanyBankAccount(rs.getString("company_bank_account"));
+				companyVO.setCompanyAddress(rs.getString("company_address"));
+				companyVO.setCompanyRegisterTime(rs.getTimestamp("company_register_time"));
 			}
 
 		} catch (SQLException se) {
@@ -230,17 +230,17 @@ public class CompanyDAOImpl implements CompanyDAO {
 
 			while (rs.next()) {
 				companyVO = new CompanyVO();
-				companyVO.setCompanyId(rs.getInt("companyId"));
-				companyVO.setCompanyStatus(rs.getInt("companyStatus"));
-				companyVO.setHeadName(rs.getString("headName"));
-				companyVO.setCompanyName(rs.getString("companyName"));
-				companyVO.setCompanyAccount(rs.getString("companyAccount"));
-				companyVO.setCompanyPassword(rs.getString("companyPassword"));
-				companyVO.setCompanyEmail(rs.getString("companyEmail"));
-				companyVO.setCompanyTel(rs.getString("companyTel"));
-				companyVO.setCompanyBankAccount(rs.getString("companyBankAccount"));
-				companyVO.setCompanyAddress(rs.getString("companyAddress"));
-				companyVO.setCompanyRegisterTime(rs.getTimestamp("companyRegisterTime"));
+				companyVO.setCompanyId(rs.getInt("company_id"));
+				companyVO.setCompanyStatus(rs.getInt("company_status"));
+				companyVO.setHeadName(rs.getString("head_name"));
+				companyVO.setCompanyName(rs.getString("company_name"));
+				companyVO.setCompanyAccount(rs.getString("company_account"));
+				companyVO.setCompanyPassword(rs.getString("company_password"));
+				companyVO.setCompanyEmail(rs.getString("company_email"));
+				companyVO.setCompanyTel(rs.getString("company_tel"));
+				companyVO.setCompanyBankAccount(rs.getString("company_bank_account"));
+				companyVO.setCompanyAddress(rs.getString("company_address"));
+				companyVO.setCompanyRegisterTime(rs.getTimestamp("company_register_time"));
 				companyList.add(companyVO);
 			}
 
@@ -272,6 +272,60 @@ public class CompanyDAOImpl implements CompanyDAO {
 		}
 		return companyList;
 	}
+	
+	
+	
+	
+//	public static void main(String[] args) {
+//	
+//	ProductReportVO productReportVO = new ProductReportVO();
+//	ProductReportDAO dao = new ProductReportDAOImpl();
+//	// insert 測試
+//	
+//	productReportVO.setMemberId(1);
+//	productReportVO.setProductId(4);
+//	productReportVO.setReportReason("太醜了!!!!");
+//	
+//	dao.insert(productReportVO);
+	
+	// delete 測試
+//	dao.delete(2);
+	
+	// update 測試
+//	productReportVO.setMemberId(2);
+//	productReportVO.setProductId(2);
+//	productReportVO.setReportReason("lol");
+//	productReportVO.setReportStatus(1);
+//	productReportVO.setProductReportId(3);
+//	
+//	dao.update(productReportVO);
+
+	// findByPrimaryKey 測試
+//	productReportVO = dao.findByPrimaryKey(4);
+//	
+//	System.out.println(productReportVO.getProductReportId());
+//	System.out.println(productReportVO.getMemberId());
+//	System.out.println(productReportVO.getProductId());
+//	System.out.println(productReportVO.getReportTime());
+//	System.out.println(productReportVO.getReportReason());
+//	System.out.println(productReportVO.getReportStatus());
+	
+	// getAll 測試
+//	List<ProductReportVO> list = dao.getAll();
+//	
+//	for (ProductReportVO p : list) {
+//		System.out.println(p.getProductReportId());
+//		System.out.println(p.getMemberId());
+//		System.out.println(p.getProductId());
+//		System.out.println(p.getReportTime());
+//		System.out.println(p.getReportReason());
+//		System.out.println(p.getReportStatus());
+//		System.out.println("========================");
+//	}
+//	
+//}
 
 }
+
+
 
