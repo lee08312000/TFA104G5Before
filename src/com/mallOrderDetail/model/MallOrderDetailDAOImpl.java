@@ -63,6 +63,41 @@ public class MallOrderDetailDAOImpl implements MallOrderDetailDAO {
 	}
 
 	@Override
+	public void insert(MallOrderDetailVO mallOrderDetailVO, Connection con) {
+		PreparedStatement pstmt = null;
+
+		try {
+			con = DriverManager.getConnection(Util.URL, Util.USER, Util.PASSWORD);
+			pstmt = con.prepareStatement(INSERT_STMT);
+
+			pstmt.setInt(1, mallOrderDetailVO.getMallOrderId());
+			pstmt.setInt(2, mallOrderDetailVO.getProductId());
+			pstmt.setInt(3, mallOrderDetailVO.getProductPurchaseQuantity());
+			pstmt.setInt(4, mallOrderDetailVO.getProductPurchasePrice());
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+
+//			if (con != null) {
+//				try {
+//					con.close();
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//				}
+//			}
+		}
+	}
+
+	@Override
 	public void update(MallOrderDetailVO mallOrderDetailVO) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
