@@ -1,11 +1,6 @@
 package camp.test;
 
-import java.util.List;
-
-import camp.common.CampTagDetailVO;
-import camp.common.CampTagVO;
-import camp.common.CampVO;
-import camp.dao.impl.CampTagDetailDAOlmpl;
+import com.campTagDetail.model.CampTagDetailDAOlmpl;
 
 public class CampTagDetailDAOtest {
 

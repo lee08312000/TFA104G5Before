@@ -1,9 +1,6 @@
 package camp.test;
 
-import java.util.List;
-
-import camp.common.CampAreaVO;
-import camp.dao.impl.CampAreaDAOlmpl;
+import com.campArea.model.CampAreaDAOlmpl;
 public class CampAreaDAOtest {
 
 	public static void main(String[] args) {

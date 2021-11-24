@@ -1,11 +1,6 @@
 package camp.test;
 
-import java.sql.Timestamp;
-import java.util.List;
-import javax.sql.rowset.serial.SerialBlob;
-
-import camp.common.CampVO;
-import camp.dao.impl.CampDAOlmpl;
+import com.camp.model.CampDAOlmpl;
 
 public class CampDAOtest {
 
