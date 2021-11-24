@@ -155,6 +155,7 @@ public class CartServlet extends HttpServlet {
 			rd.forward(req, res);
 		}
 		
+		// step3tostep2
 		
 		if ("step3tostep2".equals(action)) {
 			
