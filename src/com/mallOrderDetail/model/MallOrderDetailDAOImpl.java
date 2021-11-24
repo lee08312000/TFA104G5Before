@@ -67,7 +67,6 @@ public class MallOrderDetailDAOImpl implements MallOrderDetailDAO {
 		PreparedStatement pstmt = null;
 
 		try {
-			con = DriverManager.getConnection(Util.URL, Util.USER, Util.PASSWORD);
 			pstmt = con.prepareStatement(INSERT_STMT);
 
 			pstmt.setInt(1, mallOrderDetailVO.getMallOrderId());
