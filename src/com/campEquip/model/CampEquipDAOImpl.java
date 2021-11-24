@@ -12,7 +12,7 @@ import java.util.List;
 
 import util.Util;
 
-public class CampEquipDAOimpl implements CampEquipDAO {
+public class CampEquipDAOImpl implements CampEquipDAO {
 
 	private static final String INSERT_STMT = "INSERT INTO camp_equip(camp_equip_name) VALUES (?)";
 	private static final String UPDATE_STMT = "UPDATE camp_equip SET camp_equip_name=? WHERE camp_equip_id=?";
@@ -107,7 +107,6 @@ public class CampEquipDAOimpl implements CampEquipDAO {
 			pstmt.setInt(1, campEquipId);
 			pstmt.executeUpdate();
 			con.commit();
-			con.setAutoCommit(true);
 			
 		} catch (SQLException se) {
 			try {
@@ -127,6 +126,7 @@ public class CampEquipDAOimpl implements CampEquipDAO {
 			}
 			if (con != null) {
 				try {
+					con.setAutoCommit(true);
 					con.close();
 				} catch (Exception e) {
 					e.printStackTrace(System.err);

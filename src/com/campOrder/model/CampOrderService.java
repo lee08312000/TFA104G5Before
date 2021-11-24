@@ -16,14 +16,14 @@ public class CampOrderService {
 	private CampAreaOrderDetailDAO detaildao;
 	private CampBookingDAO bookdao;
 
-	// 建構子
+// 建構子
 	CampOrderService() {
 		orderdao = new CampOrderDAOImpl();
 		detaildao = new CampAreaOrderDetailDAOImpl();
 		bookdao =new CampBookingDAOImpl();
 	}
 
-	// 新增一筆訂單包含新增訂單明細&日程表訂位數量
+// 新增一筆訂單包含新增訂單明細&日程表訂位數量
 	public void addOneOrder(CampOrderVO campOrderVO,CampAreaOrderDetailVO...DetailVOs) {
 	
 		if (!(campOrderVO==null||DetailVOs.length==0)) {
