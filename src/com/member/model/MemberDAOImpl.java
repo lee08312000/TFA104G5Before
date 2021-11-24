@@ -27,7 +27,7 @@ public class MemberDAOImpl implements MemberDAO {
 	}
 
 	@Override
-	public void add(MemberVO member) {
+	public void add(MemberVO memberVO) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -35,15 +35,15 @@ public class MemberDAOImpl implements MemberDAO {
 
 			con = DriverManager.getConnection(Util.URL, Util.USER, Util.PASSWORD);
 			pstmt = con.prepareStatement(INSERT_STMT);
-			pstmt.setInt(1, member.getMemberId());
-			pstmt.setInt(2, member.getMemberAccountStatus());
-			pstmt.setString(3, member.getMemberName());
-			pstmt.setString(4, member.getMemberAccount());
-			pstmt.setString(5, member.getMemberPassword());
-			pstmt.setString(6, member.getMemberEmail());
-			pstmt.setString(7, member.getMemberAddress());
-			pstmt.setString(8, member.getMemberPhone());
-			pstmt.setBytes(9, member.getMemberPic());
+			pstmt.setInt(1, memberVO.getMemberId());
+			pstmt.setInt(2, memberVO.getMemberAccountStatus());
+			pstmt.setString(3, memberVO.getMemberName());
+			pstmt.setString(4, memberVO.getMemberAccount());
+			pstmt.setString(5, memberVO.getMemberPassword());
+			pstmt.setString(6, memberVO.getMemberEmail());
+			pstmt.setString(7, memberVO.getMemberAddress());
+			pstmt.setString(8, memberVO.getMemberPhone());
+			pstmt.setBytes(9, memberVO.getMemberPic());
 
 
 			pstmt.executeUpdate();
@@ -71,7 +71,7 @@ public class MemberDAOImpl implements MemberDAO {
 	}
 
 	@Override
-	public void update(MemberVO member) {
+	public void update(MemberVO memberVO) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -80,15 +80,15 @@ public class MemberDAOImpl implements MemberDAO {
 			con = DriverManager.getConnection(Util.URL, Util.USER, Util.PASSWORD);
 			pstmt = con.prepareStatement(UPDATE_STMT);
 
-			pstmt.setInt(1, member.getMemberAccountStatus());
-			pstmt.setString(2, member.getMemberName());
-			pstmt.setString(3, member.getMemberAccount());
-			pstmt.setString(4, member.getMemberPassword());
-			pstmt.setString(5, member.getMemberEmail());
-			pstmt.setString(6, member.getMemberAddress());
-			pstmt.setString(7, member.getMemberPhone());
-			pstmt.setBytes(8, member.getMemberPic());
-			pstmt.setInt(9, member.getMemberId());
+			pstmt.setInt(1, memberVO.getMemberAccountStatus());
+			pstmt.setString(2, memberVO.getMemberName());
+			pstmt.setString(3, memberVO.getMemberAccount());
+			pstmt.setString(4, memberVO.getMemberPassword());
+			pstmt.setString(5, memberVO.getMemberEmail());
+			pstmt.setString(6, memberVO.getMemberAddress());
+			pstmt.setString(7, memberVO.getMemberPhone());
+			pstmt.setBytes(8, memberVO.getMemberPic());
+			pstmt.setInt(9, memberVO.getMemberId());
 
 			pstmt.executeUpdate();
 
@@ -152,7 +152,7 @@ public class MemberDAOImpl implements MemberDAO {
 
 	@Override
 	public MemberVO findByPK(int memberId) { //回傳一個員工的物件
-		MemberVO member = null;
+		MemberVO memberVO = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -165,17 +165,17 @@ public class MemberDAOImpl implements MemberDAO {
 			rs = pstmt.executeQuery(); //select相關用這個
 
 			while (rs.next()) {
-				member = new MemberVO(); //物件建立的動作，建立Employee Bean,準備包裝著從資料庫查詢出來的部門資料
+				memberVO = new MemberVO(); //物件建立的動作，建立Employee Bean,準備包裝著從資料庫查詢出來的部門資料
 				// emp.setEmpno(empno);設定後直接回傳值回去
-				member.setMemberId(rs.getInt("memberId"));
-				member.setMemberAccountStatus(rs.getInt("memberAccountStatus"));
-				member.setMemberName(rs.getString("memberName"));
-				member.setMemberAccount(rs.getString("memberAccount"));
-				member.setMemberPassword(rs.getString("memberPassword"));
-				member.setMemberEmail(rs.getString("memberEmail"));
-				member.setMemberAddress(rs.getString("memberAddress"));
-				member.setMemberPhone(rs.getString("memberPhone"));
-				member.setMemberPic(rs.getBytes("memberPic"));
+				memberVO.setMemberId(rs.getInt("memberId"));
+				memberVO.setMemberAccountStatus(rs.getInt("memberAccountStatus"));
+				memberVO.setMemberName(rs.getString("memberName"));
+				memberVO.setMemberAccount(rs.getString("memberAccount"));
+				memberVO.setMemberPassword(rs.getString("memberPassword"));
+				memberVO.setMemberEmail(rs.getString("memberEmail"));
+				memberVO.setMemberAddress(rs.getString("memberAddress"));
+				memberVO.setMemberPhone(rs.getString("memberPhone"));
+				memberVO.setMemberPic(rs.getBytes("memberPic"));
 
 			}
 
@@ -206,13 +206,13 @@ public class MemberDAOImpl implements MemberDAO {
 			}
 		}
 
-		return member; //不要忘了這個 要替換成迴圈裡的部門物件
+		return memberVO; //不要忘了這個 要替換成迴圈裡的部門物件
 	}
 
 	@Override
 	public List<MemberVO> getAll() {
 		List<MemberVO> memberList = new ArrayList<>();
-		MemberVO  member = null;
+		MemberVO  memberVO = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -224,17 +224,17 @@ public class MemberDAOImpl implements MemberDAO {
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				member = new MemberVO();
-				member.setMemberId(rs.getInt(1));
-				member.setMemberAccountStatus(rs.getInt(2));
-				member.setMemberName(rs.getString(3));
-				member.setMemberAccount(rs.getString(4));
-				member.setMemberPassword(rs.getString(5));
-				member.setMemberEmail(rs.getString(6));
-				member.setMemberAddress(rs.getString(7));
-				member.setMemberPhone(rs.getString(8));
-				member.setMemberPic(rs.getBytes(9));
-				memberList.add(member);
+				memberVO = new MemberVO();
+				memberVO.setMemberId(rs.getInt(1));
+				memberVO.setMemberAccountStatus(rs.getInt(2));
+				memberVO.setMemberName(rs.getString(3));
+				memberVO.setMemberAccount(rs.getString(4));
+				memberVO.setMemberPassword(rs.getString(5));
+				memberVO.setMemberEmail(rs.getString(6));
+				memberVO.setMemberAddress(rs.getString(7));
+				memberVO.setMemberPhone(rs.getString(8));
+				memberVO.setMemberPic(rs.getBytes(9));
+				memberList.add(memberVO);
 				
 			}
 

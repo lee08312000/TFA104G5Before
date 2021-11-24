@@ -28,7 +28,7 @@ public class CompanyDAOImpl implements CompanyDAO {
 	}
 
 	@Override
-	public void add(CompanyVO company) {
+	public void add(CompanyVO companyVO) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -36,17 +36,17 @@ public class CompanyDAOImpl implements CompanyDAO {
 
 			con = DriverManager.getConnection(Util.URL, Util.USER, Util.PASSWORD);
 			pstmt = con.prepareStatement(INSERT_STMT);
-			pstmt.setInt(1, company.getCompanyId());
-			pstmt.setInt(2, company.getCompanyStatus());
-			pstmt.setString(3, company.getHeadName());
-			pstmt.setString(4, company.getCompanyName());
-			pstmt.setString(5, company.getCompanyAccount());
-			pstmt.setString(6, company.getCompanyPassword());
-			pstmt.setString(7, company.getCompanyEmail());
-			pstmt.setString(8, company.getCompanyTel());
-			pstmt.setString(9, company.getCompanyBankAccount());
-			pstmt.setString(10, company.getCompanyAddress());
-			pstmt.setTimestamp(11, company.getCompanyRegisterTime());
+			pstmt.setInt(1, companyVO.getCompanyId());
+			pstmt.setInt(2, companyVO.getCompanyStatus());
+			pstmt.setString(3, companyVO.getHeadName());
+			pstmt.setString(4, companyVO.getCompanyName());
+			pstmt.setString(5, companyVO.getCompanyAccount());
+			pstmt.setString(6, companyVO.getCompanyPassword());
+			pstmt.setString(7, companyVO.getCompanyEmail());
+			pstmt.setString(8, companyVO.getCompanyTel());
+			pstmt.setString(9, companyVO.getCompanyBankAccount());
+			pstmt.setString(10, companyVO.getCompanyAddress());
+			pstmt.setTimestamp(11, companyVO.getCompanyRegisterTime());
 
 			pstmt.executeUpdate();
 
@@ -73,7 +73,7 @@ public class CompanyDAOImpl implements CompanyDAO {
 	}
 
 	@Override
-	public void update(CompanyVO company) {
+	public void update(CompanyVO companyVO) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -82,17 +82,17 @@ public class CompanyDAOImpl implements CompanyDAO {
 			con = DriverManager.getConnection(Util.URL, Util.USER, Util.PASSWORD);
 			pstmt = con.prepareStatement(UPDATE_STMT);
 
-			pstmt.setInt(1, company.getCompanyStatus());
-			pstmt.setString(2, company.getHeadName());
-			pstmt.setString(3, company.getCompanyName());
-			pstmt.setString(4, company.getCompanyAccount());
-			pstmt.setString(5, company.getCompanyPassword());
-			pstmt.setString(6, company.getCompanyEmail());
-			pstmt.setString(7, company.getCompanyTel());
-			pstmt.setString(8, company.getCompanyBankAccount());
-			pstmt.setString(9, company.getCompanyAddress());
-			pstmt.setTimestamp(10, company.getCompanyRegisterTime());
-			pstmt.setInt(11, company.getCompanyId());
+			pstmt.setInt(1, companyVO.getCompanyStatus());
+			pstmt.setString(2, companyVO.getHeadName());
+			pstmt.setString(3, companyVO.getCompanyName());
+			pstmt.setString(4, companyVO.getCompanyAccount());
+			pstmt.setString(5, companyVO.getCompanyPassword());
+			pstmt.setString(6, companyVO.getCompanyEmail());
+			pstmt.setString(7, companyVO.getCompanyTel());
+			pstmt.setString(8, companyVO.getCompanyBankAccount());
+			pstmt.setString(9, companyVO.getCompanyAddress());
+			pstmt.setTimestamp(10, companyVO.getCompanyRegisterTime());
+			pstmt.setInt(11, companyVO.getCompanyId());
 
 			pstmt.executeUpdate();
 
@@ -156,7 +156,7 @@ public class CompanyDAOImpl implements CompanyDAO {
 
 	@Override
 	public CompanyVO findByPK(int companyId) { //回傳一個員工的物件
-		CompanyVO company = null;
+		CompanyVO companyVO = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -169,19 +169,19 @@ public class CompanyDAOImpl implements CompanyDAO {
 			rs = pstmt.executeQuery(); //select相關用這個
 
 			while (rs.next()) {
-				company = new CompanyVO(); //物件建立的動作，建立Employee Bean,準備包裝著從資料庫查詢出來的部門資料
+				companyVO = new CompanyVO(); //物件建立的動作，建立Employee Bean,準備包裝著從資料庫查詢出來的部門資料
 				// emp.setEmpno(empno);設定後直接回傳值回去
-				company.setCompanyId(rs.getInt("companyId"));
-				company.setCompanyStatus(rs.getInt("companyStatus"));
-				company.setHeadName(rs.getString("headName"));
-				company.setCompanyName(rs.getString("companyName"));
-				company.setCompanyAccount(rs.getString("companyAccount"));
-				company.setCompanyPassword(rs.getString("companyPassword"));
-				company.setCompanyEmail(rs.getString("companyEmail"));
-				company.setCompanyTel(rs.getString("companyTel"));
-				company.setCompanyBankAccount(rs.getString("companyBankAccount"));
-				company.setCompanyAddress(rs.getString("companyAddress"));
-				company.setCompanyRegisterTime(rs.getTimestamp("companyRegisterTime"));
+				companyVO.setCompanyId(rs.getInt("companyId"));
+				companyVO.setCompanyStatus(rs.getInt("companyStatus"));
+				companyVO.setHeadName(rs.getString("headName"));
+				companyVO.setCompanyName(rs.getString("companyName"));
+				companyVO.setCompanyAccount(rs.getString("companyAccount"));
+				companyVO.setCompanyPassword(rs.getString("companyPassword"));
+				companyVO.setCompanyEmail(rs.getString("companyEmail"));
+				companyVO.setCompanyTel(rs.getString("companyTel"));
+				companyVO.setCompanyBankAccount(rs.getString("companyBankAccount"));
+				companyVO.setCompanyAddress(rs.getString("companyAddress"));
+				companyVO.setCompanyRegisterTime(rs.getTimestamp("companyRegisterTime"));
 			}
 
 		} catch (SQLException se) {
@@ -211,13 +211,13 @@ public class CompanyDAOImpl implements CompanyDAO {
 			}
 		}
 
-		return company; //不要忘了這個 要替換成迴圈裡的部門物件
+		return companyVO; //不要忘了這個 要替換成迴圈裡的部門物件
 	}
 
 	@Override
 	public List<CompanyVO> getAll() {
 		List<CompanyVO> companyList = new ArrayList<>();
-		CompanyVO company = null;
+		CompanyVO companyVO = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -229,19 +229,19 @@ public class CompanyDAOImpl implements CompanyDAO {
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				company = new CompanyVO();
-				company.setCompanyId(rs.getInt("companyId"));
-				company.setCompanyStatus(rs.getInt("companyStatus"));
-				company.setHeadName(rs.getString("headName"));
-				company.setCompanyName(rs.getString("companyName"));
-				company.setCompanyAccount(rs.getString("companyAccount"));
-				company.setCompanyPassword(rs.getString("companyPassword"));
-				company.setCompanyEmail(rs.getString("companyEmail"));
-				company.setCompanyTel(rs.getString("companyTel"));
-				company.setCompanyBankAccount(rs.getString("companyBankAccount"));
-				company.setCompanyAddress(rs.getString("companyAddress"));
-				company.setCompanyRegisterTime(rs.getTimestamp("companyRegisterTime"));
-				companyList.add(company);
+				companyVO = new CompanyVO();
+				companyVO.setCompanyId(rs.getInt("companyId"));
+				companyVO.setCompanyStatus(rs.getInt("companyStatus"));
+				companyVO.setHeadName(rs.getString("headName"));
+				companyVO.setCompanyName(rs.getString("companyName"));
+				companyVO.setCompanyAccount(rs.getString("companyAccount"));
+				companyVO.setCompanyPassword(rs.getString("companyPassword"));
+				companyVO.setCompanyEmail(rs.getString("companyEmail"));
+				companyVO.setCompanyTel(rs.getString("companyTel"));
+				companyVO.setCompanyBankAccount(rs.getString("companyBankAccount"));
+				companyVO.setCompanyAddress(rs.getString("companyAddress"));
+				companyVO.setCompanyRegisterTime(rs.getTimestamp("companyRegisterTime"));
+				companyList.add(companyVO);
 			}
 
 		} catch (SQLException se) {

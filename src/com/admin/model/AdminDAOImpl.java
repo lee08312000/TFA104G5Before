@@ -27,7 +27,7 @@ public class AdminDAOImpl implements AdminDAO {
 	}
 
 	@Override
-	public void add(AdminVO admin) {
+	public void add(AdminVO adminVO) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -36,10 +36,10 @@ public class AdminDAOImpl implements AdminDAO {
 			con = DriverManager.getConnection(Util.URL, Util.USER, Util.PASSWORD);
 			pstmt = con.prepareStatement(INSERT_STMT);
 
-			pstmt.setInt(1, admin.getAdminId());
-			pstmt.setInt(2, admin.getAdminAccountStatus());
-			pstmt.setString(3, admin.getAdminAccount());
-			pstmt.setString(4, admin.getAdminPassword());
+			pstmt.setInt(1, adminVO.getAdminId());
+			pstmt.setInt(2, adminVO.getAdminAccountStatus());
+			pstmt.setString(3, adminVO.getAdminAccount());
+			pstmt.setString(4, adminVO.getAdminPassword());
 
 			pstmt.executeUpdate();
 
@@ -66,7 +66,7 @@ public class AdminDAOImpl implements AdminDAO {
 	}
 
 	@Override
-	public void update(AdminVO admin) {
+	public void update(AdminVO adminVO) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -75,10 +75,10 @@ public class AdminDAOImpl implements AdminDAO {
 			con = DriverManager.getConnection(Util.URL, Util.USER, Util.PASSWORD);
 			pstmt = con.prepareStatement(UPDATE_STMT);
 
-			pstmt.setInt(1, admin.getAdminAccountStatus());
-			pstmt.setString(2, admin.getAdminAccount());
-			pstmt.setString(3, admin.getAdminPassword());
-			pstmt.setInt(4, admin.getAdminId());
+			pstmt.setInt(1, adminVO.getAdminAccountStatus());
+			pstmt.setString(2, adminVO.getAdminAccount());
+			pstmt.setString(3, adminVO.getAdminPassword());
+			pstmt.setInt(4, adminVO.getAdminId());
 
 			pstmt.executeUpdate();
 
@@ -142,7 +142,7 @@ public class AdminDAOImpl implements AdminDAO {
 
 	@Override
 	public AdminVO findByPK(int adminId) { //回傳一個員工的物件
-		AdminVO admin = null;
+		AdminVO adminVO = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -155,12 +155,12 @@ public class AdminDAOImpl implements AdminDAO {
 			rs = pstmt.executeQuery(); //select相關用這個
 
 			while (rs.next()) {
-				admin = new AdminVO(); //物件建立的動作，建立Employee Bean,準備包裝著從資料庫查詢出來的部門資料
+				adminVO = new AdminVO(); //物件建立的動作，建立Employee Bean,準備包裝著從資料庫查詢出來的部門資料
 				// emp.setEmpno(empno);設定後直接回傳值回去
-				admin.setAdminId(rs.getInt("adminId"));
-				admin.setAdminAccountStatus(rs.getInt("adminAccountStatus"));
-				admin.setAdminAccount(rs.getString("adminAccount"));
-				admin.setAdminPassword(rs.getString("adminPassword"));
+				adminVO.setAdminId(rs.getInt("adminId"));
+				adminVO.setAdminAccountStatus(rs.getInt("adminAccountStatus"));
+				adminVO.setAdminAccount(rs.getString("adminAccount"));
+				adminVO.setAdminPassword(rs.getString("adminPassword"));
 			}
 			
 		} catch (SQLException se) {
@@ -191,13 +191,13 @@ public class AdminDAOImpl implements AdminDAO {
 		}
 		
 
-		return admin; //不要忘了這個 要替換成迴圈裡的部門物件
+		return adminVO; //不要忘了這個 要替換成迴圈裡的部門物件
 	}
 
 	@Override
 	public List<AdminVO> getAll() {
 		List<AdminVO> adminList = new ArrayList<>();
-		AdminVO admin = null;
+		AdminVO adminVO = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -209,12 +209,12 @@ public class AdminDAOImpl implements AdminDAO {
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				admin = new AdminVO();
-				admin.setAdminId(rs.getInt("adminId"));
-				admin.setAdminAccountStatus(rs.getInt("adminAccountStatus"));
-				admin.setAdminAccount(rs.getString("adminAccount"));
-				admin.setAdminPassword(rs.getString("adminPassword"));
-				adminList.add(admin);
+				adminVO = new AdminVO();
+				adminVO.setAdminId(rs.getInt("adminId"));
+				adminVO.setAdminAccountStatus(rs.getInt("adminAccountStatus"));
+				adminVO.setAdminAccount(rs.getString("adminAccount"));
+				adminVO.setAdminPassword(rs.getString("adminPassword"));
+				adminList.add(adminVO);
 
 			}
 
