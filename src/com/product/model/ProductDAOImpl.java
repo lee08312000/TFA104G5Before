@@ -446,6 +446,57 @@ public class ProductDAOImpl implements ProductDAO{
 			return list;
 			
 		}
+		
+		// update by Lee 購物車交易用
+		@Override
+		public void update(ProductVO ProductVO, Connection con) {
+			PreparedStatement pstmt = null;
+
+			try {
+
+				pstmt = con.prepareStatement(UPDATE);
+
+				pstmt.setInt(1, ProductVO.getCompanyId());
+				pstmt.setInt(2, ProductVO.getProductTypeId());
+				pstmt.setInt(3, ProductVO.getProductStatus());
+				pstmt.setString(4, ProductVO.getProductName());
+				pstmt.setInt(5, ProductVO.getProductPrice());
+				pstmt.setString(6, ProductVO.getProductBrand());
+				pstmt.setInt(7, ProductVO.getProductInventory());
+				pstmt.setString(8, ProductVO.getProductDescription());
+				pstmt.setString(9, ProductVO.getShoppingInformation());
+				pstmt.setBytes(10, ProductVO.getProductPic1());
+				pstmt.setBytes(11, ProductVO.getProductPic2());
+				pstmt.setBytes(12, ProductVO.getProductPic3());
+				pstmt.setInt(13, ProductVO.getProductCommentedAllnum());
+				pstmt.setInt(14, ProductVO.getProductCommentAllstar());
+				pstmt.setInt(15, ProductVO.getProductSellAllnum());
+				pstmt.setInt(16, ProductVO.getProductId());
+
+				pstmt.executeUpdate();
+
+				// Handle any driver errors
+			} catch (SQLException se) {
+				throw new RuntimeException("A database error occured. " + se.getMessage());
+				// Clean up JDBC resources
+			} finally {
+				if (pstmt != null) {
+					try {
+						pstmt.close();
+					} catch (SQLException se) {
+						se.printStackTrace(System.err);
+					}
+				}
+//				if (con != null) {
+//					try {
+//						con.close();
+//					} catch (Exception e) {
+//						e.printStackTrace(System.err);
+//					}
+//				}
+			}
+		}
+		
 	
 	public static byte[] getPictureByteArray(String path) throws IOException {
 		FileInputStream fis = new FileInputStream(path);

@@ -1,5 +1,6 @@
 package com.mallOrderDetail.model;
 
+import java.sql.Connection;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -21,6 +22,20 @@ public class MallOrderDetailService{
 		mallOrderDetailVO.setProductPurchaseQuantity(productPurchaseQuantity);
 		mallOrderDetailVO.setProductPurchasePrice(productPurchasePrice);
 		dao.insert(mallOrderDetailVO);
+		
+		return mallOrderDetailVO;
+	}
+	
+	public MallOrderDetailVO addMallOrderDetailFromOrder(Integer mallOrderId, Integer productId, Integer productPurchaseQuantity,
+			Integer productPurchasePrice, Connection con) {
+		
+		MallOrderDetailVO mallOrderDetailVO = new MallOrderDetailVO();
+		
+		mallOrderDetailVO.setMallOrderId(mallOrderId);
+		mallOrderDetailVO.setProductId(productId);
+		mallOrderDetailVO.setProductPurchaseQuantity(productPurchaseQuantity);
+		mallOrderDetailVO.setProductPurchasePrice(productPurchasePrice);
+		dao.insert(mallOrderDetailVO, con);
 		
 		return mallOrderDetailVO;
 	}
