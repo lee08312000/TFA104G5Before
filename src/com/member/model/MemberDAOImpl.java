@@ -12,10 +12,10 @@ import javax.sql.rowset.serial.SerialBlob;
 import util.Util;
 
 public class MemberDAOImpl implements MemberDAO {
-	private static final String INSERT_STMT = "INSERT INTO company(member_id, member_account_status, member_name, member_account, member_password, memberEmail, memberAddress, memberPhone, memberPic) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-	private static final String UPDATE_STMT = "UPDATE member SET memberAccountStatus = ?, memberName = ?, memberAccount = ?, memberPassword = ?, memberEmail = ?, memberAddress = ?, memberPhone = ?, memberPic = ?";
-	private static final String DELETE_STMT = "DELETE FROM member WHERE memberId = ?";
-	private static final String FIND_BY_PK = "SELECT * FROM member WHERE memberId = ?";
+	private static final String INSERT_STMT = "INSERT INTO company(member_id, member_account_status, member_name, member_account, member_password, member_email, member_address, member_phone, member_pic) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private static final String UPDATE_STMT = "UPDATE member SET member_accountStatus = ?, member_name = ?, member_account = ?, member_password = ?, member_email = ?, member_address = ?, member_phone = ?, member_pic = ?";
+	private static final String DELETE_STMT = "DELETE FROM member WHERE member_id = ?";
+	private static final String FIND_BY_PK = "SELECT * FROM member WHERE member_id = ?";
 	private static final String GET_ALL = "SELECT * FROM member";
 
 	static {
