@@ -1,5 +1,6 @@
 package com.product.model;
 
+import java.sql.Connection;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -83,5 +84,15 @@ public class ProductService {
 
 	public List<ProductVO> getAllProduct() {
 		return dao.getAll();
+	}
+	
+	// update by Lee
+	public ProductVO updateProductInventoryAndProductSellAllnum(Integer productId, Integer productInventory, Integer productSellAllnum, Connection con) {
+		ProductVO productVO = dao.findByPrimaryKey(productId);
+		productVO.setProductInventory(productInventory);
+		productVO.setProductSellAllnum(productSellAllnum);
+		dao.update(productVO, con);
+		
+		return productVO;
 	}
 }
