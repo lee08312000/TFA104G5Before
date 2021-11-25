@@ -3,6 +3,8 @@ package com.mallOrder.model;
 import java.sql.Timestamp;
 import java.util.List;
 
+import com.cart.model.CartVO;
+
 public class MallOrderService {
 	
 	private MallOrderDAO dao;
@@ -26,6 +28,11 @@ public class MallOrderService {
 		dao.insert(mallOrderVO);
 		
 		return mallOrderVO;
+	}
+	
+	public Integer addMallOrderWithMallOrderDetail(MallOrderVO mallOrderVO, List<CartVO> buyList) {
+		Integer mallOrderId = dao.insert(mallOrderVO, buyList);
+		return mallOrderId;
 	}
 
 	public MallOrderVO updateMallOrder(Integer mallOrderId, Integer companyId, Integer memberId,

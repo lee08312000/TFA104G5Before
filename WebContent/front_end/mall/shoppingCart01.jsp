@@ -4,6 +4,7 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.cart.model.CartVO"%>
 <%@ page import="com.company.model.CompanyDAOImpl"%>
+<%@ page import="com.member.model.*"%>
 
 
 <!DOCTYPE html>
@@ -63,17 +64,25 @@
 	<div class="shopping-cart" style="padding: 50px 30px 50px 30px;">
 
 		<%
+		/************************************假資料測試***********************************/
+			MemberDAO memberDAO = new MemberDAOImpl();
+			MemberVO memberVO = memberDAO.findByPK(1);
+
+			session.setAttribute("memberVO", memberVO);
+			
 			List<CartVO> buyList = new ArrayList<CartVO>();
 
-			CartVO cartvo1 = new CartVO(1, 1, 1, "酷炫帳篷1", 1000, 1);
-			CartVO cartvo2 = new CartVO(2, 2, 1, "酷炫帳篷2", 2000, 2);
-			CartVO cartvo3 = new CartVO(2, 3, 1, "酷炫帳篷3", 3000, 4);
+			CartVO cartvo1 = new CartVO(1, 1, 2, "木紋鋁合金迷你摺疊桌", 398, 1);
+			CartVO cartvo2 = new CartVO(1, 2, 2, "好毯/柔絨睡袋", 880, 2);
+			CartVO cartvo3 = new CartVO(2, 3, 4, "豪華型橫條內建電動幫浦充氣床-單人99cm", 1050, 3);
 
 			buyList.add(cartvo1);
 			buyList.add(cartvo2);
 			buyList.add(cartvo3);
 
 			session.setAttribute("buyList", buyList);
+			/************************************假資料測試***********************************/
+			
 			if (session.getAttribute("buyList") != null) {
 
 				List<CartVO> cart = (List<CartVO>) session.getAttribute("buyList");
