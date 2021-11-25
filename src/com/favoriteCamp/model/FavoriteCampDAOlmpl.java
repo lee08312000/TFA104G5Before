@@ -15,16 +15,6 @@ public class FavoriteCampDAOlmpl implements FavoriteCampDAO {
 	String url = "jdbc:mysql://localhost:3306/campingParadise?serverTimezone=Asia/Taipei";
 	String userid = "David";
 	String passwd = "123456";
-	
-//	private static DataSource ds = null;
-//	static {
-//		try {
-//			Context ctx = new InitialContext();
-//			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB2");
-//		} catch (NamingException e) {
-//			e.printStackTrace();
-//		}
-//	}
 
 	private static final String CLOUM_FOR_INSERT = "member_Id,camp_Id";
 	private static final String CLOUM_FOR_ALL = "favorite_camp_id,"
