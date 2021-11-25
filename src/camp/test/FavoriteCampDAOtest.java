@@ -1,5 +1,7 @@
 package camp.test;
 
+import java.util.List;
+
 import com.favoriteCamp.model.FavoriteCampDAOlmpl;
 import com.favoriteCamp.model.FavoriteCampVO;
 
@@ -10,9 +12,10 @@ public class FavoriteCampDAOtest {
 		FavoriteCampDAOlmpl fcd = new FavoriteCampDAOlmpl();
 
 		// 查全部資料
-//		List<FavoriteCampVO> caList = fcd.getAll();
-//		for (FavoriteCampVO av : caList) {
-//			System.out.println(av.toString());
+		List<FavoriteCampVO> caList = fcd.getAllByMemberId(3);
+		for (FavoriteCampVO av : caList) {
+			System.out.println(av.toString());
+		}
 //				
 //		//新增
 //		FavoriteCampVO favoritecamp = new FavoriteCampVO();		
@@ -22,18 +25,17 @@ public class FavoriteCampDAOtest {
 //		System.out.println("新增成功");
 			
 		//修改
-		FavoriteCampVO favoritecamp1 = new FavoriteCampVO();
-		favoritecamp1.setCampId(4); 
-		favoritecamp1.setMemberId(10);
-		favoritecamp1.setFavoriteCampId(20);
-		fcd.update(favoritecamp1);
-//		System.out.println("修改成功");
-					
-		//刪除
-		fcd.delete(19);
-		System.out.println("刪除成功");
+//		FavoriteCampVO favoritecamp1 = new FavoriteCampVO();
+//		favoritecamp1.setCampId(4); 
+//		favoritecamp1.setMemberId(10);
+//		favoritecamp1.setFavoriteCampId(20);
+//		fcd.update(favoritecamp1);
+////		System.out.println("修改成功");
+//					
+//		//刪除
+//		fcd.delete(19);
+//		System.out.println("刪除成功");
 		
-		}
 	}
-
+}
 

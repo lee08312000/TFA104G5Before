@@ -31,15 +31,18 @@ public class FavoriteCampDAOlmpl implements FavoriteCampDAO {
 			+ CLOUM_FOR_INSERT;
 	private static final String INSERT_STMT = "INSERT INTO favorite_camp ("
 			+ CLOUM_FOR_INSERT + ") " + "VALUES (?, ?)";
-	private static final String GET_ALL_STMT = "SELECT " + CLOUM_FOR_ALL
-			+ " FROM favorite_camp order by favorite_camp_id";
+	private static final String GET_ALL_STMT = "SELECT "+CLOUM_FOR_INSERT +" FROM favorite_camp where  member_id=?";
+	
 	private static final String GET_ONE_STMT = "SELECT " + CLOUM_FOR_INSERT
 			+ " FROM favorite_camp where favorite_camp_id = ?";
 	private static final String DELETE = "DELETE FROM favorite_camp where favorite_camp_id = ?";
 	private static final String UPDATE = "UPDATE favorite_camp set member_Id=?,camp_Id=? where favorite_camp_id = ?";
 
+	//依照member_id刪除favorite_camp
+	private static final String DELETE_BY_MEMBER_ID = "DELETE FROM favorite_camp where member_id = ?";
+	
 	@Override
-	public void insert(FavoriteCampVO favoriteCampVO) {
+	public void add(FavoriteCampVO favoriteCampVO) {
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -139,7 +142,7 @@ public class FavoriteCampDAOlmpl implements FavoriteCampDAO {
 
 			pstmt.executeUpdate();
 
-			// Handle any driver errors
+		
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
@@ -232,7 +235,7 @@ public class FavoriteCampDAOlmpl implements FavoriteCampDAO {
 	}
 
 	@Override
-	public List<FavoriteCampVO> getAll() {
+	public List<FavoriteCampVO> getAllByMemberId(Integer memberId) {
 		List<FavoriteCampVO> list = new ArrayList<FavoriteCampVO>();
 		FavoriteCampVO favoriteCampVO = null;
 
@@ -245,6 +248,7 @@ public class FavoriteCampDAOlmpl implements FavoriteCampDAO {
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(GET_ALL_STMT);
+			pstmt.setInt(1, memberId);
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -252,7 +256,6 @@ public class FavoriteCampDAOlmpl implements FavoriteCampDAO {
 				favoriteCampVO = new FavoriteCampVO();
 				favoriteCampVO.setCampId(rs.getInt("camp_Id"));
 				favoriteCampVO.setMemberId(rs.getInt("member_Id"));
-				favoriteCampVO.setFavoriteCampId(rs.getInt("favorite_Camp_Id"));
 				list.add(favoriteCampVO); // Store the row in the list
 			}
 
@@ -288,4 +291,44 @@ public class FavoriteCampDAOlmpl implements FavoriteCampDAO {
 		}
 		return list;
 	}
+
+	@Override
+	public void deleteByMemberId(Integer memberId) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(DELETE_BY_MEMBER_ID);
+
+			pstmt.setInt(1,  memberId);
+
+			pstmt.executeUpdate();
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+
+	}
+
 }
