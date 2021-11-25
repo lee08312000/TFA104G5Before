@@ -27,7 +27,7 @@ public class CampAreaDAOlmpl implements CampAreaDAO {
 	private static final String UPDATE = "UPDATE camp_area set camp_Id=?,camp_Area_Name=?,camp_Area_Max=?,weekday_Price=?,holiday_Price=?,capitation_Max=?,per_Capitation_Fee=?,camp_Area_Pic=? where camp_Area_Id = ?";
 
 	@Override
-	public void insert(CampAreaVO campAreaVO) {
+	public void add(CampAreaVO campAreaVO) {
 
 		Connection con = null;
 		PreparedStatement pstmt = null;

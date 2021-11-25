@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface CampAreaDAO {
 
-	void insert(CampAreaVO campAreaVO);
+	void add(CampAreaVO campAreaVO);
 
 	void update(CampAreaVO campAreaVO);
 

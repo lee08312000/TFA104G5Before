@@ -11,16 +11,22 @@ private   CampAreaDAO   campareadao;
 	}
 
 	//新增營位
-	public  void  addCampArea(Integer campTagId, String campTagName) {
+	public  void  addCampArea(Integer campAreaId, Integer campId, String campAreaName,Integer campAreaMax,Integer weekdayPrice,
+	     Integer holidayPrice,Integer capitationMax,Integer perCapitationFee,byte[]campAreaPic){
 
 		CampAreaVO  campareaVO = new  CampAreaVO(); 
-		campareaVO.setCampTagId(campTagId);
+		campareaVO.setCampAreaId(campAreaId);
+		campareaVO.setCampId(campId);
+		campareaVO.setCampAreaName(campAreaName);
+		campareaVO.setCampAreaMax(campAreaMax);
+		campareaVO.setWeekdayPrice(weekdayPrice);
+		campareaVO.setHolidayPrice(holidayPrice);
+		campareaVO.setCapitationMax(capitationMax);
+		campareaVO.setPerCapitationFee(perCapitationFee);
+		campareaVO.setCampAreaPic(campAreaPic);
 		
 		campareadao.add(campareaVO);
-		
-
-		 
-	
+			
 	}
 	
 	//刪除營位
@@ -30,11 +36,22 @@ private   CampAreaDAO   campareadao;
 	
 	
 	//更新營位
-	public void  updateCampArea(Integer campArea) {
+	public void  updateCampArea(Integer campAreaId, Integer campId, String campAreaName,Integer campAreaMax,Integer weekdayPrice,
+		     Integer holidayPrice,Integer capitationMax,Integer perCapitationFee,byte[]campAreaPic) {
 		 
-		CampAreaVO  campAreaVO = new  CampAreaVO();
-		 
-		 campAreaVO.setCampArea(campArea);
+		CampAreaVO campareaVO  = new  CampAreaVO();
+		
+		campareaVO.setCampAreaId(campAreaId);
+		campareaVO.setCampId(campId);
+		campareaVO.setCampAreaName(campAreaName);
+		campareaVO.setCampAreaMax(campAreaMax);
+		campareaVO.setWeekdayPrice(weekdayPrice);
+		campareaVO.setHolidayPrice(holidayPrice);
+		campareaVO.setCapitationMax(capitationMax);
+		campareaVO.setPerCapitationFee(perCapitationFee);
+		campareaVO.setCampAreaPic(campAreaPic);
+		
+		campareadao.update(campareaVO);
 	
 	}
 		 
@@ -53,14 +70,7 @@ private   CampAreaDAO   campareadao;
 	
 	
 	
-	
-	
 
-
-
-	
-
-}
 	
 	
 	

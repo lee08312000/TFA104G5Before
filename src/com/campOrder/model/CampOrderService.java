@@ -28,8 +28,8 @@ public class CampOrderService {
 	
 		if (!(campOrderVO==null||DetailVOs.length==0)) {
 			
-
-			orderdao.add(campOrderVO,DetailVOs);
+//
+//			orderdao.add(campOrderVO,DetailVOs);
 			
 			
 		}
