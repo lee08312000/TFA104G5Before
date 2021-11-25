@@ -1,6 +1,9 @@
 package camp.test;
 
+import java.util.List;
+
 import com.campTag.model.CampTagDAOlmpl;
+import com.campTag.model.CampTagVO;
 
 public class CampTagDAOtest {
 
@@ -11,6 +14,14 @@ public class CampTagDAOtest {
 		// 查全部資料
 //		CampTagVO ctvo = cad.findByPrimaryKey(3);
 //		System.out.println(ctvo.toString());
+		
+		List<CampTagVO> ctvolist = cad.getAllTag();
+		for(CampTagVO ctVo: ctvolist) {
+			System.out.print(ctVo.getCampTagId()+",");
+			System.out.print(ctVo.getCampTagName()+",");
+			System.out.println(ctVo.getCountCampNum());
+		}
+		
 
 		// 新增
 //		CampTagVO camptag = new CampTagVO();
