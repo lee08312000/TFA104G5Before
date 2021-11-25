@@ -12,8 +12,8 @@ import javax.sql.rowset.serial.SerialBlob;
 import util.Util;
 
 public class AdminDAOImpl implements AdminDAO {
-	private static final String INSERT_STMT = "INSERT INTO admin(admin_id, admin_account_status, admin_account, admin_password) VALUES (?, ?, ?, ?, ?)";
-	private static final String UPDATE_STMT = "UPDATE admin SET admin_account_status = ?, admin_account = ?, admin_password = ?, WHERE admin_id = ?";
+	private static final String INSERT_STMT = "INSERT INTO admin(admin_id, admin_account_status, admin_account, admin_password) VALUES (?, ?, ?, ?)";
+	private static final String UPDATE_STMT = "UPDATE admin SET admin_account_status = ?, admin_account = ?, admin_password = ? WHERE admin_id = ?";
 	private static final String DELETE_STMT = "DELETE FROM admin WHERE admin_id = ?";
 	private static final String FIND_BY_PK = "SELECT * FROM admin WHERE admin_id = ?";
 	private static final String GET_ALL = "SELECT * FROM admin";
@@ -247,58 +247,52 @@ public class AdminDAOImpl implements AdminDAO {
 		return adminList;
 	}
 
-	
-	
-	
-	
 //	public static void main(String[] args) {
 //	
-//	ProductReportVO productReportVO = new ProductReportVO();
-//	ProductReportDAO dao = new ProductReportDAOImpl();
-//	// insert 測試
+//	AdminDAOImpl dao = new AdminDAOImpl();
 //	
-//	productReportVO.setMemberId(1);
-//	productReportVO.setProductId(4);
-//	productReportVO.setReportReason("太醜了!!!!");
+//	// 新增
+//	AdminVO adminVO01 = new AdminVO();
+//	adminVO01.setAdminId(5);
+//	adminVO01.setAdminAccountStatus(1);
+//	adminVO01.setAdminAccount("David");
+//	adminVO01.setAdminPassword("123456789");
+//
+//	dao.add(adminVO01);
 //	
-//	dao.insert(productReportVO);
-	
-	// delete 測試
-//	dao.delete(2);
-	
-	// update 測試
-//	productReportVO.setMemberId(2);
-//	productReportVO.setProductId(2);
-//	productReportVO.setReportReason("lol");
-//	productReportVO.setReportStatus(1);
-//	productReportVO.setProductReportId(3);
+//	// 更新
+//	AdminVO adminVO02 = new AdminVO();
+//	adminVO02.setAdminAccountStatus(1);
+//	adminVO02.setAdminAccount("Kevin");
+//	adminVO02.setAdminPassword("987654321");
+//	adminVO02.setAdminId(1);
 //	
-//	dao.update(productReportVO);
-
-	// findByPrimaryKey 測試
-//	productReportVO = dao.findByPrimaryKey(4);
+//	dao.update(adminVO02);
 //	
-//	System.out.println(productReportVO.getProductReportId());
-//	System.out.println(productReportVO.getMemberId());
-//	System.out.println(productReportVO.getProductId());
-//	System.out.println(productReportVO.getReportTime());
-//	System.out.println(productReportVO.getReportReason());
-//	System.out.println(productReportVO.getReportStatus());
-	
-	// getAll 測試
-//	List<ProductReportVO> list = dao.getAll();
+//	//刪除
+//	dao.delete(3);
 //	
-//	for (ProductReportVO p : list) {
-//		System.out.println(p.getProductReportId());
-//		System.out.println(p.getMemberId());
-//		System.out.println(p.getProductId());
-//		System.out.println(p.getReportTime());
-//		System.out.println(p.getReportReason());
-//		System.out.println(p.getReportStatus());
-//		System.out.println("========================");
+//	//找尋
+//	AdminVO adminVO03 = dao.findByPK(4);
+//	System.out.print(adminVO03.getAdminId() + ",");
+//	System.out.print(adminVO03.getAdminAccountStatus() + ",");
+//	System.out.print(adminVO03.getAdminAccount() + ",");
+//	System.out.print(adminVO03.getAdminPassword());
+//
+//	
+//	//查詢全部
+//	List<AdminVO> list = dao.getAll();
+//	
+//	for (AdminVO test : list) {
+//		System.out.print(test.getAdminId() + ",");
+//		System.out.print(test.getAdminAccountStatus() + ",");
+//		System.out.print(test.getAdminAccount() + ",");
+//		System.out.print(test.getAdminPassword());
+//		System.out.println();
+//
 //	}
-//	
-//}
+//
+//	}
 
 }
 

@@ -1,5 +1,8 @@
 package com.member.model;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -12,8 +15,8 @@ import javax.sql.rowset.serial.SerialBlob;
 import util.Util;
 
 public class MemberDAOImpl implements MemberDAO {
-	private static final String INSERT_STMT = "INSERT INTO company(member_id, member_account_status, member_name, member_account, member_password, member_email, member_address, member_phone, member_pic) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-	private static final String UPDATE_STMT = "UPDATE member SET member_accountStatus = ?, member_name = ?, member_account = ?, member_password = ?, member_email = ?, member_address = ?, member_phone = ?, member_pic = ?";
+	private static final String INSERT_STMT = "INSERT INTO member(member_id, member_account_status, member_name, member_account, member_password, member_email, member_address, member_phone, member_pic) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private static final String UPDATE_STMT = "UPDATE member SET member_account_status = ?, member_name = ?, member_account = ?, member_password = ?, member_email = ?, member_address = ?, member_phone = ?, member_pic = ? WHERE member_id = ?";
 	private static final String DELETE_STMT = "DELETE FROM member WHERE member_id = ?";
 	private static final String FIND_BY_PK = "SELECT * FROM member WHERE member_id = ?";
 	private static final String GET_ALL = "SELECT * FROM member";
@@ -267,56 +270,102 @@ public class MemberDAOImpl implements MemberDAO {
 		return memberList;
 	}
 	
+	public static byte[] getPictureByteArray(String path) throws IOException {
+		FileInputStream fis = new FileInputStream(path);
+		byte[] buffer = new byte[fis.available()];
+		fis.read(buffer);
+		fis.close();
+		return buffer;
+	}
 	
+	public static void readPicture(byte[] bytes) throws IOException {
+		FileOutputStream fos = new FileOutputStream("E:/第五組專案/examplePic/test3.jpg");
+		fos.write(bytes);
+		fos.flush();
+		fos.close();
+	}
 	
+	public static void main(String[] args) {
 	
-//	public static void main(String[] args) {
-//	
-//	ProductReportVO productReportVO = new ProductReportVO();
-//	ProductReportDAO dao = new ProductReportDAOImpl();
-//	// insert 測試
-//	
-//	productReportVO.setMemberId(1);
-//	productReportVO.setProductId(4);
-//	productReportVO.setReportReason("太醜了!!!!");
-//	
-//	dao.insert(productReportVO);
+	MemberDAOImpl dao = new MemberDAOImpl();
 	
-	// delete 測試
-//	dao.delete(2);
-	
-	// update 測試
-//	productReportVO.setMemberId(2);
-//	productReportVO.setProductId(2);
-//	productReportVO.setReportReason("lol");
-//	productReportVO.setReportStatus(1);
-//	productReportVO.setProductReportId(3);
-//	
-//	dao.update(productReportVO);
-
-	// findByPrimaryKey 測試
-//	productReportVO = dao.findByPrimaryKey(4);
-//	
-//	System.out.println(productReportVO.getProductReportId());
-//	System.out.println(productReportVO.getMemberId());
-//	System.out.println(productReportVO.getProductId());
-//	System.out.println(productReportVO.getReportTime());
-//	System.out.println(productReportVO.getReportReason());
-//	System.out.println(productReportVO.getReportStatus());
-	
-	// getAll 測試
-//	List<ProductReportVO> list = dao.getAll();
-//	
-//	for (ProductReportVO p : list) {
-//		System.out.println(p.getProductReportId());
-//		System.out.println(p.getMemberId());
-//		System.out.println(p.getProductId());
-//		System.out.println(p.getReportTime());
-//		System.out.println(p.getReportReason());
-//		System.out.println(p.getReportStatus());
-//		System.out.println("========================");
+//	// 新增
+//	MemberVO memberVO01 = new MemberVO();
+//	memberVO01.setMemberId(11);
+//	memberVO01.setMemberAccountStatus(1);
+//	memberVO01.setMemberName("David");
+//	memberVO01.setMemberAccount("Good company");
+//	memberVO01.setMemberPassword("a123456789");
+//	memberVO01.setMemberEmail("123456");
+//	memberVO01.setMemberAddress("a123456789@gmail.com");
+//	memberVO01.setMemberPhone("123456789");
+//
+//	try {
+//		byte[] pic = getPictureByteArray("E:/第五組專案/examplePic/1.jpg");	
+//		memberVO01.setMemberPic(pic);
+//	} catch (IOException e) {
+//		System.out.print(e);
 //	}
 //	
-//}
+//	dao.add(memberVO01);
+//	
+//	//更新
+//	MemberVO memberVO02 = new MemberVO();
+//	memberVO02.setMemberAccountStatus(1);
+//	memberVO02.setMemberName("Kevin");
+//	memberVO02.setMemberAccount("bad company");
+//	memberVO02.setMemberPassword("b987654321");
+//	memberVO02.setMemberEmail("654321");
+//	memberVO02.setMemberAddress("b987654321@gmail.com");
+//	memberVO02.setMemberPhone("987654321");
+//	memberVO02.setMemberId(1);
+//
+//	try {
+//		byte[] pic = getPictureByteArray("E:\\第五組專案\\examplePic\\2.jpg");	
+//		memberVO02.setMemberPic(pic);
+//	} catch (IOException e) {
+//		System.out.print(e);
+//	}
+//		
+//	dao.update(memberVO02);
+//	
+//	//刪除
+//	dao.delete(4);
+//	
+//	//找尋
+//	MemberVO memberVO03 = dao.findByPK(7);
+//	System.out.print(memberVO03.getMemberId() + ",");
+//	System.out.print(memberVO03.getMemberAccountStatus() + ",");
+//	System.out.print(memberVO03.getMemberName() + ",");
+//	System.out.print(memberVO03.getMemberAccount() + ",");
+//	System.out.print(memberVO03.getMemberPassword() + ",");
+//	System.out.print(memberVO03.getMemberEmail() + ",");
+//	System.out.print(memberVO03.getMemberAddress() + ",");
+//	System.out.print(memberVO03.getMemberPhone() + ",");
+//	System.out.print(memberVO03.getMemberPic());
+//	System.out.println();
+//		try {
+//		readPicture(memberVO03.getMemberPic());
+//	} catch (IOException e) {
+//		System.out.print(e);
+//	}			
+//	
+//	//查詢全部
+//	List<MemberVO> list = dao.getAll();
+//	
+//	for (MemberVO test : list) {
+//		System.out.print(test.getMemberId() + ",");
+//		System.out.print(test.getMemberAccountStatus() + ",");
+//		System.out.print(test.getMemberName() + ",");
+//		System.out.print(test.getMemberAccount() + ",");
+//		System.out.print(test.getMemberPassword() + ",");
+//		System.out.print(test.getMemberEmail() + ",");
+//		System.out.print(test.getMemberAddress() + ",");
+//		System.out.print(test.getMemberPhone() + ",");
+//		System.out.print(test.getMemberPic() + ",");
+//		System.out.println();
+//	}
+
+	}
 
 }
