@@ -24,8 +24,34 @@
             orederSmallMoney.text(subtotal);
         });
 
+        // 刪除購物車session中的商品
         $('.product-removal button').click(function () {
-            removeItem(this);
+            let that = this;
+
+            let deleteProduct = {
+                "action": "delete",
+                "productId": $(that).closest("div.product").attr("data-productid")
+              };
+          
+              $.ajax({
+                url: "/TFA104G5/Cart/CartServlet",
+                type: "POST",
+                data: deleteProduct,
+                dataType: "json",
+                beforeSend: function () {
+          
+                },
+                success: function (data) {
+                  if (data.msg == "success") {
+                    console.log("刪除成功");
+                    removeItem(that);
+                  }
+                },
+                complete: function (xhr) {
+                  // console.log(xhr);
+                }
+              });
+
         });
 
 

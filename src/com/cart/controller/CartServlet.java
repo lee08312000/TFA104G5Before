@@ -16,6 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.cart.model.CartVO;
 import com.cart.model.ReceiverVO;
 import com.mallOrder.model.MallOrderService;
@@ -35,17 +38,17 @@ public class CartServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
 		req.setCharacterEncoding("UTF-8");
-//		res.setContentType("text/html; charset=UTF-8"); 
-//		PrintWriter out = res.getWriter();
+		res.setContentType("text/html; charset=UTF-8");
+		PrintWriter out = res.getWriter();
 
 		HttpSession session = req.getSession();
 		MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
 		List<CartVO> buyList = (List<CartVO>) session.getAttribute("buyList");
 		String action = req.getParameter("action");
-		
+
 		// 從商城新增商品到購物車
 		if ("add".equals(action)) {
-			
+
 			ProductService productSvc = new ProductService();
 			/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 **********************/
 			Integer productId = Integer.parseInt(req.getParameter("productId").trim());
@@ -60,28 +63,65 @@ public class CartServlet extends HttpServlet {
 			cartVO.setProductName(productVO.getProductName());
 			cartVO.setProductPrice(productVO.getProductPrice());
 			cartVO.setProductPurchaseQuantity(productPurchaseQuantity);
-			
-			if (buyList == null) {
+
+			if (buyList == null || buyList.size() == 0) {
 				buyList = new ArrayList<CartVO>();
 				buyList.add(cartVO);
 			} else {
 				for (int i = 0; i < buyList.size(); i++) {
 					CartVO c = buyList.get(i);
 					if (cartVO.getProductId().intValue() == c.getProductId().intValue()) {
-						cartVO.setProductPurchaseQuantity(cartVO.getProductPurchaseQuantity() + c.getProductPurchaseQuantity());
+						cartVO.setProductPurchaseQuantity(
+								cartVO.getProductPurchaseQuantity() + c.getProductPurchaseQuantity());
 						buyList.set(i, cartVO);
 					} else {
 						buyList.add(cartVO);
 					}
 				}
-				
+
 			}
-			
+			/*************************** 3.修改完成,準備轉交(Send the Success view) *************/
 			session.setAttribute("buyList", buyList);
+			// 回傳Json給Ajax
+			JSONObject obj = new JSONObject();
+			try {
+				obj.put("msg", "success");
+				String msg = obj.toString();
+//				System.out.println(msg);
+				out.println(msg);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+
+		// 刪除購物車商品
+		if ("delete".equals(action)) {
+			/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 **********************/
+			int productId = Integer.parseInt(req.getParameter("productId"));
+			/*************************** 2.開始修改資料 *****************************************/
+			for (int i = 0; i < buyList.size(); i++) {
+				CartVO cartVO = buyList.get(i);
+				if (productId == cartVO.getProductId().intValue()) {
+					buyList.remove(i);
+					i--;
+				}
+			}
+			/*************************** 3.修改完成,準備轉交(Send the Success view) *************/
+			session.setAttribute("buyList", buyList);
+			// 回傳Json給Ajax
+			JSONObject obj = new JSONObject();
+			try {
+				obj.put("msg", "success");
+				String msg = obj.toString();
+//				System.out.println(msg);
+				out.println(msg);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+
 		}
 
 		// 更新購買清單
-
 		if ("update".equals(action)) {
 
 			List<String> errorMsgs = new LinkedList<String>();
@@ -120,7 +160,7 @@ public class CartServlet extends HttpServlet {
 			receiverVO.setCreditCardNum(req.getParameter("creditCardNum"));
 			receiverVO.setSecurityCode(req.getParameter("securityCode"));
 			receiverVO.setEffectiveDate(req.getParameter("effectiveDate"));
-			
+
 			req.setAttribute("receiverVO", receiverVO);
 			//
 			String url = "/front_end/mall/shoppingCart02.jsp";
@@ -192,9 +232,8 @@ public class CartServlet extends HttpServlet {
 			receiverVO.setCreditCardNum(creditCardNum);
 			receiverVO.setSecurityCode(securityCode);
 			receiverVO.setEffectiveDate(effectiveDate);
-			
+
 			req.setAttribute("receiverVO", receiverVO);
-			
 
 			// Send the use back to the form, if there were errors
 			if (!errorMsgs.isEmpty()) {
@@ -214,7 +253,7 @@ public class CartServlet extends HttpServlet {
 
 			/*********************** 1.接收請求參數 - 輸入格式的錯誤處理 *************************/
 			/*************************** 2.準備轉交(Send the Success view) *************/
-			
+
 			ReceiverVO receiverVO = new ReceiverVO();
 			receiverVO.setReceiverName(req.getParameter("receiverName"));
 			receiverVO.setReceiverPhone(req.getParameter("receiverPhone"));
@@ -222,9 +261,9 @@ public class CartServlet extends HttpServlet {
 			receiverVO.setCreditCardNum(req.getParameter("creditCardNum"));
 			receiverVO.setSecurityCode(req.getParameter("securityCode"));
 			receiverVO.setEffectiveDate(req.getParameter("effectiveDate"));
-			
+
 			req.setAttribute("receiverVO", receiverVO);
-			
+
 			String url = "/front_end/mall/shoppingCart02.jsp";
 			RequestDispatcher rd = req.getRequestDispatcher(url);
 			rd.forward(req, res);
@@ -258,7 +297,7 @@ public class CartServlet extends HttpServlet {
 					if (cartVO.getProductPurchaseQuantity().intValue() == 0) {
 						buyList.remove(i);
 						i--;
-					} else {				
+					} else {
 						buyList.set(i, cartVO);
 					}
 					errorMsgs.add(cartVO.getProductName() + " 的庫存量為" + productInventory + "，請重新確認數量");
@@ -282,7 +321,7 @@ public class CartServlet extends HttpServlet {
 			session.setAttribute("buyList", buyList);
 			// Send the use back to the form, if there were errors
 			if (!errorMsgs.isEmpty()) {
-				
+
 				ReceiverVO receiverVO = new ReceiverVO();
 				receiverVO.setReceiverName(receiverName);
 				receiverVO.setReceiverPhone(receiverPhone);
@@ -290,9 +329,9 @@ public class CartServlet extends HttpServlet {
 				receiverVO.setCreditCardNum(creditCardNum);
 				receiverVO.setSecurityCode(securityCode);
 				receiverVO.setEffectiveDate(effectiveDate);
-				
+
 				req.setAttribute("receiverVO", receiverVO);
-				
+
 				RequestDispatcher failureView = req.getRequestDispatcher("/front_end/mall/shoppingCart01.jsp");
 				failureView.forward(req, res);
 				return;// 程式中斷
@@ -311,7 +350,7 @@ public class CartServlet extends HttpServlet {
 			for (Integer companyId : companySet) {
 				// 存放增加的主鍵
 				Integer mallOrderId = null;
-				
+
 				List<CartVO> newBuyList = new ArrayList<CartVO>();
 				Integer mailOrderTotalAmount = 0;
 
@@ -329,7 +368,7 @@ public class CartServlet extends HttpServlet {
 					CartVO cartVO = newBuyList.get(i);
 					mailOrderTotalAmount += cartVO.getProductPrice() * cartVO.getProductPurchaseQuantity();
 				}
-				
+
 				// 新增訂單主檔、訂單明細、修改商品庫存量及銷量
 				MallOrderService mallOrderSvc = new MallOrderService();
 
@@ -347,10 +386,9 @@ public class CartServlet extends HttpServlet {
 				mallOrderId = mallOrderSvc.addMallOrderWithMallOrderDetail(mallOrderVO, newBuyList);
 				mallOrderIdList.add(mallOrderId);
 			}
-			
+
 			session.removeAttribute("buyList");
 
-			
 			/*************************** 3.準備轉交(Send the Success view) *************/
 		}
 	}

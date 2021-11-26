@@ -65,22 +65,22 @@
 
 		<%
 		/************************************假資料測試***********************************/
-			MemberDAO memberDAO = new MemberDAOImpl();
-			MemberVO memberVO = memberDAO.findByPK(1);
+// 			MemberDAO memberDAO = new MemberDAOImpl();
+// 			MemberVO memberVO = memberDAO.findByPK(1);
 
-			session.setAttribute("memberVO", memberVO);
+// 			session.setAttribute("memberVO", memberVO);
 			
-			List<CartVO> buyList = new ArrayList<CartVO>();
+// 			List<CartVO> buyList = new ArrayList<CartVO>();
 
-			CartVO cartvo1 = new CartVO(1, 1, 2, "木紋鋁合金迷你摺疊桌", 398, 1);
-			CartVO cartvo2 = new CartVO(1, 2, 2, "好毯/柔絨睡袋", 880, 1);
-			CartVO cartvo3 = new CartVO(2, 3, 4, "豪華型橫條內建電動幫浦充氣床-單人99cm", 1050, 3);
+// 			CartVO cartvo1 = new CartVO(1, 1, 2, "木紋鋁合金迷你摺疊桌", 398, 1);
+// 			CartVO cartvo2 = new CartVO(1, 2, 2, "好毯/柔絨睡袋", 880, 1);
+// 			CartVO cartvo3 = new CartVO(2, 3, 4, "豪華型橫條內建電動幫浦充氣床-單人99cm", 1050, 3);
 
-			buyList.add(cartvo1);
-			buyList.add(cartvo2);
-			buyList.add(cartvo3);
+// 			buyList.add(cartvo1);
+// 			buyList.add(cartvo2);
+// 			buyList.add(cartvo3);
 
-			session.setAttribute("buyList", buyList);
+// 			session.setAttribute("buyList", buyList);
 			/************************************假資料測試***********************************/
 			
 			if (session.getAttribute("buyList") != null) {
@@ -130,7 +130,7 @@
 
 						<c:if test="${oneOrder == oneProduct.companyId}">
 							<!-- 一個商品項start -->
-							<div class="product">
+							<div data-productId="${oneProduct.productId}" class="product">
 								<div class="product-image">
 									<img
 										src="<%=request.getContextPath()%>/product/PicServlet?productId=${oneProduct.productId}&pic=1">
@@ -150,7 +150,7 @@
 										value="${oneProduct.productPurchaseQuantity}" min="1">
 								</div>
 								<div class="product-removal">
-									<button class="remove-product">移除</button>
+									<button type="button" class="remove-product">移除</button>
 								</div>
 								<div class="product-line-price">${oneProduct.productPurchaseQuantity * oneProduct.productPrice}</div>
 
