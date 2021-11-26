@@ -237,7 +237,7 @@
 	<!-- footer-end -->
 
 	<script
-		src="<%=request.getContextPath()%>/front_end/mall/vendors_shoppingCart/jquery/jquery-3.6.0.min.js"></script>
+		src="<%=request.getContextPath()%>/front_end/mall/vendor/vendors_shoppingCart/jquery/jquery-3.6.0.min.js"></script>
 
 	<script
 		src="<%=request.getContextPath()%>/front_end/mall/js/shoppingCart.js"></script>

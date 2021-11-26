@@ -49,8 +49,8 @@ public class CartServlet extends HttpServlet {
 			/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 **********************/
 			Integer productId = Integer.parseInt(req.getParameter("productId").trim());
 			Integer productPurchaseQuantity = Integer.parseInt(req.getParameter("productPurchaseQuantity").trim());
-			ProductVO productVO = productSvc.getOneProduct(productId);
 			/*************************** 2.開始修改資料 *****************************************/
+			ProductVO productVO = productSvc.getOneProduct(productId);
 			// 新的商品
 			CartVO cartVO = new CartVO();
 			cartVO.setCompanyId(productVO.getCompanyId());
@@ -111,7 +111,7 @@ public class CartServlet extends HttpServlet {
 
 			/*************************** 3.修改完成,準備轉交(Send the Success view) *************/
 			session.setAttribute("buyList", buyList);
-
+			
 			String url = "/front_end/mall/shoppingCart02.jsp";
 			RequestDispatcher rd = req.getRequestDispatcher(url);
 			rd.forward(req, res);
@@ -236,9 +236,13 @@ public class CartServlet extends HttpServlet {
 				Integer productPurchaseQuantity = cartVO.getProductPurchaseQuantity();
 				if ((productInventory.intValue() - productPurchaseQuantity.intValue()) < 0) {
 					cartVO.setProductPurchaseQuantity(productInventory);
-					buyList.remove(i);
-					buyList.add(i, cartVO);
-					errorMsgs.add(cartVO.getProductName() + " 的庫存量為" + productInventory + "，請重新選擇數量");
+					if (cartVO.getProductPurchaseQuantity().intValue() == 0) {
+						buyList.remove(i);
+						i--;
+					} else {				
+						buyList.set(i, cartVO);
+					}
+					errorMsgs.add(cartVO.getProductName() + " 的庫存量為" + productInventory + "，請重新確認數量");
 				}
 				// 檢查購買流程時廠商是否更動價格
 				Integer realPrice = productVO.getProductPrice();
@@ -249,7 +253,7 @@ public class CartServlet extends HttpServlet {
 					errorMsgs.add(cartVO.getProductName() + " : 廠商在您 shopping 時更動了價格，請重新確認");
 				}
 				// 檢查購買流程時廠商是否下價商品
-				if (productVO.getProductStatus() == 0) {
+				if (productVO.getProductStatus().intValue() == 0) {
 					buyList.remove(i);
 					i--;
 					errorMsgs.add(cartVO.getProductName() + " : 商品已下架，請重新確認");

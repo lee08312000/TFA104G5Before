@@ -78,7 +78,7 @@ $(function () {
   $("span#right-inventory").append(product.productInventory);
   // 商品分類
   $("a#right-productTypeName").text(product.productTypeName);
-  $("a#right-productTypeName").attr("href", `products_list.html?productTypeId=${product.productTypeId}`);
+  $("a#right-productTypeName").attr("href", `mall_products_list.html?productTypeId=${product.productTypeId}`);
   $("span#right-productBrand").text(product.productBrand);
   // 上架時間
   $("span#right-launchedTime").text(product.productLaunchedTime);
@@ -126,9 +126,9 @@ $(function () {
   for (var i = 0; i < 8; i++) {
     let product_item =
       `<div data-productId="${typeProducts.productId}" data-productTypeId="${typeProducts.productTypeId}" class="product-item">
-              <a href="product_detail.html?productId=${typeProducts.productId}&productTypeId=${typeProducts.productTypeId}"><img src="${typeProducts.productPic1}" alt="${typeProducts.productName}"></a>
+              <a href="mall_product_detail.html?productId=${typeProducts.productId}&productTypeId=${typeProducts.productTypeId}"><img src="${typeProducts.productPic1}" alt="${typeProducts.productName}"></a>
               <div class="down-content" style="position: relative; padding: 0 10px;">
-                <a href="product_detail.html?productId=${typeProducts.productId}&productTypeId=${typeProducts.productTypeId}" title="${typeProducts.productName}">
+                <a href="mall_product_detail.html?productId=${typeProducts.productId}&productTypeId=${typeProducts.productTypeId}" title="${typeProducts.productName}">
                   <h4 style="font-size: 16px; overflow : hidden; text-overflow :ellipsis; white-space: nowrap; width: 75%">
                     ${typeProducts.productName}
                   </h4>

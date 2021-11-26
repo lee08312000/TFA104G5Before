@@ -31,9 +31,9 @@ $(function () {
       let product_item =
         `<div class="col-md-4">
         <div data-productId="${hotProducts.productId}" data-productTypeId="${hotProducts.productTypeId}" class="product-item">
-          <a href="product_detail.html?productId=${hotProducts.productId}&productTypeId=${hotProducts.productTypeId}"><img src="${hotProducts.productPic1}" alt="${hotProducts.productName}"></a>
+          <a href="mall_product_detail.html?productId=${hotProducts.productId}&productTypeId=${hotProducts.productTypeId}"><img src="${hotProducts.productPic1}" alt="${hotProducts.productName}"></a>
           <div class="down-content">
-            <a href="product_detail.html?productId=${hotProducts.productId}&productTypeId=${hotProducts.productTypeId}" title="${hotProducts.productName}">
+            <a href="mall_product_detail.html?productId=${hotProducts.productId}&productTypeId=${hotProducts.productTypeId}" title="${hotProducts.productName}">
               <h4 style="overflow : hidden; text-overflow :ellipsis; white-space: nowrap; width: 75%">
                 ${hotProducts.productName}
               </h4>
@@ -70,9 +70,9 @@ $(function () {
       let product_item =
       `<div class="col-md-4">
         <div data-productId="${latestProducts.productId}" data-productTypeId="${latestProducts.productTypeId}" class="product-item">
-          <a href="product_detail.html?productId=${latestProducts.productId}&productTypeId=${latestProducts.productTypeId}"><img src="${latestProducts.productPic1}" alt="${latestProducts.productName}"></a>
+          <a href="mall_product_detail.html?productId=${latestProducts.productId}&productTypeId=${latestProducts.productTypeId}"><img src="${latestProducts.productPic1}" alt="${latestProducts.productName}"></a>
           <div class="down-content">
-            <a href="product_detail.html?productId=${latestProducts.productId}&productTypeId=${latestProducts.productTypeId}">
+            <a href="mall_product_detail.html?productId=${latestProducts.productId}&productTypeId=${latestProducts.productTypeId}">
               <h4 style="overflow : hidden; text-overflow :ellipsis; white-space: nowrap; width: 75%" title="${latestProducts.productName}">
                 ${latestProducts.productName}
               </h4>

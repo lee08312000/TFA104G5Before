@@ -31,7 +31,7 @@ $(function () {
   $(document).on("click", "div.filters > ul > li", function () {
       $("div.filters > ul > li").removeClass("active");
       $(this).addClass("active");
-      history.replaceState(null, "page2", "products_list.html");
+      history.replaceState(null, "page2", "mall_products_list.html");
     });
   
   
@@ -93,9 +93,9 @@ $(function () {
       let product_item =
         `<div class="col-lg-4 col-md-6 all">
           <div data-productId="${hotProducts.productId}" data-productTypeId="${hotProducts.productTypeId}" class="product-item">
-              <a href="product_detail.html?productId=${hotProducts.productId}&productTypeId=${hotProducts.productTypeId}"><img src="${hotProducts.productPic1}" alt="${hotProducts.productName}"></a>
+              <a href="mall_product_detail.html?productId=${hotProducts.productId}&productTypeId=${hotProducts.productTypeId}"><img src="${hotProducts.productPic1}" alt="${hotProducts.productName}"></a>
               <div class="down-content">
-                <a href="product_detail.html?productId=${hotProducts.productId}&productTypeId=${hotProducts.productTypeId}" title="${hotProducts.productName}">
+                <a href="mall_product_detail.html?productId=${hotProducts.productId}&productTypeId=${hotProducts.productTypeId}" title="${hotProducts.productName}">
                   <h4 style="overflow : hidden; text-overflow :ellipsis; white-space: nowrap; width: 75%">
                     ${hotProducts.productName}
                   </h4>
