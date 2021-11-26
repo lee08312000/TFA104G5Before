@@ -123,7 +123,7 @@
         // 判斷購物車為空的話，加入文字
         function cartIsEmpty() {
             if ($("div.shopping-cart").find("div.oneOrder").length == 0) {
-                $("div.shopping-cart").html("<h1 style='text-align: center;'>購物車是空的!!!</h1>");
+                $("div.shopping-cart").prepend("<h1 style='text-align: center;'>購物車是空的!!!</h1>");
             };
         };
 

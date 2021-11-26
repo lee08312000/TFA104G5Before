@@ -167,30 +167,30 @@
 					style="text-align: left; display: inline-block;">
 					<label style="color: black; font-weight: bold;"> 收件人姓名 : <input
 						type="text" maxlength="10" size="50" name="receiverName"
-						id="receiverName" value="${ receiverName }" placeholder="請輸入姓名"
+						id="receiverName" value="${ receiverVO.receiverName }" placeholder="請輸入姓名"
 						style="margin-bottom: 10px;">
 					</label> <br> <label style="color: black; font-weight: bold;">
 						收件人手機 : <input type="text" maxlength="10" size="50"
-						name="receiverPhone" id="receiverPhone" value="${ receiverPhone }"
+						name="receiverPhone" id="receiverPhone" value="${ receiverVO.receiverPhone }"
 						placeholder="ex:09xxxxxxxx" style="margin-bottom: 10px;">
 					</label> <br> <label style="color: black; font-weight: bold;">
 						收件人地址 : <input type="text" maxlength="80" size="50"
-						name="receiverAddress" id="receiverAddress" value="${ receiverAddress }"
+						name="receiverAddress" id="receiverAddress" value="${ receiverVO.receiverAddress }"
 						placeholder="請輸入地址" style="margin-bottom: 10px;">
 					</label> <br>
 					<button type="button" id="inputReceiverInfo"
 						style="margin-bottom: 30px;">同會員資料</button>
 					<br> <label style="color: black; font-weight: bold;">
 						信用卡號 : <input type="text" maxlength="16" size="16"
-						name="creditCardNum" id="creditCardNum" value="${ creditCardNum }"
+						name="creditCardNum" id="creditCardNum" value="${ receiverVO.creditCardNum }"
 						placeholder="請輸入16碼數字" style="margin-bottom: 10px;">
 					</label> <br> <label style="color: black; font-weight: bold;">
 						安全碼 : <input type="text" maxlength="3" size="3"
-						name="securityCode" id="securityCode" value="${ securityCode }" placeholder="xxx"
+						name="securityCode" id="securityCode" value="${ receiverVO.securityCode }" placeholder="xxx"
 						style="margin-bottom: 10px;">
 					</label> <label style="color: black; font-weight: bold;"> 有效日期 : <input
 						type="text" maxlength="4" size="4" name="effectiveDate"
-						id="effectiveDate" value="${ effectiveDate }" placeholder="MMYY"
+						id="effectiveDate" value="${ receiverVO.effectiveDate }" placeholder="MMYY"
 						style="margin-bottom: 10px;">
 					</label><br>
 					<%-- 錯誤表列 --%>

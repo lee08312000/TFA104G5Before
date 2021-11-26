@@ -73,7 +73,7 @@
 			List<CartVO> buyList = new ArrayList<CartVO>();
 
 			CartVO cartvo1 = new CartVO(1, 1, 2, "木紋鋁合金迷你摺疊桌", 398, 1);
-			CartVO cartvo2 = new CartVO(1, 2, 2, "好毯/柔絨睡袋", 880, 2);
+			CartVO cartvo2 = new CartVO(1, 2, 2, "好毯/柔絨睡袋", 880, 1);
 			CartVO cartvo3 = new CartVO(2, 3, 4, "豪華型橫條內建電動幫浦充氣床-單人99cm", 1050, 3);
 
 			buyList.add(cartvo1);
@@ -95,7 +95,7 @@
 				request.setAttribute("companySet", companySet);
 				
 			}
-						
+		
 		%>
 
 		<jsp:useBean id="companyDAOImpl"
@@ -200,6 +200,12 @@
 				</ul>
 			</c:if>
 
+			<input type="hidden" name="receiverName" value="${ receiverVO.receiverName }">
+			<input type="hidden" name="receiverPhone" value="${ receiverVO.receiverPhone }">
+			<input type="hidden" name="receiverAddress" value="${ receiverVO.receiverAddress }">
+			<input type="hidden" name="creditCardNum" value="${ receiverVO.creditCardNum }">
+			<input type="hidden" name="securityCode" value="${ receiverVO.securityCode }">
+			<input type="hidden" name="effectiveDate" value="${ receiverVO.effectiveDate }">
 
 			<input type="hidden" name="action" value="update"> <input
 				type="submit" class="checkout" value="下一步">

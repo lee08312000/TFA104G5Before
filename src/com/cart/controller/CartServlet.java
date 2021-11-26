@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.cart.model.CartVO;
+import com.cart.model.ReceiverVO;
 import com.mallOrder.model.MallOrderService;
 import com.mallOrder.model.MallOrderVO;
 import com.member.model.MemberVO;
@@ -111,7 +112,17 @@ public class CartServlet extends HttpServlet {
 
 			/*************************** 3.修改完成,準備轉交(Send the Success view) *************/
 			session.setAttribute("buyList", buyList);
+			//
+			ReceiverVO receiverVO = new ReceiverVO();
+			receiverVO.setReceiverName(req.getParameter("receiverName"));
+			receiverVO.setReceiverPhone(req.getParameter("receiverPhone"));
+			receiverVO.setReceiverAddress(req.getParameter("receiverAddress"));
+			receiverVO.setCreditCardNum(req.getParameter("creditCardNum"));
+			receiverVO.setSecurityCode(req.getParameter("securityCode"));
+			receiverVO.setEffectiveDate(req.getParameter("effectiveDate"));
 			
+			req.setAttribute("receiverVO", receiverVO);
+			//
 			String url = "/front_end/mall/shoppingCart02.jsp";
 			RequestDispatcher rd = req.getRequestDispatcher(url);
 			rd.forward(req, res);
@@ -174,12 +185,16 @@ public class CartServlet extends HttpServlet {
 				errorMsgs.add("有效日期: 只能是正整數，長度為4，格式為MMYY --> 2025年8月，EX:0825");
 			}
 			/*************************** 2.準備轉交(Send the Success view) *************/
-			req.setAttribute("receiverName", receiverName);
-			req.setAttribute("receiverPhone", receiverPhone);
-			req.setAttribute("receiverAddress", receiverAddress);
-			req.setAttribute("creditCardNum", creditCardNum);
-			req.setAttribute("securityCode", securityCode);
-			req.setAttribute("effectiveDate", effectiveDate);
+			ReceiverVO receiverVO = new ReceiverVO();
+			receiverVO.setReceiverName(receiverName);
+			receiverVO.setReceiverPhone(receiverPhone);
+			receiverVO.setReceiverAddress(receiverAddress);
+			receiverVO.setCreditCardNum(creditCardNum);
+			receiverVO.setSecurityCode(securityCode);
+			receiverVO.setEffectiveDate(effectiveDate);
+			
+			req.setAttribute("receiverVO", receiverVO);
+			
 
 			// Send the use back to the form, if there were errors
 			if (!errorMsgs.isEmpty()) {
@@ -199,13 +214,17 @@ public class CartServlet extends HttpServlet {
 
 			/*********************** 1.接收請求參數 - 輸入格式的錯誤處理 *************************/
 			/*************************** 2.準備轉交(Send the Success view) *************/
-			req.setAttribute("receiverName", req.getParameter("receiverName"));
-			req.setAttribute("receiverPhone", req.getParameter("receiverPhone"));
-			req.setAttribute("receiverAddress", req.getParameter("receiverAddress"));
-			req.setAttribute("creditCardNum", req.getParameter("creditCardNum"));
-			req.setAttribute("securityCode", req.getParameter("securityCode"));
-			req.setAttribute("effectiveDate", req.getParameter("effectiveDate"));
-
+			
+			ReceiverVO receiverVO = new ReceiverVO();
+			receiverVO.setReceiverName(req.getParameter("receiverName"));
+			receiverVO.setReceiverPhone(req.getParameter("receiverPhone"));
+			receiverVO.setReceiverAddress(req.getParameter("receiverAddress"));
+			receiverVO.setCreditCardNum(req.getParameter("creditCardNum"));
+			receiverVO.setSecurityCode(req.getParameter("securityCode"));
+			receiverVO.setEffectiveDate(req.getParameter("effectiveDate"));
+			
+			req.setAttribute("receiverVO", receiverVO);
+			
 			String url = "/front_end/mall/shoppingCart02.jsp";
 			RequestDispatcher rd = req.getRequestDispatcher(url);
 			rd.forward(req, res);
@@ -263,15 +282,18 @@ public class CartServlet extends HttpServlet {
 			session.setAttribute("buyList", buyList);
 			// Send the use back to the form, if there were errors
 			if (!errorMsgs.isEmpty()) {
-				req.setAttribute("receiverName", receiverName);
-				req.setAttribute("receiverPhone", receiverPhone);
-				req.setAttribute("receiverAddress", receiverAddress);
-				req.setAttribute("creditCardNum", creditCardNum);
-				req.setAttribute("securityCode", securityCode);
-				req.setAttribute("effectiveDate", effectiveDate);
 				
-
-				RequestDispatcher failureView = req.getRequestDispatcher("/front_end/mall/shoppingCart03.jsp");
+				ReceiverVO receiverVO = new ReceiverVO();
+				receiverVO.setReceiverName(receiverName);
+				receiverVO.setReceiverPhone(receiverPhone);
+				receiverVO.setReceiverAddress(receiverAddress);
+				receiverVO.setCreditCardNum(creditCardNum);
+				receiverVO.setSecurityCode(securityCode);
+				receiverVO.setEffectiveDate(effectiveDate);
+				
+				req.setAttribute("receiverVO", receiverVO);
+				
+				RequestDispatcher failureView = req.getRequestDispatcher("/front_end/mall/shoppingCart01.jsp");
 				failureView.forward(req, res);
 				return;// 程式中斷
 			}
