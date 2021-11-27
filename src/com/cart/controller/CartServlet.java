@@ -120,6 +120,9 @@ public class CartServlet extends HttpServlet {
 			}
 
 		}
+		
+		// 更新購買清單by Ajax
+		
 
 		// 更新購買清單
 		if ("update".equals(action)) {
@@ -139,6 +142,46 @@ public class CartServlet extends HttpServlet {
 					errorMsgs.add(productNameArray[i] + " 請輸入正確數量");
 				}
 			}
+			
+			buyList = getBuyList(req);
+			
+			// 檢查庫存量及購買流程時廠商是否更動價格
+			ProductService productSvc = new ProductService();
+			for (int i = 0; i < buyList.size(); i++) {
+				CartVO cartVO = buyList.get(i);
+				ProductVO productVO = productSvc.getOneProduct(cartVO.getProductId());
+				// 檢查庫存量
+				Integer productInventory = productVO.getProductInventory();
+				Integer productPurchaseQuantity = cartVO.getProductPurchaseQuantity();
+				if ((productInventory.intValue() - productPurchaseQuantity.intValue()) < 0) {
+					cartVO.setProductPurchaseQuantity(productInventory);
+					if (cartVO.getProductPurchaseQuantity().intValue() == 0) {
+						buyList.remove(i);
+						i--;
+					} else {
+						buyList.set(i, cartVO);
+					}
+					errorMsgs.add(cartVO.getProductName() + " 的庫存量為" + productInventory + "，請重新確認數量");
+				}
+				
+				// 檢查購買流程時廠商是否更動價格
+				Integer realPrice = productVO.getProductPrice();
+				Integer cartPrice = cartVO.getProductPrice();
+				if (cartPrice.intValue() != realPrice.intValue()) {
+					cartVO.setProductPrice(realPrice);
+					buyList.set(i, cartVO);
+					errorMsgs.add(cartVO.getProductName() + " : 廠商在您 shopping 時更動了價格，請重新確認");
+				}
+				// 檢查購買流程時廠商是否下價商品
+				if (productVO.getProductStatus().intValue() == 0) {
+					buyList.remove(i);
+					i--;
+					errorMsgs.add(cartVO.getProductName() + " : 商品已下架，請重新確認");
+				}
+			}
+			
+			session.setAttribute("buyList", buyList);
+			
 			// Send the use back to the form, if there were errors
 			if (!errorMsgs.isEmpty()) {
 				RequestDispatcher failureView = req.getRequestDispatcher("/front_end/mall/shoppingCart01.jsp");
@@ -148,10 +191,10 @@ public class CartServlet extends HttpServlet {
 
 			/*************************** 2.開始修改資料 *****************************************/
 
-			buyList = getBuyList(req);
+//			buyList = getBuyList(req);
 
 			/*************************** 3.修改完成,準備轉交(Send the Success view) *************/
-			session.setAttribute("buyList", buyList);
+//			session.setAttribute("buyList", buyList);
 			//
 			ReceiverVO receiverVO = new ReceiverVO();
 			receiverVO.setReceiverName(req.getParameter("receiverName"));

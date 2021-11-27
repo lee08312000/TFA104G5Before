@@ -65,10 +65,10 @@
 
 		<%
 		/************************************假資料測試***********************************/
-// 			MemberDAO memberDAO = new MemberDAOImpl();
-// 			MemberVO memberVO = memberDAO.findByPK(1);
+			MemberDAO memberDAO = new MemberDAOImpl();
+			MemberVO memberVO = memberDAO.findByPK(1);
 
-// 			session.setAttribute("memberVO", memberVO);
+			session.setAttribute("memberVO", memberVO);
 			
 // 			List<CartVO> buyList = new ArrayList<CartVO>();
 
@@ -210,6 +210,9 @@
 			<input type="hidden" name="action" value="update"> <input
 				type="submit" class="checkout" value="下一步">
 		</form>
+
+		<button type="button" class="checkout" style="margin-right: 30px;"
+			onclick="location.href = '<%=request.getContextPath()%>/front_end/mall/mall_index.html';">繼續購物</button>
 
 	</div>
 
