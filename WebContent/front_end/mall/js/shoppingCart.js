@@ -7,17 +7,21 @@
         /* Assign actions */
         $('.product-quantity input').change(function () {
 //        	console.log("123");
-            if ($(this).val().trim() <= 0 || $(this).val().trim() == "") {
+            let that = this;
+            if ($(that).val().trim() <= 0 || $(that).val().trim() == "") {
 
-                $(this).closest("div.product").find('.product-removal button').eq(0).click();
+                $(that).closest("div.product").find('.product-removal button').eq(0).click();
+            } else {
+                // 去後端session改商品數量
+
             }
             
-            updateQuantity(this);
+            updateQuantity(that);
             let subtotal = 0;
-            // console.log($(this).parent().parent().parent().find("div.totals-value").eq(0));
-            let orederSmallMoney = $(this).closest("div.oneOrder").find("div.totals-value").eq(0);
+            // console.log($(that).parent().parent().parent().find("div.totals-value").eq(0));
+            let orederSmallMoney = $(that).closest("div.oneOrder").find("div.totals-value").eq(0);
 
-            let line_prices = $(this).closest("div.oneOrder").find("div.product-line-price");
+            let line_prices = $(that).closest("div.oneOrder").find("div.product-line-price");
             line_prices.each(function (index, item) {
                 subtotal = parseInt(subtotal) + parseInt($(item).text());
             });
