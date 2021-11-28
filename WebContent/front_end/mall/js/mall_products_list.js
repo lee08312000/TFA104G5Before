@@ -22,6 +22,7 @@ $(function () {
     // 商品排序
     $("select.orderBy").on("change", function () {
       console.log($(this).val());
+      console.log($("select.company").val());
     });
 
   });

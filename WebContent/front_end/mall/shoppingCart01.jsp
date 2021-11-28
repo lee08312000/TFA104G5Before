@@ -101,6 +101,7 @@
 		<jsp:useBean id="companyDAOImpl"
 			class="com.company.model.CompanyDAOImpl"></jsp:useBean>
 
+
 		<form action="<%=request.getContextPath()%>/Cart/CartServlet"
 			method="post">
 

@@ -55,6 +55,10 @@ public class CartServlet extends HttpServlet {
 			Integer productPurchaseQuantity = Integer.parseInt(req.getParameter("productPurchaseQuantity").trim());
 			/*************************** 2.開始修改資料 *****************************************/
 			ProductVO productVO = productSvc.getOneProduct(productId);
+			int productInventory = productVO.getProductInventory().intValue();
+			int newProductPurchaseQuantity = 0;
+			boolean match = false;
+			String msg = "denied";
 			// 新的商品
 			CartVO cartVO = new CartVO();
 			cartVO.setCompanyId(productVO.getCompanyId());
@@ -64,31 +68,58 @@ public class CartServlet extends HttpServlet {
 			cartVO.setProductPrice(productVO.getProductPrice());
 			cartVO.setProductPurchaseQuantity(productPurchaseQuantity);
 
+			// 若沒有buyList 或 裡面沒東西時
 			if (buyList == null || buyList.size() == 0) {
-				buyList = new ArrayList<CartVO>();
-				buyList.add(cartVO);
+				// 若庫存量大於等於選購數量
+				if (productInventory >= productPurchaseQuantity.intValue()) {
+					buyList = new ArrayList<CartVO>();
+					buyList.add(cartVO);
+					msg = "success";
+				}
 			} else {
+				// buyList 有東西時
 				for (int i = 0; i < buyList.size(); i++) {
 					CartVO c = buyList.get(i);
+					// buyList 有東西時，且購物車已有欲加入的商品時
 					if (cartVO.getProductId().intValue() == c.getProductId().intValue()) {
-						cartVO.setProductPurchaseQuantity(
-								cartVO.getProductPurchaseQuantity() + c.getProductPurchaseQuantity());
-						buyList.set(i, cartVO);
-					} else {
-						buyList.add(cartVO);
+						match = true;
+						newProductPurchaseQuantity = cartVO.getProductPurchaseQuantity() + c.getProductPurchaseQuantity();
+						// 若庫存量大於等於選購數量(剛剛新增的加上購物車裡的)
+						if (productInventory >= newProductPurchaseQuantity) {
+							cartVO.setProductPurchaseQuantity(newProductPurchaseQuantity);
+							buyList.set(i, cartVO);
+							msg = "success";
+						} else {
+							// 若庫存量小於選購數量(剛剛新增的加上購物車裡的)
+							// 若庫存量>0將庫存量設為購買數量加回購物車中
+							if (productInventory > 0) {
+								cartVO.setProductPurchaseQuantity(productInventory);
+								buyList.set(i, cartVO);								
+							}
+						}
+						
 					}
 				}
-
+				// buyList 有東西時，購物車沒有欲加入的商品時
+				if (!match) {
+					// 若庫存量大於等於選購數量
+					if (productInventory >= productPurchaseQuantity.intValue()) {
+						buyList.add(cartVO);
+						msg = "success";
+					}
+				}
+				
 			}
 			/*************************** 3.修改完成,準備轉交(Send the Success view) *************/
 			session.setAttribute("buyList", buyList);
 			// 回傳Json給Ajax
 			JSONObject obj = new JSONObject();
 			try {
-				obj.put("msg", "success");
-				String msg = obj.toString();
-//				System.out.println(msg);
-				out.println(msg);
+				obj.put("msg", msg);
+				obj.put("productInventory", productInventory);
+				String msgJson = obj.toString();
+//				System.out.println(msgJson);
+				out.println(msgJson);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -122,6 +153,48 @@ public class CartServlet extends HttpServlet {
 		}
 		
 		// 更新購買清單by Ajax
+		if ("updateByAjax".equals(action)) {
+			ProductService productSvc = new ProductService();
+			/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 **********************/
+			Integer productId = Integer.parseInt(req.getParameter("productId").trim());
+			Integer productPurchaseQuantity = Integer.parseInt(req.getParameter("productPurchaseQuantity").trim());
+			Integer productInventory = productSvc.getOneProduct(productId).getProductInventory();
+			String msg = "";
+			/*************************** 2.開始修改資料 *****************************************/	
+			if (productPurchaseQuantity.intValue() > productInventory.intValue()) {
+				
+				for (int i = 0; i < buyList.size(); i++) {
+					CartVO c = buyList.get(i);
+					if (productId.intValue() == c.getProductId().intValue()) {
+						c.setProductPurchaseQuantity(productInventory);
+						buyList.set(i, c);
+					}
+				}
+				msg = "denied";
+			} else {
+				for (int i = 0; i < buyList.size(); i++) {
+					CartVO c = buyList.get(i);
+					if (productId.intValue() == c.getProductId().intValue()) {
+						c.setProductPurchaseQuantity(productPurchaseQuantity);
+						buyList.set(i, c);
+					}
+				}
+				msg = "success";
+			}
+			/*************************** 3.修改完成,準備轉交(Send the Success view) *************/
+			session.setAttribute("buyList", buyList);
+			// 回傳Json給Ajax
+			JSONObject obj = new JSONObject();
+			try {
+				obj.put("msg", msg);
+				obj.put("productInventory", productInventory);
+				String msgJson = obj.toString();
+//				System.out.println(msgJson);
+				out.println(msgJson);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
 		
 
 		// 更新購買清單
@@ -401,7 +474,7 @@ public class CartServlet extends HttpServlet {
 				for (int i = 0; i < buyList.size(); i++) {
 
 					CartVO cartVO = buyList.get(i);
-					if (companyId == cartVO.getCompanyId()) {
+					if (companyId.intValue() == cartVO.getCompanyId().intValue()) {
 						newBuyList.add(cartVO);
 					}
 				}
