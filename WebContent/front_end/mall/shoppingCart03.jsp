@@ -161,38 +161,48 @@
 			<div style="text-align: center; margin-bottom: 50px;">
 				<div class="receiverInfo"
 					style="text-align: left; display: inline-block;">
-					<label style="color: black; font-weight: bold;"> 收件人姓名 : ${ receiverName }<input
+					<label style="color: black; font-weight: bold;"> 收件人姓名 : ${ receiverVO.receiverName }<input
 						type="hidden" maxlength="10" size="50" name="receiverName"
-						id="receiverName" value="${ receiverName }" placeholder="請輸入姓名"
+						id="receiverName" value="${ receiverVO.receiverName }" placeholder="請輸入姓名"
 						style="margin-bottom: 10px;">
 					</label> <br> <label style="color: black; font-weight: bold;">
-						收件人手機 : ${ receiverPhone }<input type="hidden" maxlength="10"
+						收件人手機 : ${ receiverVO.receiverPhone }<input type="hidden" maxlength="10"
 						size="50" name="receiverPhone" id="receiverPhone"
-						value="${ receiverPhone }" placeholder="ex:09xxxxxxxx"
+						value="${ receiverVO.receiverPhone }" placeholder="ex:09xxxxxxxx"
 						style="margin-bottom: 10px;">
 					</label> <br> <label style="color: black; font-weight: bold;">
-						收件人地址 : ${ receiverAddress }<input type="hidden" maxlength="80"
+						收件人地址 : ${ receiverVO.receiverAddress }<input type="hidden" maxlength="80"
 						size="50" name="receiverAddress" id="receiverAddress"
-						value="${ receiverAddress }" placeholder="請輸入地址"
+						value="${ receiverVO.receiverAddress }" placeholder="請輸入地址"
 						style="margin-bottom: 10px;">
 					</label> <br>
 
 					<button type="button" id="inputReceiverInfo"
 						style="visibility: hidden">同會員資料</button>
 					<br> <label style="color: black; font-weight: bold;">
-						信用卡號 : ${ creditCardNum }<input type="hidden" maxlength="16"
+						信用卡號 : ${ receiverVO.creditCardNum }<input type="hidden" maxlength="16"
 						size="16" name="creditCardNum" id="creditCardNum"
-						value="${ creditCardNum }" placeholder="請輸入16碼數字"
+						value="${ receiverVO.creditCardNum }" placeholder="請輸入16碼數字"
 						style="margin-bottom: 10px;">
 					</label> <br> <label style="color: black; font-weight: bold;">
-						安全碼 : ${ securityCode }<input type="hidden" maxlength="3" size="3"
-						name="securityCode" id="securityCode" value="${ securityCode }"
+						安全碼 : ${ receiverVO.securityCode }<input type="hidden" maxlength="3" size="3"
+						name="securityCode" id="securityCode" value="${ receiverVO.securityCode }"
 						placeholder="xxx" style="margin-bottom: 10px;">
-					</label> <label style="color: black; font-weight: bold;"> 有效日期 : ${ effectiveDate }<input
+					</label> <label style="color: black; font-weight: bold;"> 有效日期 : ${ receiverVO.effectiveDate }<input
 						type="hidden" maxlength="4" size="4" name="effectiveDate"
-						id="effectiveDate" value="${ effectiveDate }" placeholder="MMYY"
+						id="effectiveDate" value="${ receiverVO.effectiveDate }" placeholder="MMYY"
 						style="margin-bottom: 10px;">
-					</label>
+					</label><br>
+										<%-- 錯誤表列 --%>
+					<c:if test="${not empty errorMsgs}">
+						<font style="color: red">請修正以下錯誤:</font>
+						<ul>
+							<c:forEach var="message" items="${errorMsgs}">
+								<li style="color: red">${message}</li>
+							</c:forEach>
+						</ul>
+					</c:if>
+					
 				</div>
 			</div>
 
@@ -203,12 +213,12 @@
 
 		<form action="<%=request.getContextPath()%>/Cart/CartServlet"
 			method="post">
-			<input type="hidden" name="receiverName" value="${ receiverName }">
-			<input type="hidden" name="receiverPhone" value="${ receiverPhone }">
-			<input type="hidden" name="receiverAddress" value="${ receiverAddress }">
-			<input type="hidden" name="creditCardNum" value="${ creditCardNum }">
-			<input type="hidden" name="securityCode" value="${ securityCode }">
-			<input type="hidden" name="effectiveDate" value="${ effectiveDate }">
+			<input type="hidden" name="receiverName" value="${ receiverVO.receiverName }">
+			<input type="hidden" name="receiverPhone" value="${ receiverVO.receiverPhone }">
+			<input type="hidden" name="receiverAddress" value="${ receiverVO.receiverAddress }">
+			<input type="hidden" name="creditCardNum" value="${ receiverVO.creditCardNum }">
+			<input type="hidden" name="securityCode" value="${ receiverVO.securityCode }">
+			<input type="hidden" name="effectiveDate" value="${ receiverVO.effectiveDate }">
 			<input type="hidden" name="action" value="step3tostep2"> <input
 				type="submit" class="checkout" style="margin-right: 30px;"
 				value="上一步">
@@ -227,7 +237,7 @@
 	<!-- footer-end -->
 
 	<script
-		src="<%=request.getContextPath()%>/front_end/mall/vendors_shoppingCart/jquery/jquery-3.6.0.min.js"></script>
+		src="<%=request.getContextPath()%>/front_end/mall/vendor/vendors_shoppingCart/jquery/jquery-3.6.0.min.js"></script>
 
 	<script
 		src="<%=request.getContextPath()%>/front_end/mall/js/shoppingCart.js"></script>

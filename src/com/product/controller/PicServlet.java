@@ -35,24 +35,34 @@ public class PicServlet extends HttpServlet {
 		res.setContentType("image/gif");
 		ServletOutputStream out =  res.getOutputStream();
 		Integer productId = Integer.parseInt(req.getParameter("productId"));
-		Integer picId = Integer.parseInt(req.getParameter("pic"));
+		int picId = Integer.parseInt(req.getParameter("pic"));
 		
 		productSvc = new ProductService();
 		ProductVO productVO = productSvc.getOneProduct(productId);
+		byte[] noDataPic = getPictureFromLocal(getServletContext().getRealPath("NoData/none3.jpg"));
+		
+		if (productVO == null) {
+			out.write(noDataPic);
+			return;
+		}
+		
+		byte[] pic1 = productVO.getProductPic1();
+		byte[] pic2 = productVO.getProductPic2();
+		byte[] pic3 = productVO.getProductPic3();
 		
 		switch (picId) {
 		case 1:
-			out.write(productVO.getProductPic1());
+			out.write((pic1 != null) ? pic1 : noDataPic);
 			break;
 		case 2:
-			out.write(productVO.getProductPic2());
+			out.write((pic2 != null) ? pic2 : noDataPic);
 			break;
 		case 3:
-			out.write(productVO.getProductPic3());
+			out.write((pic3 != null) ? pic3 : noDataPic);
 			break;
 
 		default:
-			out.write(getPictureFromLocal(getServletContext().getRealPath("NoData/none3.jpg")));
+			out.write(noDataPic);
 			break;
 		}
 		
