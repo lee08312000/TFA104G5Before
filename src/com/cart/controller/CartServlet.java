@@ -283,7 +283,36 @@ public class CartServlet extends HttpServlet {
 			RequestDispatcher rd = req.getRequestDispatcher(url);
 			rd.forward(req, res);
 		}
-
+		// 購物車step2 得到會員資料資料
+		if ("getMemberInfo".equals(action)) {
+			/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 **********************/
+			String msg = "denied";
+			String memberName = "";
+			String memberPhone = "";
+			String memberAddress = "";
+			
+			if (memberVO != null) {
+				memberName = memberVO.getMemberName();
+				memberPhone = memberVO.getMemberPhone();
+				memberAddress = memberVO.getMemberAddress();
+				msg = "success";
+			}
+			
+			// 回傳Json給Ajax
+			JSONObject obj = new JSONObject();
+			try {
+				obj.put("msg", msg);
+				obj.put("memberName", memberName);
+				obj.put("memberPhone", memberPhone);
+				obj.put("memberAddress", memberAddress);
+				String msgJson = obj.toString();
+//				System.out.println(msgJson);
+				out.println(msgJson);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		// 購物車step2 輸入收件人資料
 
 		if ("inputReceiverInfo".equals(action)) {

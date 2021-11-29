@@ -196,15 +196,31 @@ function cartIsEmpty() {
 };
 
 $("button#inputReceiverInfo").on("click", function () {
+    let that = this;
 
+    $.ajax({
+        url: "/TFA104G5/Cart/CartServlet",
+        type: "POST",
+        data: {
+            "action":"getMemberInfo"
+        },
+        dataType: "json",
+        beforeSend: function () {
+            $(that).prop("disabled", true);
+        },
+        success: function (data) {
+            if (data.msg == "success") {
+                $("input#receiverName").val(data.memberName);
+                $("input#receiverPhone").val(data.memberPhone);
+                $("input#receiverAddress").val(data.memberAddress);
+                console.log("得到會員資料");
+            } else if (data.msg == "denied") {
+                console.log("查無會員資料");
+            }
+        },
+        complete: function (xhr) {
+            $(that).prop("disabled", false);
+        }
+    });
 
-    let member = {
-        "memberName": "蜥蜴男爵",
-        "memberPhone": "0912345678",
-        "memberAddress": "台北市南京東路緯育Java就業養成班"
-    };
-
-    $("input#receiverName").val(member.memberName);
-    $("input#receiverPhone").val(member.memberPhone);
-    $("input#receiverAddress").val(member.memberAddress);
 });
