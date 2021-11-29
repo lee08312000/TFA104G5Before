@@ -454,56 +454,20 @@ public class CartServlet extends HttpServlet {
 			}
 
 			/*************************** 2.開始新增資料 ***************************************/
-			// 存放增加的訂單編號
-			List<Integer> mallOrderIdList = new ArrayList<Integer>();
-			// 創造companySet
-			Set<Integer> companySet = new TreeSet<Integer>();
-			for (CartVO c : buyList) {
-				companySet.add(c.getCompanyId());
+			
+			MallOrderService mallOrderSvc = new MallOrderService();
+			// 存放增加的訂單的ID
+			List<Integer> mallOrderIdList = mallOrderSvc.checkout(memberVO.getMemberId(), creditCardNum, receiverName, receiverPhone, receiverAddress, buyList);
+			// 測試:印出增加的mallOrderId
+			for (Integer mallOrderId : mallOrderIdList) {
+				System.out.println(mallOrderId);
 			}
-
-			// 用set分別成立訂單
-			for (Integer companyId : companySet) {
-				// 存放增加的主鍵
-				Integer mallOrderId = null;
-
-				List<CartVO> newBuyList = new ArrayList<CartVO>();
-				Integer mailOrderTotalAmount = 0;
-
-				// 將此廠商的商品存到新的List
-				for (int i = 0; i < buyList.size(); i++) {
-
-					CartVO cartVO = buyList.get(i);
-					if (companyId.intValue() == cartVO.getCompanyId().intValue()) {
-						newBuyList.add(cartVO);
-					}
-				}
-
-				// 計算此訂單的總金額
-				for (int i = 0; i < newBuyList.size(); i++) {
-					CartVO cartVO = newBuyList.get(i);
-					mailOrderTotalAmount += cartVO.getProductPrice() * cartVO.getProductPurchaseQuantity();
-				}
-
-				// 新增訂單主檔、訂單明細、修改商品庫存量及銷量
-				MallOrderService mallOrderSvc = new MallOrderService();
-
-				MallOrderVO mallOrderVO = new MallOrderVO();
-
-				mallOrderVO.setCompanyId(companyId);
-//				mallOrderVO.setMemberId(1);
-				mallOrderVO.setMemberId(memberVO.getMemberId());
-				mallOrderVO.setMailOrderTotalAmount(mailOrderTotalAmount);
-				mallOrderVO.setCreditCardNum(creditCardNum);
-				mallOrderVO.setReceiverName(receiverName);
-				mallOrderVO.setReceiverPhone(receiverPhone);
-				mallOrderVO.setReceiverAddress(receiverAddress);
-
-				mallOrderId = mallOrderSvc.addMallOrderWithMallOrderDetail(mallOrderVO, newBuyList);
-				mallOrderIdList.add(mallOrderId);
+			
+			if (mallOrderIdList == null || mallOrderIdList.size() == 0) {
+				System.out.println("訂單成立失敗");
+			} else {
+				session.removeAttribute("buyList");				
 			}
-
-			session.removeAttribute("buyList");
 
 			/*************************** 3.準備轉交(Send the Success view) *************/
 		}
