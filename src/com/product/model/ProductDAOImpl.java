@@ -11,24 +11,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+public class ProductDAOImpl implements ProductDAO {
 
-public class ProductDAOImpl implements ProductDAO{
-	
 	String driver = "com.mysql.cj.jdbc.Driver";
 	String url = "jdbc:mysql://localhost:3306/campingParadise?serverTimezone=Asia/Taipei";
 	String userid = "David";
 	String passwd = "123456";
 
-	private static final String INSERT_STMT = 
-		"INSERT INTO product (company_id,product_type_id,product_status,product_name,product_price,product_brand,product_inventory,product_description,shopping_information,product_pic_1,product_pic_2,product_pic_3) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-	private static final String GET_ALL_STMT = 
-		"SELECT product_id,company_id,product_type_id,product_status,product_name,product_price,product_brand,product_inventory,product_description,shopping_information,product_pic_1,product_pic_2,product_pic_3,product_launched_time,product_commented_allnum,product_comment_allstar,product_sell_allnum FROM product order by product_id";
-	private static final String GET_ONE_STMT = 
-		"SELECT product_id,company_id,product_type_id,product_status,product_name,product_price,product_brand,product_inventory,product_description,shopping_information,product_pic_1,product_pic_2,product_pic_3,product_launched_time,product_commented_allnum,product_comment_allstar,product_sell_allnum FROM product where product_id = ?";
-	private static final String DELETE = 
-		"DELETE FROM product where product_id = ?";
-	private static final String UPDATE = 
-		"UPDATE product set company_id=?, product_type_id=?, product_status=?, product_name=?, product_price=?, product_brand=?, product_inventory=?, product_description=?, shopping_information=?, product_pic_1=?, product_pic_2=?, product_pic_3=?, product_commented_allnum=?, product_comment_allstar=?, product_sell_allnum=? where product_id = ?";
+	private static final String INSERT_STMT = "INSERT INTO product (company_id,product_type_id,product_status,product_name,product_price,product_brand,product_inventory,product_description,shopping_information,product_pic_1,product_pic_2,product_pic_3) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private static final String GET_ALL_STMT = "SELECT product_id,company_id,product_type_id,product_status,product_name,product_price,product_brand,product_inventory,product_description,shopping_information,product_pic_1,product_pic_2,product_pic_3,product_launched_time,product_commented_allnum,product_comment_allstar,product_sell_allnum FROM product order by product_id";
+	private static final String GET_ONE_STMT = "SELECT product_id,company_id,product_type_id,product_status,product_name,product_price,product_brand,product_inventory,product_description,shopping_information,product_pic_1,product_pic_2,product_pic_3,product_launched_time,product_commented_allnum,product_comment_allstar,product_sell_allnum FROM product where product_id = ?";
+	private static final String DELETE = "DELETE FROM product where product_id = ?";
+	private static final String UPDATE = "UPDATE product set company_id=?, product_type_id=?, product_status=?, product_name=?, product_price=?, product_brand=?, product_inventory=?, product_description=?, shopping_information=?, product_pic_1=?, product_pic_2=?, product_pic_3=?, product_commented_allnum=?, product_comment_allstar=?, product_sell_allnum=? where product_id = ?";
 
 	@Override
 	public void insert(ProductVO ProductVO) {
@@ -57,12 +51,10 @@ public class ProductDAOImpl implements ProductDAO{
 
 			// Handle any driver errors
 		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "
-					+ e.getMessage());
+			throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
 			// Handle any SQL errors
 		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. "
-					+ se.getMessage());
+			throw new RuntimeException("A database error occured. " + se.getMessage());
 			// Clean up JDBC resources
 		} finally {
 			if (pstmt != null) {
@@ -80,7 +72,7 @@ public class ProductDAOImpl implements ProductDAO{
 				}
 			}
 		}
-		
+
 	}
 
 	@Override
@@ -115,12 +107,10 @@ public class ProductDAOImpl implements ProductDAO{
 
 			// Handle any driver errors
 		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "
-					+ e.getMessage());
+			throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
 			// Handle any SQL errors
 		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. "
-					+ se.getMessage());
+			throw new RuntimeException("A database error occured. " + se.getMessage());
 			// Clean up JDBC resources
 		} finally {
 			if (pstmt != null) {
@@ -138,7 +128,7 @@ public class ProductDAOImpl implements ProductDAO{
 				}
 			}
 		}
-		
+
 	}
 
 	@Override
@@ -158,12 +148,10 @@ public class ProductDAOImpl implements ProductDAO{
 
 			// Handle any driver errors
 		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "
-					+ e.getMessage());
+			throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
 			// Handle any SQL errors
 		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. "
-					+ se.getMessage());
+			throw new RuntimeException("A database error occured. " + se.getMessage());
 			// Clean up JDBC resources
 		} finally {
 			if (pstmt != null) {
@@ -181,7 +169,7 @@ public class ProductDAOImpl implements ProductDAO{
 				}
 			}
 		}
-		
+
 	}
 
 	@Override
@@ -220,17 +208,15 @@ public class ProductDAOImpl implements ProductDAO{
 				ProductVO.setProductLaunchedTime(rs.getTimestamp("product_launched_time"));
 				ProductVO.setProductCommentedAllnum(rs.getInt("product_commented_allnum"));
 				ProductVO.setProductCommentAllstar(rs.getInt("product_comment_allstar"));
-				ProductVO.setProductSellAllnum(rs.getInt("product_sell_allnum"));				
+				ProductVO.setProductSellAllnum(rs.getInt("product_sell_allnum"));
 			}
 
 			// Handle any driver errors
 		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "
-					+ e.getMessage());
+			throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
 			// Handle any SQL errors
 		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. "
-					+ se.getMessage());
+			throw new RuntimeException("A database error occured. " + se.getMessage());
 			// Clean up JDBC resources
 		} finally {
 			if (rs != null) {
@@ -298,12 +284,10 @@ public class ProductDAOImpl implements ProductDAO{
 
 			// Handle any driver errors
 		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "
-					+ e.getMessage());
+			throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
 			// Handle any SQL errors
 		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. "
-					+ se.getMessage());
+			throw new RuntimeException("A database error occured. " + se.getMessage());
 			// Clean up JDBC resources
 		} finally {
 			if (rs != null) {
@@ -330,163 +314,166 @@ public class ProductDAOImpl implements ProductDAO{
 		}
 		return list;
 	}
-	
-		// update by Lee
-		// 商城用
-		@Override
-		public List<ProductVO> getProductsByType(Integer productTypeId, Integer orderType, Integer limitX, Integer limitY) {
-			String productTypeIdString = "";
-			String orderByString = " ORDER BY ";
-			String orderTypeString = "";
-			String limitString = " limit " + limitX + ", " + limitY;
-			
-			if(orderType == 0) {
-				orderByString = "";
-			}
-			
-			if (limitX == 0 && limitY == 0) {
-				limitString = "";
-			}
-			
-			if (productTypeId != 0) {
-				productTypeIdString = "AND product_type_id = " + productTypeId;
-			}
-			
-			switch(orderType) {
-				case 1 :
-					orderTypeString = "product_sell_allnum DESC";
-					break;
-				case 2 :
-					orderTypeString = "product_launched_time DESC";
-					break;
-				case 3 :
-					orderTypeString = "IFNULL(ROUND(product_comment_allstar / product_commented_allnum), 0) DESC";
-					break;
-				case 4 :
-					orderTypeString = "product_price";
-					break;
-				case 5 :
-					orderTypeString = "product_price DESC";
-					break;
-			}
-			
-			
-			
-			String sql = "SELECT * FROM product WHERE product_status = 1 " + productTypeIdString + orderByString + orderTypeString + limitString;
-//			System.out.println(sql);
-			
-			List<ProductVO> list = new ArrayList<ProductVO>();
-			ProductVO ProductVO = null;
 
-			Connection con = null;
-			PreparedStatement pstmt = null;
-			ResultSet rs = null;
+	// update by Lee
+	// 商城用
+	@Override
+	public List<ProductVO> getProducts(Integer productTypeId, Integer companyId, Integer orderType, Integer limitX,
+			Integer limitY) {
+		String productTypeIdString = "";
+		String companyIdString = "";
+		String orderByString = " ORDER BY ";
+		String orderTypeString = "";
+		String limitString = " limit " + limitX + ", " + limitY;
 
-			try {
-
-				Class.forName(driver);
-				con = DriverManager.getConnection(url, userid, passwd);
-				pstmt = con.prepareStatement(sql);
-				rs = pstmt.executeQuery();
-
-				while (rs.next()) {
-					ProductVO = new ProductVO();
-					ProductVO.setProductId(rs.getInt("product_id"));
-					ProductVO.setCompanyId(rs.getInt("company_id"));
-					ProductVO.setProductTypeId(rs.getInt("product_type_id"));
-					ProductVO.setProductStatus(rs.getInt("product_status"));
-					ProductVO.setProductName(rs.getString("product_name"));
-					ProductVO.setProductPrice(rs.getInt("product_price"));
-					ProductVO.setProductBrand(rs.getString("product_brand"));
-					ProductVO.setProductInventory(rs.getInt("product_inventory"));
-					ProductVO.setProductDescription(rs.getString("product_description"));
-					ProductVO.setShoppingInformation(rs.getString("shopping_information"));
-					ProductVO.setProductPic1(rs.getBytes("product_pic_1"));
-					ProductVO.setProductPic2(rs.getBytes("product_pic_2"));
-					ProductVO.setProductPic3(rs.getBytes("product_pic_3"));
-					ProductVO.setProductLaunchedTime(rs.getTimestamp("product_launched_time"));
-					ProductVO.setProductCommentedAllnum(rs.getInt("product_commented_allnum"));
-					ProductVO.setProductCommentAllstar(rs.getInt("product_comment_allstar"));
-					ProductVO.setProductSellAllnum(rs.getInt("product_sell_allnum"));
-					list.add(ProductVO); // Store the row in the list
-				}
-
-				// Handle any driver errors
-			} catch (ClassNotFoundException e) {
-				throw new RuntimeException("Couldn't load database driver. "
-						+ e.getMessage());
-				// Handle any SQL errors
-			} catch (SQLException se) {
-				throw new RuntimeException("A database error occured. "
-						+ se.getMessage());
-				// Clean up JDBC resources
-			} finally {
-				if (rs != null) {
-					try {
-						rs.close();
-					} catch (SQLException se) {
-						se.printStackTrace(System.err);
-					}
-				}
-				if (pstmt != null) {
-					try {
-						pstmt.close();
-					} catch (SQLException se) {
-						se.printStackTrace(System.err);
-					}
-				}
-				if (con != null) {
-					try {
-						con.close();
-					} catch (Exception e) {
-						e.printStackTrace(System.err);
-					}
-				}
-			}
-			return list;
-			
+		if (productTypeId != 0) {
+			productTypeIdString = "AND product_type_id = " + productTypeId;
 		}
-		
-		// update by Lee 購物車交易用
-		@Override
-		public void update(ProductVO ProductVO, Connection con) {
-			PreparedStatement pstmt = null;
 
-			try {
+		if (companyId != 0) {
+			companyIdString = " AND company_id = " + companyId;
+		}
 
-				pstmt = con.prepareStatement(UPDATE);
+		if (orderType == 0) {
+			orderByString = "";
+		}
 
-				pstmt.setInt(1, ProductVO.getCompanyId());
-				pstmt.setInt(2, ProductVO.getProductTypeId());
-				pstmt.setInt(3, ProductVO.getProductStatus());
-				pstmt.setString(4, ProductVO.getProductName());
-				pstmt.setInt(5, ProductVO.getProductPrice());
-				pstmt.setString(6, ProductVO.getProductBrand());
-				pstmt.setInt(7, ProductVO.getProductInventory());
-				pstmt.setString(8, ProductVO.getProductDescription());
-				pstmt.setString(9, ProductVO.getShoppingInformation());
-				pstmt.setBytes(10, ProductVO.getProductPic1());
-				pstmt.setBytes(11, ProductVO.getProductPic2());
-				pstmt.setBytes(12, ProductVO.getProductPic3());
-				pstmt.setInt(13, ProductVO.getProductCommentedAllnum());
-				pstmt.setInt(14, ProductVO.getProductCommentAllstar());
-				pstmt.setInt(15, ProductVO.getProductSellAllnum());
-				pstmt.setInt(16, ProductVO.getProductId());
+		if (limitX == 0 && limitY == 0) {
+			limitString = "";
+		}
 
-				pstmt.executeUpdate();
+		switch (orderType) {
+		case 1:
+			orderTypeString = "product_sell_allnum DESC";
+			break;
+		case 2:
+			orderTypeString = "product_launched_time DESC";
+			break;
+		case 3:
+			orderTypeString = "IFNULL(ROUND(product_comment_allstar / product_commented_allnum), 0) DESC";
+			break;
+		case 4:
+			orderTypeString = "product_price";
+			break;
+		case 5:
+			orderTypeString = "product_price DESC";
+			break;
+		}
 
-				// Handle any driver errors
-			} catch (SQLException se) {
-				throw new RuntimeException("A database error occured. " + se.getMessage());
-				// Clean up JDBC resources
-			} finally {
-				if (pstmt != null) {
-					try {
-						pstmt.close();
-					} catch (SQLException se) {
-						se.printStackTrace(System.err);
-					}
+		String sql = "SELECT * FROM product WHERE product_status = 1 " + productTypeIdString + companyIdString
+				+ orderByString + orderTypeString + limitString;
+		System.out.println(sql);
+
+		List<ProductVO> list = new ArrayList<ProductVO>();
+		ProductVO ProductVO = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				ProductVO = new ProductVO();
+				ProductVO.setProductId(rs.getInt("product_id"));
+				ProductVO.setCompanyId(rs.getInt("company_id"));
+				ProductVO.setProductTypeId(rs.getInt("product_type_id"));
+				ProductVO.setProductStatus(rs.getInt("product_status"));
+				ProductVO.setProductName(rs.getString("product_name"));
+				ProductVO.setProductPrice(rs.getInt("product_price"));
+				ProductVO.setProductBrand(rs.getString("product_brand"));
+				ProductVO.setProductInventory(rs.getInt("product_inventory"));
+				ProductVO.setProductDescription(rs.getString("product_description"));
+				ProductVO.setShoppingInformation(rs.getString("shopping_information"));
+				ProductVO.setProductPic1(rs.getBytes("product_pic_1"));
+				ProductVO.setProductPic2(rs.getBytes("product_pic_2"));
+				ProductVO.setProductPic3(rs.getBytes("product_pic_3"));
+				ProductVO.setProductLaunchedTime(rs.getTimestamp("product_launched_time"));
+				ProductVO.setProductCommentedAllnum(rs.getInt("product_commented_allnum"));
+				ProductVO.setProductCommentAllstar(rs.getInt("product_comment_allstar"));
+				ProductVO.setProductSellAllnum(rs.getInt("product_sell_allnum"));
+				list.add(ProductVO); // Store the row in the list
+			}
+
+			// Handle any driver errors
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
 				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+
+	}
+
+	// update by Lee 購物車交易用
+	@Override
+	public void update(ProductVO ProductVO, Connection con) {
+		PreparedStatement pstmt = null;
+
+		try {
+
+			pstmt = con.prepareStatement(UPDATE);
+
+			pstmt.setInt(1, ProductVO.getCompanyId());
+			pstmt.setInt(2, ProductVO.getProductTypeId());
+			pstmt.setInt(3, ProductVO.getProductStatus());
+			pstmt.setString(4, ProductVO.getProductName());
+			pstmt.setInt(5, ProductVO.getProductPrice());
+			pstmt.setString(6, ProductVO.getProductBrand());
+			pstmt.setInt(7, ProductVO.getProductInventory());
+			pstmt.setString(8, ProductVO.getProductDescription());
+			pstmt.setString(9, ProductVO.getShoppingInformation());
+			pstmt.setBytes(10, ProductVO.getProductPic1());
+			pstmt.setBytes(11, ProductVO.getProductPic2());
+			pstmt.setBytes(12, ProductVO.getProductPic3());
+			pstmt.setInt(13, ProductVO.getProductCommentedAllnum());
+			pstmt.setInt(14, ProductVO.getProductCommentAllstar());
+			pstmt.setInt(15, ProductVO.getProductSellAllnum());
+			pstmt.setInt(16, ProductVO.getProductId());
+
+			pstmt.executeUpdate();
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
 //				if (con != null) {
 //					try {
 //						con.close();
@@ -494,10 +481,9 @@ public class ProductDAOImpl implements ProductDAO{
 //						e.printStackTrace(System.err);
 //					}
 //				}
-			}
 		}
-		
-	
+	}
+
 	public static byte[] getPictureByteArray(String path) throws IOException {
 		FileInputStream fis = new FileInputStream(path);
 		byte[] buffer = new byte[fis.available()];
@@ -505,14 +491,14 @@ public class ProductDAOImpl implements ProductDAO{
 		fis.close();
 		return buffer;
 	}
-	
+
 	public static void readPicture(byte[] bytes) throws IOException {
 		FileOutputStream fos = new FileOutputStream("C:/example/test3.jpg");
 		fos.write(bytes);
 		fos.flush();
 		fos.close();
 	}
-	
+
 	public static void main(String[] args) {
 
 		ProductDAOImpl dao = new ProductDAOImpl();
@@ -549,7 +535,7 @@ public class ProductDAOImpl implements ProductDAO{
 //		} catch (IOException ie) {
 //			System.out.println(ie);
 //		}
-		
+
 //		dao.insert(ProductVO1);
 
 //		// 修改
@@ -596,10 +582,10 @@ public class ProductDAOImpl implements ProductDAO{
 		System.out.println(ProductVO3.getProductDescription() + ",");
 		System.out.println(ProductVO3.getShoppingInformation() + ",");
 		try {
-		readPicture(ProductVO3.getProductPic1());
-		readPicture(ProductVO3.getProductPic2());
-		readPicture(ProductVO3.getProductPic3());
-		}catch (IOException ie) {
+			readPicture(ProductVO3.getProductPic1());
+			readPicture(ProductVO3.getProductPic2());
+			readPicture(ProductVO3.getProductPic3());
+		} catch (IOException ie) {
 			System.out.println(ie);
 		}
 		System.out.println(ProductVO3.getProductLaunchedTime() + ",");

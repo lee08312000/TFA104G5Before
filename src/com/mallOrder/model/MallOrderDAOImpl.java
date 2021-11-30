@@ -5,8 +5,14 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.cart.model.CartVO;
+import com.mallOrderDetail.model.MallOrderDetailService;
+import com.product.model.ProductService;
+import com.product.model.ProductVO;
 
 import util.Util;
 
@@ -63,6 +69,88 @@ public class MallOrderDAOImpl implements MallOrderDAO {
 				}
 			}
 		}
+	}
+
+	@Override
+	public Integer insert(MallOrderVO mallOrderVO, List<CartVO> buyList) {
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Integer mallOrderId = null;
+		MallOrderDetailService mallOrderDetailSvc = new MallOrderDetailService();
+		ProductService productSvc = new ProductService();
+
+		try {
+			con = DriverManager.getConnection(Util.URL, Util.USER, Util.PASSWORD);
+			pstmt = con.prepareStatement(INSERT_STMT, Statement.RETURN_GENERATED_KEYS);
+
+			con.setAutoCommit(false);
+
+			pstmt.setInt(1, mallOrderVO.getCompanyId());
+			pstmt.setInt(2, mallOrderVO.getMemberId());
+			pstmt.setInt(3, mallOrderVO.getMailOrderTotalAmount());
+			pstmt.setString(4, mallOrderVO.getCreditCardNum());
+			pstmt.setString(5, mallOrderVO.getReceiverName());
+			pstmt.setString(6, mallOrderVO.getReceiverPhone());
+			pstmt.setString(7, mallOrderVO.getReceiverAddress());
+			pstmt.executeUpdate();
+
+			rs = pstmt.getGeneratedKeys();
+			if (rs.next()) {
+				mallOrderId = rs.getInt(1);
+			}
+
+			for (int i = 0; i < buyList.size(); i++) {
+				CartVO cartVO = buyList.get(i);
+				mallOrderDetailSvc.addMallOrderDetailFromOrder(mallOrderId, cartVO.getProductId(),
+						cartVO.getProductPurchaseQuantity(), cartVO.getProductPrice(), con);
+				ProductVO productVO = productSvc.getOneProduct(cartVO.getProductId());
+				Integer newProductInventory = productVO.getProductInventory() - cartVO.getProductPurchaseQuantity();
+				Integer newProductSellAllnum = productVO.getProductSellAllnum() + cartVO.getProductPurchaseQuantity();
+				productSvc.updateProductInventoryAndProductSellAllnum(cartVO.getProductId(), newProductInventory,
+						newProductSellAllnum, con);
+
+			}
+
+			con.commit();
+
+		} catch (Exception e) {
+			if (con != null) {
+				try {
+					con.rollback();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+			}
+			e.printStackTrace();
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return mallOrderId;
 	}
 
 	@Override
@@ -273,7 +361,7 @@ public class MallOrderDAOImpl implements MallOrderDAO {
 //		MallOrderVO mallOrderVO = new MallOrderVO();
 //		MallOrderDAO dao = new MallOrderDAOImpl();
 
-		// insert 測試
+	// insert 測試
 //		mallOrderVO.setCompanyId(2);
 //		mallOrderVO.setMemberId(1);
 //		mallOrderVO.setMailOrderTotalAmount(4999);
@@ -283,7 +371,7 @@ public class MallOrderDAOImpl implements MallOrderDAO {
 //		mallOrderVO.setReceiverAddress("台北101");
 //		dao.insert(mallOrderVO);
 
-		// update 測試
+	// update 測試
 //		mallOrderVO.setCompanyId(2);
 //		mallOrderVO.setMemberId(1);
 //		mallOrderVO.setMallOrderStatus(2);
@@ -297,10 +385,10 @@ public class MallOrderDAOImpl implements MallOrderDAO {
 //		mallOrderVO.setMallOrderId(3);
 //		dao.update(mallOrderVO);
 
-		// delete 測試
+	// delete 測試
 //		dao.delete(6);
 
-		// findByPrimaryKey 測試
+	// findByPrimaryKey 測試
 
 //		mallOrderVO = dao.findByPrimaryKey(3);
 //		System.out.println(mallOrderVO.getMallOrderId());
@@ -316,7 +404,7 @@ public class MallOrderDAOImpl implements MallOrderDAO {
 //		System.out.println(mallOrderVO.getReceiverAddress());
 //		System.out.println(mallOrderVO.getMallOrderCompletedTime());
 
-		// getAll 測試
+	// getAll 測試
 //		List<MallOrderVO> list = dao.getAll();
 //		
 //		for (MallOrderVO m : list) {

@@ -4,6 +4,7 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.cart.model.CartVO"%>
 <%@ page import="com.company.model.CompanyDAOImpl"%>
+<%@ page import="com.member.model.*"%>
 
 
 <!DOCTYPE html>
@@ -63,17 +64,25 @@
 	<div class="shopping-cart" style="padding: 50px 30px 50px 30px;">
 
 		<%
-			List<CartVO> buyList = new ArrayList<CartVO>();
+		/************************************假資料測試***********************************/
+			MemberDAO memberDAO = new MemberDAOImpl();
+			MemberVO memberVO = memberDAO.findByPK(1);
 
-			CartVO cartvo1 = new CartVO(1, 1, 1, "酷炫帳篷1", 1000, 1);
-			CartVO cartvo2 = new CartVO(2, 2, 1, "酷炫帳篷2", 2000, 2);
-			CartVO cartvo3 = new CartVO(2, 3, 1, "酷炫帳篷3", 3000, 4);
+			session.setAttribute("memberVO", memberVO);
+			
+// 			List<CartVO> buyList = new ArrayList<CartVO>();
 
-			buyList.add(cartvo1);
-			buyList.add(cartvo2);
-			buyList.add(cartvo3);
+// 			CartVO cartvo1 = new CartVO(1, 1, 2, "木紋鋁合金迷你摺疊桌", 398, 1);
+// 			CartVO cartvo2 = new CartVO(1, 2, 2, "好毯/柔絨睡袋", 880, 1);
+// 			CartVO cartvo3 = new CartVO(2, 3, 4, "豪華型橫條內建電動幫浦充氣床-單人99cm", 1050, 3);
 
-			session.setAttribute("buyList", buyList);
+// 			buyList.add(cartvo1);
+// 			buyList.add(cartvo2);
+// 			buyList.add(cartvo3);
+
+// 			session.setAttribute("buyList", buyList);
+			/************************************假資料測試***********************************/
+			
 			if (session.getAttribute("buyList") != null) {
 
 				List<CartVO> cart = (List<CartVO>) session.getAttribute("buyList");
@@ -84,11 +93,14 @@
 				}
 
 				request.setAttribute("companySet", companySet);
+				
 			}
+		
 		%>
 
 		<jsp:useBean id="companyDAOImpl"
 			class="com.company.model.CompanyDAOImpl"></jsp:useBean>
+
 
 		<form action="<%=request.getContextPath()%>/Cart/CartServlet"
 			method="post">
@@ -119,7 +131,7 @@
 
 						<c:if test="${oneOrder == oneProduct.companyId}">
 							<!-- 一個商品項start -->
-							<div class="product">
+							<div data-productId="${oneProduct.productId}" class="product">
 								<div class="product-image">
 									<img
 										src="<%=request.getContextPath()%>/product/PicServlet?productId=${oneProduct.productId}&pic=1">
@@ -139,7 +151,7 @@
 										value="${oneProduct.productPurchaseQuantity}" min="1">
 								</div>
 								<div class="product-removal">
-									<button class="remove-product">移除</button>
+									<button type="button" class="remove-product">移除</button>
 								</div>
 								<div class="product-line-price">${oneProduct.productPurchaseQuantity * oneProduct.productPrice}</div>
 
@@ -189,10 +201,19 @@
 				</ul>
 			</c:if>
 
+			<input type="hidden" name="receiverName" value="${ receiverVO.receiverName }">
+			<input type="hidden" name="receiverPhone" value="${ receiverVO.receiverPhone }">
+			<input type="hidden" name="receiverAddress" value="${ receiverVO.receiverAddress }">
+			<input type="hidden" name="creditCardNum" value="${ receiverVO.creditCardNum }">
+			<input type="hidden" name="securityCode" value="${ receiverVO.securityCode }">
+			<input type="hidden" name="effectiveDate" value="${ receiverVO.effectiveDate }">
 
 			<input type="hidden" name="action" value="update"> <input
 				type="submit" class="checkout" value="下一步">
 		</form>
+
+		<button type="button" class="checkout" style="margin-right: 30px;"
+			onclick="location.href = '<%=request.getContextPath()%>/front_end/mall/mall_index.html';">繼續購物</button>
 
 	</div>
 
@@ -207,7 +228,7 @@
 	<!-- footer-end -->
 
 	<script
-		src="<%=request.getContextPath()%>/front_end/mall/vendors_shoppingCart/jquery/jquery-3.6.0.min.js"></script>
+		src="<%=request.getContextPath()%>/front_end/mall/vendor/vendors_shoppingCart/jquery/jquery-3.6.0.min.js"></script>
 
 	<script
 		src="<%=request.getContextPath()%>/front_end/mall/js/shoppingCart.js"></script>
