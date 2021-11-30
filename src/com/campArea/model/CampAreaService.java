@@ -15,7 +15,6 @@ private   CampAreaDAO   campareadao;
 	     Integer holidayPrice,Integer capitationMax,Integer perCapitationFee,byte[]campAreaPic){
 
 		CampAreaVO  campareaVO = new  CampAreaVO(); 
-		campareaVO.setCampAreaId(campAreaId);
 		campareaVO.setCampId(campId);
 		campareaVO.setCampAreaName(campAreaName);
 		campareaVO.setCampAreaMax(campAreaMax);
@@ -30,8 +29,8 @@ private   CampAreaDAO   campareadao;
 	}
 	
 	//刪除營位
-	public void deleteCampArea(Integer campArea) {
-		campareadao.delete(campArea);
+	public void deleteCampArea(Integer campAreaId) {
+		campareadao.delete(campAreaId);
 	}
 	
 	
