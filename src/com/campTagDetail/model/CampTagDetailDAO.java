@@ -1,13 +1,25 @@
 package com.campTagDetail.model;
 
+import java.util.List;
+import java.util.Set;
+
+import com.campEquipDetail.model.CampEquipDetailVO;
+
 public interface CampTagDetailDAO {
 
-	void insert(CampTagDetailVO campTagDetailVO);
+	public void insert(CampTagDetailVO campTagDetailVO);
 
-	void update(CampTagDetailVO campTagDetailVO);
+	public void update(CampTagDetailVO campTagDetailVO);
 
-	CampTagDetailVO findByPrimaryKey(Integer campTagId, Integer campId);
+	public CampTagDetailVO findByPrimaryKey(Integer campTagId, Integer campId);
 
-	void delete(Integer campTagId, Integer campId);
+	public Set<CampTagDetailVO> findByMultireq(Set<Integer> camptagSet);//查詢符合條件的營地
+
+	public List<Integer> findByCampId(Integer campId);
+	
+	public void delete(Integer campTagId, Integer campId);
+	
+	
+	public List<CampTagDetailVO> getAll();
 
 }

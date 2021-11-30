@@ -10,6 +10,7 @@ import camp.common.CampOrderVO;
 package com.campOrder.model;
 
 import java.util.List;
+
 import com.campAreaOrderDetail.model.CampAreaOrderDetailVO;
 >>>>>>> main:src/com/campOrder/model/CampOrderDAO.java
 
@@ -24,5 +25,20 @@ public interface CampOrderDAO {
 	public CampOrderVO findByPK(Integer campOrderId);
 
 	public List<CampOrderVO> getAll();
+	
+	//尋找熱門營地，依據已1.完成訂單數量 2.平均星星數
+	public List<Integer> findhotcamp();
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
 
 }

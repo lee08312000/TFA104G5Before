@@ -4,14 +4,20 @@ import java.util.List;
 
 public interface CampDAO {
 
-	void insert(CampVO empVO);
+	public void insert(CampVO campVO);
 
-	void update(CampVO campVO);
+	public void update(CampVO campVO);
 
-	void delete(Integer campId);
+	public void delete(Integer campId);
 
-	CampVO findByPrimaryKey(Integer campId);
+	public CampVO findByPrimaryKey(Integer campId);
 
-	List<CampVO> getAll();
+	public List<CampVO> findByKeyWord(String words);
+	
+	
+	//參數是排列方式
+	public List<CampVO> getAll(Integer orderby);
+	
+	
 
 }

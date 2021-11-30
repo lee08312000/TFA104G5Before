@@ -1,11 +1,11 @@
 package camp.test;
 
-import com.campArea.model.CampAreaDAOlmpl;
+import com.campArea.model.CampAreaDAOImpl;
 public class CampAreaDAOtest {
 
 	public static void main(String[] args) {
 
-		CampAreaDAOlmpl cad = new CampAreaDAOlmpl();
+		CampAreaDAOImpl cad = new CampAreaDAOImpl();
 
 		// 查全部資料
 //		List<CampAreaVO> caList = cad.getAll();

@@ -1,12 +1,12 @@
 package camp.test;
 
-import com.camp.model.CampDAOlmpl;
+import com.camp.model.CampDAOImpl;
 
 public class CampDAOtest {
 
 	public static void main(String[] args) {
 
-		CampDAOlmpl cad = new CampDAOlmpl();
+		CampDAOImpl cad = new CampDAOImpl();
 
 		// 查全部資料
 //		List<CampVO> caList = cad.getAll();

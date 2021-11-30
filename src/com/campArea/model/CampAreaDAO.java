@@ -3,15 +3,15 @@ package com.campArea.model;
 import java.util.List;
 
 public interface CampAreaDAO {
+	public void add(CampAreaVO campAreaVO);
+	
 
-	void insert(CampAreaVO campAreaVO);
+	public void update(CampAreaVO campAreaVO);
 
-	void update(CampAreaVO campAreaVO);
+	public void delete(Integer campAreaId);
 
-	void delete(Integer campAreaId);
+	public CampAreaVO findByPrimaryKey(Integer campAreaId);
 
-	CampAreaVO findByPrimaryKey(Integer campAreaId);
-
-	List<CampAreaVO> getAll();
+	public List<CampAreaVO> getAll();
 
 }

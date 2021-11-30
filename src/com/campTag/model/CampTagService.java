@@ -40,7 +40,7 @@ public class CampTagService {
 
 	
 	//查詢某個/營地標籤
-	public CampTagVO getOneEmp(Integer campTagId) {
+	public CampTagVO getOneTag(Integer campTagId) {
 		return camptagdao.findByPrimaryKey(campTagId);
 	}                                          
 	
