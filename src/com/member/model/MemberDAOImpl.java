@@ -290,7 +290,6 @@ public class MemberDAOImpl implements MemberDAO {
 	
 //	// 新增
 //	MemberVO memberVO01 = new MemberVO();
-//	memberVO01.setMemberId(11);
 //	memberVO01.setMemberAccountStatus(1);
 //	memberVO01.setMemberName("David");
 //	memberVO01.setMemberAccount("Good company");
