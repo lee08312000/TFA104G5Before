@@ -17,17 +17,6 @@ public class CampAreaDAOlmpl implements CampAreaDAO {
 	String userid = "David";
 	String passwd = "123456";
 
-//	private static DataSource ds = null;
-//	
-//	static {
-//		try {
-//			Context ctx = new InitialContext();
-//			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/CampProject");
-//		} catch (NamingException e) {
-//			e.printStackTrace();
-//		}
-//	}
-
 	private static final String CLOUM_FOR_INSERT = "camp_Id,camp_Area_Name,camp_Area_Max,weekday_Price,holiday_Price,capitation_Max,per_Capitation_Fee,camp_Area_Pic";
 	private static final String CLOUM_FOR_ALL = "camp_Area_Id," + CLOUM_FOR_INSERT;
 	private static final String INSERT_STMT = "INSERT INTO camp_area (" + CLOUM_FOR_INSERT + ") "
