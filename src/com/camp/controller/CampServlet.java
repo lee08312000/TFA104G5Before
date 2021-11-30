@@ -19,6 +19,7 @@ import org.json.JSONArray;
 import com.camp.model.CampService;
 import com.camp.model.CampVO;
 import com.campArea.model.CampAreaService;
+import com.campArea.model.CampAreaVO;
 import com.campOrder.model.CampOrderService;
 import com.campTag.model.CampTagService;
 import com.campTag.model.CampTagVO;
@@ -209,9 +210,8 @@ public class CampServlet extends HttpServlet {
 				}
 
 //step5 查詢營位資料
+				List<CampAreaVO> list=campareaSvc.findCampAreaByCampId(camp.getCampId());
 				
-				
-
 				
 				
 				
