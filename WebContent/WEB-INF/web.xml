@@ -17,14 +17,14 @@
     <res-auth>Container</res-auth>
   </resource-ref>
   
-  <servlet>
-    <servlet-name>CampServlet</servlet-name>
-    <servlet-class>camp.controller.CampServlet</servlet-class>
-  </servlet>
+<!--   <servlet> -->
+<!--     <servlet-name>CampServlet</servlet-name> -->
+<!--     <servlet-class>camp.controller.CampServlet</servlet-class> -->
+<!--   </servlet> -->
   
   
-  <servlet-mapping>
-    <servlet-name>CampServlet</servlet-name>
-    <url-pattern>/camp/camp.dao</url-pattern>
-  </servlet-mapping>
+<!--   <servlet-mapping> -->
+<!--     <servlet-name>CampServlet</servlet-name> -->
+<!--     <url-pattern>/camp/camp.dao</url-pattern> -->
+<!--   </servlet-mapping> -->
 </web-app>

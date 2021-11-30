@@ -1,9 +1,12 @@
 package com.campOrder.model;
+
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.camp.model.CampDAO;
+import com.camp.model.CampDAOImpl;
 import com.campAreaOrderDetail.model.CampAreaOrderDetailDAO;
 import com.campAreaOrderDetail.model.CampAreaOrderDetailDAOImpl;
 import com.campAreaOrderDetail.model.CampAreaOrderDetailVO;
@@ -15,39 +18,37 @@ public class CampOrderService {
 	private CampOrderDAO orderdao;
 	private CampAreaOrderDetailDAO detaildao;
 	private CampBookingDAO bookdao;
+	private CampDAO campdao;
 
 // 建構子
-	CampOrderService() {
+	public CampOrderService() {
 		orderdao = new CampOrderDAOImpl();
 		detaildao = new CampAreaOrderDetailDAOImpl();
-		bookdao =new CampBookingDAOImpl();
+		bookdao = new CampBookingDAOImpl();
+		campdao = new CampDAOImpl();
 	}
 
 // 新增一筆訂單包含新增訂單明細&日程表訂位數量
-	public void addOneOrder(CampOrderVO campOrderVO,CampAreaOrderDetailVO...DetailVOs) {
-	
-		if (!(campOrderVO==null||DetailVOs.length==0)) {
-			
+	public void addOneOrder(CampOrderVO campOrderVO, CampAreaOrderDetailVO... DetailVOs) {
 
-			orderdao.add(campOrderVO,DetailVOs);
-			
-			
+		if (!(campOrderVO == null || DetailVOs.length == 0)) {
+
+			orderdao.add(campOrderVO, DetailVOs);
+
 		}
-			
-	}
-	
-	
-	
-/********************************************更新訂單功能*****************************************/
 
-//更新訂單
+	}
+
+	/********************************************
+	 * 更新訂單功能
+	 *****************************************/
+
+//更新訂單(只能更新訂單狀態，訂單完成時間，評論時間)暫定
 	public void updateOrder(Integer campOrderId, Integer campId, Integer memberId, Integer campOrderStatus,
 			Integer campOrderTotalAmount, Date campCheckOutDate, Date campCheckInDate, String creditCardNum,
 			String payerName, String payerPhone, Timestamp campOrderConfirmedTime, Timestamp campOrderCompletedTime,
 			Integer campCommentStar, String campComment, Timestamp campOrderCommentTime) {
-		CampOrderVO order = new CampOrderVO();
-
-		order.setCampId(campId);
+		CampOrderVO order = orderdao.findByPK(campOrderId);
 		order.setMemberId(memberId);
 		order.setCampOrderStatus(campOrderStatus);
 		order.setCampOrderTotalAmount(campOrderTotalAmount);
@@ -56,7 +57,6 @@ public class CampOrderService {
 		order.setCreditCardNum(creditCardNum);
 		order.setPayerName(payerName);
 		order.setPayerPhone(payerPhone);
-		order.setCampOrderConfirmedTime(campOrderConfirmedTime);
 		order.setCampOrderCompletedTime(campOrderCompletedTime);
 		order.setCampCommentStar(campCommentStar);
 		order.setCampComment(campComment);
@@ -93,17 +93,9 @@ public class CampOrderService {
 		orderdao.update(order);
 	}
 
-//刪除訂單by訂單編號，且刪除此筆訂單的明細
-	public void deleteByOrderId(Integer campOrderId) {
-		orderdao.delete(campOrderId);
-	}
-
-//刪除訂單明細by訂單明細編號會問題(有可能需要修改訂單)
-
-	
-	
-	
-/********************************************查詢訂單功能*****************************************/
+	/********************************************
+	 * 查詢訂單功能
+	 *****************************************/
 //查詢訂單by訂單編號(廠商)
 	public CampOrderVO findByCampOrderId(Integer campOrderId) {
 		return orderdao.findByPK(campOrderId);
@@ -138,13 +130,13 @@ public class CampOrderService {
 	}
 
 //查詢訂單by營地編號(廠商查自己營地所有訂單)
-//未完成需要查詢廠商編號
 	public List OrderByCompanyId(int companyId) {
 		List<CampOrderVO> daolist = orderdao.getAll();
 		List<CampOrderVO> querylist = new ArrayList<CampOrderVO>();
-		int campId = 12;
+
 		for (CampOrderVO obj : daolist) {
-			if (obj.getCampId() == campId) {
+			int companyidnum = campdao.findByPrimaryKey(obj.getCampId()).getCompanyId();
+			if (companyidnum == companyId) {
 				querylist.add(obj);
 			}
 		}
@@ -165,8 +157,6 @@ public class CampOrderService {
 		return querylist;
 	}
 
-
-
 //查詢訂單明細by訂單編號(使用者)
 
 	public List<CampOrderVO> OrderByOrderId(int orderId, int memberId) {
@@ -181,4 +171,13 @@ public class CampOrderService {
 		return querylist;
 	}
 
+
+
+//查詢熱門營地排行(for訂單)
+	public List<Integer> findhotcamp() {
+
+	return 	orderdao.findhotcamp();
+		
+		
+	}
 }

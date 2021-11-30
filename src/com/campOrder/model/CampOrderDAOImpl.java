@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.camp.model.CampVO;
 import com.campAreaOrderDetail.model.CampAreaOrderDetailVO;
 import com.campBooking.model.CampBookingDAO;
 import com.campBooking.model.CampBookingDAOImpl;
@@ -29,6 +30,8 @@ public class CampOrderDAOImpl implements CampOrderDAO {
 
 	private static final String FIND_BY_PK = "SELECT * FROM camp_order WHERE camp_order_id= ?";
 	private static final String GET_ALL = "SELECT * FROM camp_order";
+	private static final String FIND_HOTCAMP = "SELECT camp_id,(sum(camp_comment_star)/count(*)) as 'avg_star',count(*) as 'compl_ordernum' FROM campingParadise.camp_order where camp_order_completed_time is not null group by camp_id order by compl_ordernum desc,avg_star desc";
+
 	static {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -385,5 +388,62 @@ public class CampOrderDAOImpl implements CampOrderDAO {
 
 		return list;
 	}
+
+	@Override
+	public List<Integer> findhotcamp() {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<Integer> list=new ArrayList<Integer>();
+		
+		try {
+			con = DriverManager.getConnection(Util.URL, Util.USER, Util.PASSWORD);
+			pstmt = con.prepareStatement(FIND_HOTCAMP);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+			Integer campId=rs.getInt(1);
+				list.add(campId);
+			}
+		} catch (SQLException se) {
+			se.printStackTrace();
+		} finally {
+
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+
+		return list;
+	}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	
+
 
 }

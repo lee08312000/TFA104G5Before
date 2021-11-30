@@ -11,7 +11,7 @@ import java.util.List;
 
 import javax.sql.rowset.serial.SerialBlob;
 
-public class CampDAOlmpl implements CampDAO {
+public class CampDAOImpl implements CampDAO {
 	String driver = "com.mysql.cj.jdbc.Driver";
 	String url = "jdbc:mysql://localhost:3306/campingParadise?serverTimezone=Asia/Taipei";
 	String userid = "David";
@@ -31,8 +31,20 @@ public class CampDAOlmpl implements CampDAO {
 	private static final String CLOUM_FOR_ALL = "camp_Id," + CLOUM_FOR_INSERT;
 	private static final String INSERT_STMT = "INSERT INTO camp (" + CLOUM_FOR_INSERT + ") "
 			+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?)";
-	private static final String GET_ALL_STMT = "SELECT " + CLOUM_FOR_ALL + " FROM camp order by camp_Id";
-	private static final String GET_ONE_STMT = "SELECT " + CLOUM_FOR_INSERT + " FROM camp where camp_Id = ?";
+
+	// 查詢營地基本資料(動態調整排序條件1.營地上架時間2.熱門排行)兩隻表camp left join camp_order
+	private static final String GET_ALL_STMT = "SELECT \r\n"
+			+ "    camp.*, ifnull(ranktable.rank_num,9999) as rank_no\r\n" + "FROM\r\n" + "    camp\r\n"
+			+ "        LEFT JOIN\r\n" + "    (SELECT \r\n"
+			+ "        t.*, (@row_number:=@row_number + 1) AS rank_num\r\n" + "    FROM\r\n" + "        (SELECT \r\n"
+			+ "        camp_id,\r\n" + "            (SUM(camp_comment_star) / COUNT(*)) AS 'avg_star',\r\n"
+			+ "            COUNT(*) AS 'compl_ordernum'\r\n" + "    FROM\r\n" + "        campingParadise.camp_order\r\n"
+			+ "    WHERE\r\n" + "        camp_order_completed_time IS NOT NULL\r\n" + "    GROUP BY camp_id\r\n"
+			+ "    ORDER BY compl_ordernum DESC , avg_star DESC) AS t, (SELECT @row_number:=0) AS t2) ranktable USING (camp_id)\r\n"
+			+ "order by";
+
+	private static String GET_BY_KEYWORDS = "SELECT  *  FROM camp where camp_name like '%%' ";
+	private static final String GET_ONE_STMT = "SELECT  *  FROM camp where camp_Id = ?";
 	private static final String DELETE = "DELETE FROM camp where camp_Id = ?";
 	private static final String UPDATE = "UPDATE camp set company_Id=?,camp_Status=?,camp_description=?,camp_Name=?,camp_Rule=?,camp_Pic_1=?,camp_Pic_2=?,camp_Pic_3=?,camp_Pic_4=?,camp_Pic_5=?,camp_Address=?,camp_Phone=?,certificate_Num=?,certificate_Pic=?,camp_Launched_Time=?,camp_Applied_Launch_Time=?,longitude=?,lattitude=? where camp_Id = ?";
 
@@ -88,9 +100,8 @@ public class CampDAOlmpl implements CampDAO {
 			}
 			pstmt.setTimestamp(15, campVO.getCampLaunchedTime());
 			pstmt.setTimestamp(16, campVO.getCampAppliedLaunchTime());
-			pstmt.setDouble(17, campVO.getLongitude());
-			pstmt.setDouble(18, campVO.getLattitude());
-			
+			pstmt.setBigDecimal(17, campVO.getLongitude());
+			pstmt.setBigDecimal(18, campVO.getLattitude());
 
 			pstmt.executeUpdate();
 
@@ -172,8 +183,8 @@ public class CampDAOlmpl implements CampDAO {
 
 			pstmt.setTimestamp(15, campVO.getCampLaunchedTime());
 			pstmt.setTimestamp(16, campVO.getCampAppliedLaunchTime());
-			pstmt.setDouble(17, campVO.getLongitude());
-			pstmt.setDouble(18, campVO.getLattitude());
+			pstmt.setBigDecimal(17, campVO.getLongitude());
+			pstmt.setBigDecimal(18, campVO.getLattitude());
 			pstmt.setInt(19, campVO.getCampId());
 			pstmt.executeUpdate();
 
@@ -264,6 +275,9 @@ public class CampDAOlmpl implements CampDAO {
 				CampVO.setCampId(rs.getInt("camp_Id"));
 				CampVO.setCompanyId(rs.getInt("company_Id"));
 				CampVO.setCampStatus(rs.getInt("camp_Status"));
+				CampVO.setCampDiscription(rs.getString("camp_description"));
+				CampVO.setCampName(rs.getString("camp_name"));
+				CampVO.setCampRule(rs.getString("camp_rule"));
 				CampVO.setCampPic1(checkBlob(rs.getBlob("camp_Pic_1")));
 				CampVO.setCampPic2(checkBlob(rs.getBlob("camp_Pic_2")));
 				CampVO.setCampPic3(checkBlob(rs.getBlob("camp_Pic_3")));
@@ -271,18 +285,17 @@ public class CampDAOlmpl implements CampDAO {
 				CampVO.setCampPic5(checkBlob(rs.getBlob("camp_Pic_5")));
 				CampVO.setCampAddress(rs.getString("camp_Address"));
 				CampVO.setCampPhone(rs.getString("camp_Phone"));
-				CampVO.setCertificateNum(rs.getString("certificate_Num"));
-				CampVO.setCertificatePic(checkBlob(rs.getBlob("certificate_Pic")));
-				CampVO.setCampLaunchedTime(rs.getTimestamp("camp_Launched_Time"));
-				CampVO.setCampAppliedLaunchTime(rs.getTimestamp("camp_Applied_Launch_Time"));
-				CampVO.setLongitude(rs.getDouble("longitude"));
-				CampVO.setLattitude(rs.getDouble("lattitude"));
+				CampVO.setCertificateNum(rs.getString("certificate_num"));
+				CampVO.setCertificatePic(checkBlob(rs.getBlob("certificate_pic")));
+				CampVO.setCampLaunchedTime(rs.getTimestamp("camp_launched_time"));
+				CampVO.setLongitude(rs.getBigDecimal("longitude"));
+				CampVO.setLattitude(rs.getBigDecimal("lattitude"));
+				CampVO.setCampAppliedLaunchTime(rs.getTimestamp("camp_applied_launch_time"));
 
 			}
 
 		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. " + se.getMessage());
-
+			se.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} finally {
@@ -329,27 +342,42 @@ public class CampDAOlmpl implements CampDAO {
 	}
 
 	@Override
-	public List<CampVO> getAll() {
+	public List<CampVO> getAll(Integer orderby) {
 		List<CampVO> list = new ArrayList<CampVO>();
 		CampVO campVO = null;
-
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-
+		String order = null;
 		try {
 
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, passwd);
-			pstmt = con.prepareStatement(GET_ALL_STMT);
+			switch (orderby) {
+			case 0: // 營地流水號
+				order = "camp_id";
+				break;
+			case 1: // 營地上架時間新->舊
+				order = "camp_launched_time desc";
+				break;
+			case 2: // 營地上架時間舊->新
+				order = "camp_launched_time asc";
+				break;
+			case 3: // 熱門排行
+				order = "rank_no asc";
+			default: // 營地流水號
+				order = "camp_id";
+			}
+
+			pstmt = con.prepareStatement(GET_ALL_STMT + " " + order);
 			rs = pstmt.executeQuery();
-
 			while (rs.next()) {
-
 				campVO = new CampVO();
 				campVO.setCampId(rs.getInt("camp_Id"));
 				campVO.setCompanyId(rs.getInt("company_Id"));
 				campVO.setCampStatus(rs.getInt("camp_Status"));
+				campVO.setCampDiscription(rs.getString("camp_description"));
+				campVO.setCampName(rs.getString("camp_name"));
 				campVO.setCampPic1(checkBlob(rs.getBlob("camp_Pic_1")));
 				campVO.setCampPic2(checkBlob(rs.getBlob("camp_Pic_2")));
 				campVO.setCampPic3(checkBlob(rs.getBlob("camp_Pic_3")));
@@ -361,16 +389,89 @@ public class CampDAOlmpl implements CampDAO {
 				campVO.setCertificatePic(checkBlob(rs.getBlob("certificate_Pic")));
 				campVO.setCampLaunchedTime(rs.getTimestamp("camp_Launched_Time"));
 				campVO.setCampAppliedLaunchTime(rs.getTimestamp("camp_Applied_Launch_Time"));
-				campVO.setLongitude(rs.getDouble("longitude"));
-				campVO.setLattitude(rs.getDouble("lattitude"));
-				list.add(campVO); // Store the row in the list
+				campVO.setLongitude(rs.getBigDecimal("longitude"));
+				campVO.setLattitude(rs.getBigDecimal("lattitude"));
+				campVO.setCampAppliedLaunchTime(rs.getTimestamp("camp_applied_launch_time"));
+				list.add(campVO);
 			}
 
 		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. " + se.getMessage());
-
+			se.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+	
+	
+	
+	
+
+	@Override
+	public List<CampVO> findByKeyWord(String words) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<CampVO> list = new ArrayList<CampVO>();
+		CampVO campVO = null;
+
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			StringBuffer str = new StringBuffer(GET_BY_KEYWORDS);
+			str = str.insert(44, words);
+			pstmt = con.prepareStatement(str.toString());
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+
+				campVO = new CampVO();
+				campVO.setCampId(rs.getInt("camp_Id"));
+				campVO.setCompanyId(rs.getInt("company_Id"));
+				campVO.setCampStatus(rs.getInt("camp_Status"));
+				campVO.setCampDiscription(rs.getString("camp_description"));
+				campVO.setCampName(rs.getString("camp_name"));
+				campVO.setCampRule(rs.getString("camp_rule"));
+				campVO.setCampPic1(checkBlob(rs.getBlob("camp_Pic_1")));
+				campVO.setCampPic2(checkBlob(rs.getBlob("camp_Pic_2")));
+				campVO.setCampPic3(checkBlob(rs.getBlob("camp_Pic_3")));
+				campVO.setCampPic4(checkBlob(rs.getBlob("camp_Pic_4")));
+				campVO.setCampPic5(checkBlob(rs.getBlob("camp_Pic_5")));
+				campVO.setCampAddress(rs.getString("camp_Address"));
+				campVO.setCampPhone(rs.getString("camp_Phone"));
+				campVO.setCertificateNum(rs.getString("certificate_num"));
+				campVO.setCertificatePic(checkBlob(rs.getBlob("certificate_pic")));
+				campVO.setCampLaunchedTime(rs.getTimestamp("camp_launched_time"));
+				campVO.setLongitude(rs.getBigDecimal("longitude"));
+				campVO.setLattitude(rs.getBigDecimal("lattitude"));
+				campVO.setCampAppliedLaunchTime(rs.getTimestamp("camp_applied_launch_time"));
+				list.add(campVO);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException se) {
+			se.printStackTrace();
 		} finally {
 			if (rs != null) {
 				try {
