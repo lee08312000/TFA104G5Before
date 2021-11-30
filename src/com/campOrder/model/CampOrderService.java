@@ -17,7 +17,7 @@ public class CampOrderService {
 	private CampBookingDAO bookdao;
 
 // 建構子
-	CampOrderService() {
+	public CampOrderService() {
 		orderdao = new CampOrderDAOImpl();
 		detaildao = new CampAreaOrderDetailDAOImpl();
 		bookdao =new CampBookingDAOImpl();

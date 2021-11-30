@@ -25,6 +25,15 @@
   
   <servlet-mapping>
     <servlet-name>CampServlet</servlet-name>
-    <url-pattern>/camp/camp.dao</url-pattern>
+    <url-pattern>/camp/camp.do</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>CampOrderServlet</servlet-name>
+    <servlet-class>com.campOrder.controller.CampOrderServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CampOrderServlet</servlet-name>
+    <url-pattern>/camp/campOrder.do</url-pattern>
   </servlet-mapping>
 </web-app>

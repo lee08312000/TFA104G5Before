@@ -37,9 +37,9 @@ public class CampTagDAOtest {
 //		cad.update(camptag1);
 //		System.out.println("修改成功");
 
-		// 刪除
-		cad.delete(15);
-		System.out.println("刪除成功");
+//		// 刪除
+//		cad.delete(15);
+//		System.out.println("刪除成功");
 
 	}
 
