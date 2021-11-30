@@ -15,7 +15,7 @@ import javax.sql.rowset.serial.SerialBlob;
 import util.Util;
 
 public class MemberDAOImpl implements MemberDAO {
-	private static final String INSERT_STMT = "INSERT INTO member(member_id, member_account_status, member_name, member_account, member_password, member_email, member_address, member_phone, member_pic) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private static final String INSERT_STMT = "INSERT INTO member(member_account_status, member_name, member_account, member_password, member_email, member_address, member_phone, member_pic) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String UPDATE_STMT = "UPDATE member SET member_account_status = ?, member_name = ?, member_account = ?, member_password = ?, member_email = ?, member_address = ?, member_phone = ?, member_pic = ? WHERE member_id = ?";
 	private static final String DELETE_STMT = "DELETE FROM member WHERE member_id = ?";
 	private static final String FIND_BY_PK = "SELECT * FROM member WHERE member_id = ?";
@@ -38,15 +38,14 @@ public class MemberDAOImpl implements MemberDAO {
 
 			con = DriverManager.getConnection(Util.URL, Util.USER, Util.PASSWORD);
 			pstmt = con.prepareStatement(INSERT_STMT);
-			pstmt.setInt(1, memberVO.getMemberId());
-			pstmt.setInt(2, memberVO.getMemberAccountStatus());
-			pstmt.setString(3, memberVO.getMemberName());
-			pstmt.setString(4, memberVO.getMemberAccount());
-			pstmt.setString(5, memberVO.getMemberPassword());
-			pstmt.setString(6, memberVO.getMemberEmail());
-			pstmt.setString(7, memberVO.getMemberAddress());
-			pstmt.setString(8, memberVO.getMemberPhone());
-			pstmt.setBytes(9, memberVO.getMemberPic());
+			pstmt.setInt(1, memberVO.getMemberAccountStatus());
+			pstmt.setString(2, memberVO.getMemberName());
+			pstmt.setString(3, memberVO.getMemberAccount());
+			pstmt.setString(4, memberVO.getMemberPassword());
+			pstmt.setString(5, memberVO.getMemberEmail());
+			pstmt.setString(6, memberVO.getMemberAddress());
+			pstmt.setString(7, memberVO.getMemberPhone());
+			pstmt.setBytes(8, memberVO.getMemberPic());
 
 
 			pstmt.executeUpdate();

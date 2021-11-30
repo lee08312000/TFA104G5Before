@@ -7,12 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.sql.rowset.serial.SerialBlob;
 import util.Util;
 
 public class AdminDAOImpl implements AdminDAO {
-	private static final String INSERT_STMT = "INSERT INTO admin(admin_id, admin_account_status, admin_account, admin_password) VALUES (?, ?, ?, ?)";
+	private static final String INSERT_STMT = "INSERT INTO admin(admin_account_status, admin_account, admin_password) VALUES (?, ?, ?)";
 	private static final String UPDATE_STMT = "UPDATE admin SET admin_account_status = ?, admin_account = ?, admin_password = ? WHERE admin_id = ?";
 	private static final String DELETE_STMT = "DELETE FROM admin WHERE admin_id = ?";
 	private static final String FIND_BY_PK = "SELECT * FROM admin WHERE admin_id = ?";
@@ -36,10 +34,9 @@ public class AdminDAOImpl implements AdminDAO {
 			con = DriverManager.getConnection(Util.URL, Util.USER, Util.PASSWORD);
 			pstmt = con.prepareStatement(INSERT_STMT);
 
-			pstmt.setInt(1, adminVO.getAdminId());
-			pstmt.setInt(2, adminVO.getAdminAccountStatus());
-			pstmt.setString(3, adminVO.getAdminAccount());
-			pstmt.setString(4, adminVO.getAdminPassword());
+			pstmt.setInt(1, adminVO.getAdminAccountStatus());
+			pstmt.setString(2, adminVO.getAdminAccount());
+			pstmt.setString(3, adminVO.getAdminPassword());
 
 			pstmt.executeUpdate();
 
@@ -155,7 +152,8 @@ public class AdminDAOImpl implements AdminDAO {
 			rs = pstmt.executeQuery(); //select相關用這個
 
 			while (rs.next()) {
-				adminVO = new AdminVO(); //物件建立的動作，建立Employee Bean,準備包裝著從資料庫查詢出來的部門資料
+				adminVO = new AdminVO(); 
+				// 物件建立的動作，建立Employee Bean,準備包裝著從資料庫查詢出來的部門資料
 				// emp.setEmpno(empno);設定後直接回傳值回去
 				adminVO.setAdminId(rs.getInt("admin_id"));
 				adminVO.setAdminAccountStatus(rs.getInt("admin_account_status"));

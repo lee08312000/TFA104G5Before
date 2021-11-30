@@ -9,15 +9,12 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.sql.rowset.serial.SerialBlob;
-
-import com.product.model.ProductVO;
 
 import util.Util;
 
 public class CompanyDAOImpl implements CompanyDAO {
-	private static final String INSERT_STMT = "INSERT INTO company(company_id, company_status, head_name, company_name, company_account, company_password, company_email, company_tel, company_bank_account, company_address, company_register_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private static final String INSERT_STMT = "INSERT INTO company(company_status, head_name, company_name, company_account, company_password, company_email, company_tel, company_bank_account, company_address, company_register_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String UPDATE_STMT = "UPDATE company SET company_status = ?, head_name = ?, company_name = ?, company_account = ?, company_password = ?, company_email = ?, company_tel = ?, company_bank_account = ?, company_address = ?, company_register_time = ? WHERE company_id = ?";
 	private static final String DELETE_STMT = "DELETE FROM company WHERE company_id = ?";
 	private static final String FIND_BY_PK = "SELECT * FROM company WHERE company_id = ?";
@@ -41,17 +38,16 @@ public class CompanyDAOImpl implements CompanyDAO {
 			
 			con = DriverManager.getConnection(Util.URL, Util.USER, Util.PASSWORD);
 			pstmt = con.prepareStatement(INSERT_STMT);
-			pstmt.setInt(1, companyVO.getCompanyId());
-			pstmt.setInt(2, companyVO.getCompanyStatus());
-			pstmt.setString(3, companyVO.getHeadName());
-			pstmt.setString(4, companyVO.getCompanyName());
-			pstmt.setString(5, companyVO.getCompanyAccount());
-			pstmt.setString(6, companyVO.getCompanyPassword());
-			pstmt.setString(7, companyVO.getCompanyEmail());
-			pstmt.setString(8, companyVO.getCompanyTel());
-			pstmt.setString(9, companyVO.getCompanyBankAccount());
-			pstmt.setString(10, companyVO.getCompanyAddress());
-			pstmt.setTimestamp(11, companyVO.getCompanyRegisterTime());
+			pstmt.setInt(1, companyVO.getCompanyStatus());
+			pstmt.setString(2, companyVO.getHeadName());
+			pstmt.setString(3, companyVO.getCompanyName());
+			pstmt.setString(4, companyVO.getCompanyAccount());
+			pstmt.setString(5, companyVO.getCompanyPassword());
+			pstmt.setString(6, companyVO.getCompanyEmail());
+			pstmt.setString(7, companyVO.getCompanyTel());
+			pstmt.setString(8, companyVO.getCompanyBankAccount());
+			pstmt.setString(9, companyVO.getCompanyAddress());
+			pstmt.setTimestamp(10, companyVO.getCompanyRegisterTime());
 
 			pstmt.executeUpdate();
 
