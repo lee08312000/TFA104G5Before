@@ -23,11 +23,12 @@ public class CampAreaDAOlmpl implements CampAreaDAO {
 			+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = "SELECT " + CLOUM_FOR_INSERT + " FROM camp_area order by camp_Area_Id";
 	private static final String GET_ONE_STMT = "SELECT " + CLOUM_FOR_INSERT + " FROM camp_area where camp_Area_Id = ?";
+	private static final String GET_CAMPAREALIST = "SELECT " + CLOUM_FOR_ALL + " FROM camp_area where camp_Id = ?";
 	private static final String DELETE = "DELETE FROM camp_area where camp_Area_Id = ?";
 	private static final String UPDATE = "UPDATE camp_area set camp_Id=?,camp_Area_Name=?,camp_Area_Max=?,weekday_Price=?,holiday_Price=?,capitation_Max=?,per_Capitation_Fee=?,camp_Area_Pic=? where camp_Area_Id = ?";
 
 	@Override
-	public void add(CampAreaVO campAreaVO) {
+	public void insert(CampAreaVO campAreaVO) {
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -53,6 +54,7 @@ public class CampAreaDAOlmpl implements CampAreaDAO {
 			pstmt.executeUpdate();
 
 		} catch (SQLException se) {
+			se.printStackTrace();
 			throw new RuntimeException("A database error occured. " + se.getMessage());
 
 		} catch (ClassNotFoundException e) {
@@ -243,6 +245,12 @@ public class CampAreaDAOlmpl implements CampAreaDAO {
 		return b;
 
 	}
+	
+	
+	
+	
+	
+	
 
 	@Override
 	public List<CampAreaVO> getAll() {
@@ -302,4 +310,68 @@ public class CampAreaDAOlmpl implements CampAreaDAO {
 		}
 		return list;
 	}
+
+	@Override
+	public List<CampAreaVO> camparealist(Integer campId) {
+		 List<CampAreaVO>  campAreaList = new ArrayList<CampAreaVO>();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_CAMPAREALIST);
+
+			pstmt.setInt(1, campId);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+
+				CampAreaVO camparea= new CampAreaVO();
+				camparea.setCampAreaId(rs.getInt("camp_Area_Id"));
+				camparea.setCampId(rs.getInt("camp_Id"));
+				camparea.setCampAreaName(rs.getString("camp_Area_Name"));
+				camparea.setCampAreaMax(rs.getInt("camp_Area_Max"));
+				camparea.setWeekdayPrice(rs.getInt("weekday_Price"));
+				camparea.setHolidayPrice(rs.getInt("holiday_Price"));
+				camparea.setCapitationMax(rs.getInt("capitation_Max"));
+				camparea.setPerCapitationFee(rs.getInt("per_Capitation_Fee"));
+				camparea.setCampAreaPic(checkBlob(rs.getBlob("camp_Area_Pic")));
+				campAreaList.add(camparea);
+			}
+
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return campAreaList;
+	}
+		
+		
 }

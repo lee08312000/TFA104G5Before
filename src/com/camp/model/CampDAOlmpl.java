@@ -95,6 +95,7 @@ public class CampDAOlmpl implements CampDAO {
 			pstmt.executeUpdate();
 
 		} catch (SQLException se) {
+			se.printStackTrace();
 			throw new RuntimeException("A database error occured. " + se.getMessage());
 
 		} catch (ClassNotFoundException e) {

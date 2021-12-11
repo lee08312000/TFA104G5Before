@@ -11,26 +11,15 @@ private   CampAreaDAO   campareadao;
 	}
 
 	//新增營位
-	public  void  addCampArea(Integer campAreaId, Integer campId, String campAreaName,Integer campAreaMax,Integer weekdayPrice,
-	     Integer holidayPrice,Integer capitationMax,Integer perCapitationFee,byte[]campAreaPic){
+	public  void  addCampArea(CampAreaVO  campareaVO){
 
-		CampAreaVO  campareaVO = new  CampAreaVO(); 
-		campareaVO.setCampId(campId);
-		campareaVO.setCampAreaName(campAreaName);
-		campareaVO.setCampAreaMax(campAreaMax);
-		campareaVO.setWeekdayPrice(weekdayPrice);
-		campareaVO.setHolidayPrice(holidayPrice);
-		campareaVO.setCapitationMax(capitationMax);
-		campareaVO.setPerCapitationFee(perCapitationFee);
-		campareaVO.setCampAreaPic(campAreaPic);
-		
-		campareadao.add(campareaVO);
+		campareadao.insert(campareaVO);
 			
 	}
 	
 	//刪除營位
-	public void deleteCampArea(Integer campAreaId) {
-		campareadao.delete(campAreaId);
+	public void deleteCampArea(Integer campArea) {
+		campareadao.delete(campArea);
 	}
 	
 	
@@ -59,8 +48,16 @@ private   CampAreaDAO   campareadao;
 	//查詢某個營位
 	public	CampAreaVO  getOneCampArea(Integer campArea) {
 		return campareadao.findByPrimaryKey(campArea);
-	}                                          
+	}
 	
+	//依條件查詢營位狀態
+	
+	public  List<CampAreaVO>  camparealist(Integer campId){
+		
+		return campareadao.camparealist(campId);
+		
+	}
+
 	//查詢全部營位
 	public List<CampAreaVO> getAll() {
 		return  campareadao.getAll();

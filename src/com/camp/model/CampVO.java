@@ -13,7 +13,7 @@ public class CampVO implements Serializable {
 	private Integer campId;// 營地流水號
 	private Integer companyId;// 廠商流水號
 	private Integer campStatus;// 營地狀態
-	private String campDiscription;
+	private String campDiscription;//營地敘述
 	private String campName;// 營地名稱
 	private String campRule;// 營地租借規則
 	private byte[] campPic1;// 營地美照1

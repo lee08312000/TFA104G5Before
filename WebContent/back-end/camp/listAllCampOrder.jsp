@@ -1,27 +1,37 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
+ <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="com.campOrder.model.*"%>
 <!DOCTYPE html>
+<%@ page import="java.util.*"%>
+
+<%
+	List<CampOrderVO> list = new ArrayList<CampOrderVO>();
+	if(request.getAttribute("list")!=null){
+		list = (ArrayList<CampOrderVO>)request.getAttribute("list");
+	}
+    pageContext.setAttribute("list",list);
+%>
 <html>
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="../css/colorbox.css" />
+<link rel="stylesheet" href="<%=request.getContextPath()%>/back-end/css/colorbox.css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="../js/jquery.colorbox.js"></script>
+<script src="<%=request.getContextPath()%>/back-end/js/jquery.colorbox.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
+	var ctx = "<%=request.getContextPath()%>";
 	//到新增指令集Page
-	$("#testBtn").click(function() {
-		//var campOrderId = $("input#campOrderId").val();
-		var campOrderId = 12;
+	$( ".update" ).click(function() {
+		var campOrderId = $(this).attr("name");
 		param = {
 			data : {
 				"action":"GETONECAMP",
 				"campOrderId" : campOrderId
 			},
-			title : "新增指令集",
+			title : "營地訂單",
 			href : '<c:url value="/camp/campOrder.do" />',
 			innerHeight : 350,
 			innerWidth : 650,
@@ -38,7 +48,7 @@ $(document).ready(function() {
 	href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
 	integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm"
 	crossorigin="anonymous">
-<link rel="stylesheet" href="..\css\campOrder.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/back-end/css/campOrder.css">
 </head>
 <body>
 
@@ -46,13 +56,13 @@ $(document).ready(function() {
 		<div class="header-inner responsive-wrapper">
 			<div class="header-logo">
 				<a style="display: inline-block; vertical-align: middle;"
-					href="首頁URL"> <img src="..\images\camp_paradise_logo.png" />
+					href="首頁URL"> <img src="<%=request.getContextPath()%>/back-end/images/camp_paradise_logo.png" />
 				</a> <span style="display: inline-block; vertical-align: middle;">Camping
 					Paradise</span>
 			</div>
 			<nav class="header-navigation">
 				<a href="#">Home</a> <a href="#">線上商城</a> <a href="#"><img
-					src="..\images\heart.png"></a> <a href="#">註冊</a> <a href="#">登入</a>
+					src="<%=request.getContextPath()%>/back-end/images/heart.png"></a> <a href="#">註冊</a> <a href="#">登入</a>
 				<a href="#"> <i class="fas fa-user"></i></a>
 				<button>Menu</button>
 			</nav>
@@ -62,25 +72,32 @@ $(document).ready(function() {
 <div id="bodyCenter">
 	<!-- --------main區域------- -->
 	<h2>營地訂單查詢</h2>
-
+<table>
 	<div class="divSearchForm">
-		<form class="searchForm" action="/action_page.php"
+		<form class="searchForm"  method="post" ACTION="<%=request.getContextPath()%>/camp/campOrder.do"
 			style="margin: auto; max-width: 300px">
-			<select class="selector">
-				<option>全部</option>
-				<option>依日期排序</option>
-				<option>已處理</option>
-				<option>處理中</option>
-				<option>已取消</option>
-			</select> <input type="text" placeholder="請輸入關鍵字" name="search2">
-			<button type="submit">
-				<i class="fa fa-search"></i>
-			</button>
-			<div style="clear: both;"></div>
+			<div class="">
+			<label>訂單狀態</label>
+				<select>
+					<option value="-1">全部</option>
+					<option value="1">已處理</option>
+					<option value="2">處理中</option>
+					<option value="3">已取消</option>
+				</select>
+			</div>
+			<div>
+				<label>訂單日期區間</label>
+				<input type="date" id="startDate" name="startDate"> -
+			    <input type="date" id="endDate" name="endDate">
+			</div>
+			
 		</form>
-		
-    <input type="button" value="open the box" id="testBtn"/>
+	</table>	
+
     
+	</div>
+	<div class="pagination">
+	<%@ include file="pages/page1.jsp" %> 
 	</div>
 	<table>
 		<thead>
@@ -93,198 +110,33 @@ $(document).ready(function() {
 				<th>訂單狀態</th>
 				<th>評價</th>
 				<th>編輯</th>
-
-
 			</tr>
 		</thead>
 
-
+      
 		<tbody>
+		<c:forEach var="campOrderVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
+				
+				<tr>
+					<td><fmt:formatDate value="${campOrderVO.campOrderConfirmedTime}" pattern="yyyy-MM-dd" /></td>
+					<td>${campOrderVO.campOrderId}</td>
+					<td>${campOrderVO.payerName}</td>
+					<td>${campOrderVO.payerPhone}</td>
+					<td>${campOrderVO.campOrderTotalAmount}</td>
+					<td>${campOrderVO.campOrderStatus}</td> 
+					<td>${campOrderVO.campCommentStar}</td> 
+					<td>
+					     <input type="button" value="修改" name="${campOrderVO.campOrderId}" class="update"  />
+					</td>
+				</tr>
+			</c:forEach>
 
-			<tr>
-				<!-- <td>第二列</td> -->
-				<td>10/04</td>
-				<td>02</td>
-				<td>蔡桃貴</td>
-				<td>0988565372</td>
-				<td>$2000</td>
-				<td>已處理</td>
-				<td>5分</td>
-				<td>
-					<FORM METHOD="post"
-						ACTION="<%=request.getContextPath()%>/camp/camp.Select">
-						<input type="submit" value="修改"> <input type="hidden"
-							name="camp" value="${campVO.camp}"> <input type="hidden"
-							name="action" value="getOne_For_Update">
-					</FORM>
-				</td>
-
-			</tr>
-
-			<tr>
-				<!-- <td>第三列</td> -->
-				<td>10/10</td>
-				<td>03</td>
-				<td>蔡桃貴</td>
-				<td>0988565372</td>
-				<td>$2000</td>
-				<td>已處理</td>
-				<td>5分</td>
-				<td>
-					<FORM METHOD="post"
-						ACTION="<%=request.getContextPath()%>/camp/camp.Select">
-						<input type="submit" value="修改"> <input type="hidden"
-							name="camp" value="${campVO.camp}"> <input type="hidden"
-							name="action" value="getOne_For_Update">
-					</FORM>
-				</td>
-			<tr>
-				<!-- <td>第四列</td> -->
-				<td>10/20</td>
-				<td>04</td>
-				<td>蔡桃貴</td>
-				<td>0988565372</td>
-				<td>$200</td>
-				<td>已處理</td>
-				<td>5分</td>
-
-				<td>
-					<FORM METHOD="post"
-						ACTION="<%=request.getContextPath()%>/camp/camp.Select">
-						<input type="submit" value="修改"> <input type="hidden"
-							name="camp" value="${campVO.camp}"> <input type="hidden"
-							name="action" value="getOne_For_Update">
-					</FORM>
-				</td>
-
-			</tr>
-
-			<tr>
-				<!-- <td>第五列</td> -->
-				<td>10/20</td>
-				<td>04</td>
-				<td>蔡桃貴</td>
-				<td>0988565372</td>
-				<td>$200</td>
-				<td>已處理</td>
-				<td>5分</td>
-				<td>
-					<FORM METHOD="post"
-						ACTION="<%=request.getContextPath()%>/camp/camp.Select">
-						<input type="submit" value="修改"> <input type="hidden"
-							name="camp" value="${campVO.camp}"> <input type="hidden"
-							name="action" value="getOne_For_Update">
-					</FORM>
-				</td>
-			<tr>
-				<!-- <td>第六列</td> -->
-				<td>10/20</td>
-				<td>04</td>
-				<td>蔡桃貴</td>
-				<td>0988565372</td>
-				<td>$200</td>
-				<td>已處理</td>
-				<td>5分</td>
-				<td>
-					<FORM METHOD="post"
-						ACTION="<%=request.getContextPath()%>/camp/camp.Select">
-						<input type="submit" value="修改"> <input type="hidden"
-							name="camp" value="${campVO.camp}"> <input type="hidden"
-							name="action" value="getOne_For_Update">
-					</FORM>
-				</td>
-			<tr>
-				<!-- <td>第七列</td> -->
-				<td>10/20</td>
-				<td>04</td>
-				<td>蔡桃貴</td>
-				<td>0988565372</td>
-				<td>$200</td>
-				<td>已處理</td>
-				<td>5分</td>
-				<td>
-					<FORM METHOD="post"
-						ACTION="<%=request.getContextPath()%>/camp/camp.Select">
-						<input type="submit" value="修改"> <input type="hidden"
-							name="camp" value="${campVO.camp}"> <input type="hidden"
-							name="action" value="getOne_For_Update">
-					</FORM>
-				</td>
-			<tr>
-				<!-- <td>第八列</td> -->
-				<td>10/20</td>
-				<td>04</td>
-				<td>蔡桃貴</td>
-				<td>0988565372</td>
-				<td>$200</td>
-				<td>已處理</td>
-				<td>5分</td>
-				<td>
-					<FORM METHOD="post"
-						ACTION="<%=request.getContextPath()%>/camp/camp.Select">
-						<input type="submit" value="修改"> <input type="hidden"
-							name="camp" value="${campVO.camp}"> <input type="hidden"
-							name="action" value="getOne_For_Update">
-					</FORM>
-				</td>
-			<tr>
-				<!-- <td>第九列</td> -->
-				<td>10/20</td>
-				<td>04</td>
-				<td>蔡桃貴</td>
-				<td>0988565372</td>
-				<td>$200</td>
-				<td>已處理</td>
-				<td>5分</td>
-				<td>
-					<FORM METHOD="post"
-						ACTION="<%=request.getContextPath()%>/camp/camp.Select">
-						<input type="submit" value="修改"> <input type="hidden"
-							name="camp" value="${campVO.camp}"> <input type="hidden"
-							name="action" value="getOne_For_Update">
-					</FORM>
-				</td>
-			<tr>
-				<!-- <td>第十列</td> -->
-				<td>10/20</td>
-				<td>04</td>
-				<td>蔡桃貴</td>
-				<td>0988565372</td>
-				<td>$200</td>
-				<td>已處理</td>
-				<td>5分</td>
-				<td>
-					<FORM METHOD="post"
-						ACTION="<%=request.getContextPath()%>/camp/camp.Select">
-						<input type="submit" value="修改"> <input type="hidden"
-							name="camp" value="${campVO.camp}"> <input type="hidden"
-							name="action" value="getOne_For_Update">
-					</FORM>
-				</td>
-			<tr>
-				<!-- <td>第十一列</td> -->
-				<td>10/20</td>
-				<td>04</td>
-				<td>蔡桃貴</td>
-				<td>0988565372</td>
-				<td>$200</td>
-				<td>已處理</td>
-				<td>5分</td>
-				<td>
-					<FORM METHOD="post"
-						ACTION="<%=request.getContextPath()%>/camp/camp.Select">
-						<input type="submit" value="修改"> <input type="hidden"
-							name="camp" value="${campVO.camp}"> <input type="hidden"
-							name="action" value="getOne_For_Update">
-					</FORM>
-				</td>
+		
 		</tbody>
 	</table>
+		
 	<div class="pagination">
-
-		<a href="#">&laquo;</a> <a href="#">1</a> <a href="#" class="active">2</a>
-		<a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="#">6</a>
-		<a href="#">&raquo;</a>
+		<%@ include file="pages/page2.jsp" %>
 	</div>
 </div>
 	<!-- ----------------aside區域------------------->

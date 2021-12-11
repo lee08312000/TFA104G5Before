@@ -88,6 +88,7 @@ public class CampAreaVO implements Serializable {
 	public void setCampAreaPic(byte[] campAreaPic) {
 		this.campAreaPic = campAreaPic;
 	}
+	
 	@Override
 	public String toString() {
 		return "CampAreaVO [campAreaId=" + campAreaId + ", campId=" + campId + ", campAreaName=" + campAreaName
