@@ -17,23 +17,53 @@
     <res-auth>Container</res-auth>
   </resource-ref>
   
-  <servlet>
-    <servlet-name>CampServlet</servlet-name>
-    <servlet-class>camp.controller.CampServlet</servlet-class>
-  </servlet>
-  
-  
-  <servlet-mapping>
-    <servlet-name>CampServlet</servlet-name>
-    <url-pattern>/camp/camp.do</url-pattern>
-  </servlet-mapping>
+ 
   
   <servlet>
     <servlet-name>CampOrderServlet</servlet-name>
     <servlet-class>com.campOrder.controller.CampOrderServlet</servlet-class>
   </servlet>
+  
+  
   <servlet-mapping>
     <servlet-name>CampOrderServlet</servlet-name>
     <url-pattern>/camp/campOrder.do</url-pattern>
+  </servlet-mapping>
+  
+  
+   <servlet>
+    <servlet-name>CampServlet</servlet-name>
+    <servlet-class>com.camp.controller.CampServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>CampServlet</servlet-name>
+    <url-pattern>/camp/shelves.do</url-pattern>
+  </servlet-mapping>
+
+     <servlet>
+    <servlet-name>CampAreaServlet</servlet-name>
+    <servlet-class>com.campArea.controller.CampAreaServlet</servlet-class>
+  </servlet>
+  
+
+  <servlet-mapping>
+    <servlet-name>CampAreaServlet</servlet-name>
+    <url-pattern>/camp/campareashelves.do</url-pattern>
+  </servlet-mapping>
+  
+
+  
+  
+  
+  
+   <servlet>
+    <servlet-name>HelloServlet</servlet-name>
+    <servlet-class>com.Hello.controller.HelloServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>HelloServlet</servlet-name>
+    <url-pattern>/camp/hello.do</url-pattern>
   </servlet-mapping>
 </web-app>

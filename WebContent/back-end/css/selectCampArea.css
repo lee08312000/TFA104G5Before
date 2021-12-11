@@ -134,24 +134,13 @@
             text-align: center;
             margin-left:200px;
         }
-        h2{
-        	color:black;
-        	text-align:center;
-        
-        }
-        .order_detail{
-            font-size:18px;
-            text-align: left;
-            font-weight:bold;
-            margin-left:230px ;
-            margin-top:300px;
-        }
+  
         
 
         table{
           border:1px solid blck;
           border-collapse: collapse;
-          margin-left:230px ;
+          margin-left:210px ;
           margin-top: 0px;
           table-layout: fixed;
           width: 80%;
@@ -237,7 +226,7 @@
 		.pagination a {
 		  color: black;
 		  float: left;
-		  padding: 8px 16px;
+		  padding: 5px px;
 		  text-decoration: none;
 		  border-radius: 5px;
 		  border: 1px solid #ddd;
