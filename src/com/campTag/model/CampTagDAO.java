@@ -14,7 +14,6 @@ public interface CampTagDAO {
 
 	public List<CampTagVO> getAll();
 
-	//查詢到幾筆
-	public List<CampTagVO> getAllTag();
+
 
 }

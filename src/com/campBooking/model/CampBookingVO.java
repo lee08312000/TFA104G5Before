@@ -11,12 +11,12 @@ public class CampBookingVO implements Serializable{
 	private Date date;// 日期
 	private Integer bookingCampAreaMax;// 預約帳數上限
 	private Integer bookedCampAreaNum;// 已預約帳數
-	private char closedStatus;// 公休狀態
+	private Boolean closedStatus;// 公休狀態
 	
 	public CampBookingVO() {
 	}
 	public CampBookingVO(Integer campBookingId, Integer campId, Integer campAreaId, Date date,
-			Integer bookingCampAreaMax, Integer bookedCampAreaNum, char closedStatus) {
+			Integer bookingCampAreaMax, Integer bookedCampAreaNum, Boolean closedStatus) {
 		
 		this.campBookingId = campBookingId;
 		this.campId = campId;
@@ -75,11 +75,11 @@ public class CampBookingVO implements Serializable{
 		this.bookedCampAreaNum = bookedCampAreaNum;
 	}
 
-	public char getClosedStatus() {
+	public Boolean getClosedStatus() {
 		return closedStatus;
 	}
 
-	public void setClosedStatus(char closedStatus) {
+	public void setClosedStatus(Boolean closedStatus) {
 		this.closedStatus = closedStatus;
 	}
 

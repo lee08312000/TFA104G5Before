@@ -23,6 +23,7 @@ public interface CampDAO {
 	public List<CampVO> getAll(Integer orderby);
 	
 	
+<<<<<<< HEAD
 =======
 	CampVO findByPrimaryKey(Integer campId);
 	
@@ -33,5 +34,11 @@ public interface CampDAO {
 	
 
 >>>>>>> Alice
+=======
+	//查詢全部營地(分頁模式) offset =略過筆數; rows=顯示筆數   
+		public List<CampVO> getAllByPage(Integer offset,Integer rows,Integer status);
+	
+	
+>>>>>>> 7890843d354c84c1d315f9810be7b06ed74d70a2
 
 }

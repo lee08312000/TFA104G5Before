@@ -1,16 +1,20 @@
 package com.campOrder.model;
 
 import java.sql.Connection;
+<<<<<<< HEAD
 import java.util.Date;
+=======
+import java.sql.Date;
+>>>>>>> 7890843d354c84c1d315f9810be7b06ed74d70a2
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import com.camp.model.CampVO;
 import com.campAreaOrderDetail.model.CampAreaOrderDetailVO;
 import com.campBooking.model.CampBookingDAO;
 import com.campBooking.model.CampBookingDAOImpl;
@@ -38,8 +42,12 @@ public class CampOrderDAOImpl implements CampOrderDAO {
 	private static final String DELETE_ORDERDETAIL = "DELETE FROM camp_order_detail WHERE camp_order_id = ?";
 
 	private static final String FIND_BY_PK = "SELECT * FROM camp_order WHERE camp_order_id= ?";
+<<<<<<< HEAD
 	private static final String GET_ALL = "SELECT * FROM camp_order";
 <<<<<<< HEAD
+=======
+	private static final String GET_ALL = "SELECT * FROM camp_order order by ";
+>>>>>>> 7890843d354c84c1d315f9810be7b06ed74d70a2
 	private static final String FIND_HOTCAMP = "SELECT camp_id,(sum(camp_comment_star)/count(*)) as 'avg_star',count(*) as 'compl_ordernum' FROM campingParadise.camp_order where camp_order_completed_time is not null group by camp_id order by compl_ordernum desc,avg_star desc";
 
 =======
@@ -115,29 +123,29 @@ public class CampOrderDAOImpl implements CampOrderDAO {
 			pstmt3 = con.prepareStatement(UPDATEBOOKING_STMT);
 			java.sql.Date checkin = campOrderVO.getCampCheckInDate();
 			java.sql.Date checkout = campOrderVO.getCampCheckOutDate();
-			List<java.sql.Date> list = DiffDays.getDates(checkin, checkout);
+			List<java.util.Date> list = DiffDays.getDates(checkin, checkout);
 
 			CampBookingDAO bookdao = new CampBookingDAOImpl();
-
+            SimpleDateFormat sdf=new  SimpleDateFormat("yyyy-MM-dd");
 			for (int i = 0; i < DetailVOs.length; i++) {
-				for (java.sql.Date days : list) {
-					Set<CampBookingVO> set = bookdao.findByCampId(campOrderVO.getCampId(), days);
+				for (java.util.Date days : list) {
+					List<CampBookingVO> booklist = bookdao.findByAllArea(campOrderVO.getCampId(), sdf.format(days));
 					CampBookingVO target = null;
-					for (CampBookingVO item : set) {
+					for (CampBookingVO item : booklist) {
 						if (item.getCampAreaId() == DetailVOs[i].getCampAreaId()) {
 							target = item;
 							break;
 						}
 
 					}
-					//這個營位的這一天剩餘空位數
+					// 這個營位的這一天剩餘空位數
 					int lastAreaNum = target.getBookingCampAreaMax() - target.getBookedCampAreaNum();
 
 					if (DetailVOs[i].getBookingQuantity() <= lastAreaNum) {
 						pstmt3.setInt(1, DetailVOs[i].getBookingQuantity());
 						pstmt3.setInt(2, campOrderVO.getCampId());
 						pstmt3.setInt(3, DetailVOs[i].getCampAreaId());
-						pstmt3.setDate(4, days);
+						pstmt3.setDate(4, new java.sql.Date(days.getTime()));
 						pstmt3.addBatch();
 					} else {
 						throw new Exception();
@@ -439,15 +447,56 @@ public class CampOrderDAOImpl implements CampOrderDAO {
 	}
 
 	@Override
-	public List<CampOrderVO> getAll() {
+	public List<CampOrderVO> getAll(Integer... sortmethed) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		CampOrderVO campOrderVO = null;
 		List<CampOrderVO> list = new ArrayList<>();
+		StringBuffer buf = new StringBuffer();
 		try {
+<<<<<<< HEAD
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ALL);
+=======
+
+			con = DriverManager.getConnection(Util.URL, Util.USER, Util.PASSWORD);
+			if (sortmethed.length != 0) {
+				for (Integer ordernumber : sortmethed) {
+					switch (ordernumber) {
+					case 0:
+						buf.append("camp_order_id,");
+						break;
+					case 1:
+						buf.append("camp_id,");
+						break;
+					case 2:
+						buf.append("camp_order_status,");
+						break;
+					case 3:
+						buf.append("camp_check_out_date desc,");
+						break;
+					case 4:
+						buf.append("camp_check_in_date desc,");
+						break;
+					case 5:
+						buf.append("camp_order_comment_time desc,");
+						break;
+					default:
+						buf.append("camp_order_id,");
+					}
+
+				}
+			} else {
+				buf.append("camp_order_id,");
+			}
+
+			String sorted = buf.toString().substring(0, buf.length() - 1);
+
+
+			pstmt = con.prepareStatement(GET_ALL + "" + sorted);
+
+>>>>>>> 7890843d354c84c1d315f9810be7b06ed74d70a2
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -505,15 +554,15 @@ public class CampOrderDAOImpl implements CampOrderDAO {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		List<Integer> list=new ArrayList<Integer>();
-		
+		List<Integer> list = new ArrayList<Integer>();
+
 		try {
 			con = DriverManager.getConnection(Util.URL, Util.USER, Util.PASSWORD);
 			pstmt = con.prepareStatement(FIND_HOTCAMP);
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-			Integer campId=rs.getInt(1);
+				Integer campId = rs.getInt(1);
 				list.add(campId);
 			}
 		} catch (SQLException se) {
@@ -545,16 +594,5 @@ public class CampOrderDAOImpl implements CampOrderDAO {
 
 		return list;
 	}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	
-
 
 }

@@ -1,6 +1,7 @@
 package com.campAreaOrderDetail.model;
 
 
+import java.sql.Connection;
 import java.util.List;
 
 
