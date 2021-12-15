@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+<<<<<<< HEAD
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,6 +15,9 @@ import java.util.Set;
 import com.campEquipDetail.model.CampEquipDetailVO;
 
 import util.Util;
+=======
+import java.util.List;
+>>>>>>> Alice
 
 public class CampTagDetailDAOlmpl implements CampTagDetailDAO {
 
@@ -39,9 +43,17 @@ public class CampTagDetailDAOlmpl implements CampTagDetailDAO {
 			+ " FROM camp_tag_detail where camp_Tag_Id = ? and camp_Id=?";
 	private static final String DELETE = "DELETE FROM camp_tag_detail where  camp_Id=? and camp_Tag_Id = ? ";
 	private static final String UPDATE = "UPDATE camp_tag_detail set camp_Tag_Id=?,camp_Id=? where camp_Tag_Id = ? and camp_Id=?";
+<<<<<<< HEAD
 	private static final String GET_ALL = "SELECT*FROM camp_tag_detail";
 	private static final String GET_Tag_BY_CAMPID = "SELECT*FROM camp_tag_detail where camp_id=?";
+=======
+	private static final String DELETE_BY_CAMP_ID = "DELETE FROM camp_tag_detail where  camp_Id=? ";
+>>>>>>> Alice
 
+	private static final String GET_ONE_BY_CAMP_ID ="select ct.camp_tag_name,ct.camp_tag_id from camp_tag_detail ctd join camp_tag ct on ctd.camp_tag_id = ct.camp_tag_id where ctd.camp_id = ? group by ct.camp_tag_id";
+	
+	private static final String GET_ALL ="select ct.camp_tag_name,ct.camp_tag_id from camp_tag_detail ctd join camp_tag ct on ctd.camp_tag_id = ct.camp_tag_id group by ct.camp_tag_id";
+	
 	@Override
 	public void insert(CampTagDetailVO campTagDetailVO) {
 
@@ -165,6 +177,63 @@ public class CampTagDetailDAOlmpl implements CampTagDetailDAO {
 
 	}
 
+	
+	@Override
+	public List<CampTagDetailVO> findByCampId(Integer campId) {
+		List<CampTagDetailVO> camptagDetailList = new ArrayList<CampTagDetailVO>();
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_ONE_BY_CAMP_ID);
+			pstmt.setInt(1, campId);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				CampTagDetailVO campTagDetailVO = new CampTagDetailVO();
+				campTagDetailVO.setCampTagName(rs.getString("ct.camp_tag_name"));
+				campTagDetailVO.setCampTagId(rs.getInt("ct.camp_tag_id"));
+				camptagDetailList.add(campTagDetailVO);
+			}
+
+			
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+		
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return camptagDetailList;
+	}
+	
 	@Override
 	public CampTagDetailVO findByPrimaryKey(Integer campTagId, Integer campId) {
 
@@ -381,4 +450,102 @@ public class CampTagDetailDAOlmpl implements CampTagDetailDAO {
 
 	}
 
+<<<<<<< HEAD
+=======
+	@Override
+	public List<CampTagDetailVO> getAll() {
+        List<CampTagDetailVO> camptagDetailList = new ArrayList<CampTagDetailVO>();
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_ALL);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				CampTagDetailVO campTagDetailVO = new CampTagDetailVO();
+				campTagDetailVO.setCampTagName(rs.getString("ct.camp_tag_name"));
+				campTagDetailVO.setCampTagId(rs.getInt("ct.camp_tag_id"));
+				camptagDetailList.add(campTagDetailVO);
+			}
+
+			
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+		
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return camptagDetailList;
+	}
+
+	@Override
+	public void deleteByKey(Integer campId) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(DELETE_BY_CAMP_ID);
+
+			pstmt.setInt(1, campId);
+
+			pstmt.executeUpdate();
+
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+	
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+
+		
+	}
+>>>>>>> Alice
 }

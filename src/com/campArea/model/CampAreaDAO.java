@@ -10,8 +10,20 @@ public interface CampAreaDAO {
 
 	public void delete(Integer campAreaId);
 
+<<<<<<< HEAD
 	public CampAreaVO findByPrimaryKey(Integer campAreaId);
 
 	public List<CampAreaVO> getAll();
+=======
+	void delete(Integer campAreaId);
+	
 
+	CampAreaVO findByPrimaryKey(Integer campAreaId);
+	
+	List<CampAreaVO> camparealist(Integer campId);
+
+	List<CampAreaVO> getAll();
+>>>>>>> Alice
+
+	
 }

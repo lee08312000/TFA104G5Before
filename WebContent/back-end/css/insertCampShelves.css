@@ -9,7 +9,7 @@
             --header-outer-height: 110px;
             --header-inner-height: 70px;
             --header-height-difference: calc(var(--header-outer-height) - var(--header-inner-height));
-            --header-bg: rgb(116, 190, 116);
+            --header-bg:#d7ab75 ;
         }
         
          body {
@@ -41,7 +41,7 @@
             display: flex;
             align-items: center;
             /* Other */
-            background-color: var(--header-bg);
+            background-color: #d7ab75;
             box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
             color: #FFFFFF;
             font-weight: bold;
@@ -127,135 +127,72 @@
                 display: none;
             }
         }
-        /* =====================main區域========================*/
-        
-        h1{
-            color:black;
+            /* =====================main區域========================*/
+                     
+        h1 {
+            color: black;
             text-align: center;
-            margin-left:200px;
+            margin-left: 150px;
         }
-        h2{
-        	color:black;
-        	text-align:center;
-        
-        }
-        .order_detail{
-            font-size:18px;
-            text-align: left;
-            font-weight:bold;
-            margin-left:230px ;
-            margin-top:300px;
-        }
-        
 
-        table{
-          border:1px solid blck;
-          border-collapse: collapse;
-          margin-left:230px ;
-          margin-top: 0px;
-          table-layout: fixed;
-          width: 80%;
+        table td,
+        table th {
+            border: 1px solid black;
+            text-align: left;
+
         }
-        table td,table th{
-          border:1px solid black;
-          text-align: center; 
-          
-        }
-        .topnav{
-            margin-left:885px;
-            margin-top:100px;        
+
+        .topnav {
+            margin-left: 885px;
+            margin-top: 100px;
         }
 
         body {
             font-family: Arial;
         }
 
-       
-       
-        .selector{
-         height: 27px;
-         margin-right:2000px;
-         
-        }
-        
-        .submit_button{
-        margin-right:210px;
-        float:right;
-        }
-        form.searchForm input[type=text] {
-        
-            padding: 5px;
-            font-size: 10px;
-            border: 1px solid grey;
-            float: right;
-            width: 150PX;
-            background: #f1f1f1;
-            max-width: 100%;
-           
-         }
-
-        form.searchForm button {
-            float: left;
-            margin-left:500px;
-            width: 30PX;
-            padding: 5px;
-            background:#D0D0D0;
-            color: white;
-            font-size: 10px;
-            border: 1px solid grey;
-            border-left: none;
-            cursor: pointer;
-            max-width: 100%;
-           
-        }
-
-        form.searchForm button:hover {
-            background: #0b7dda;
-         
-        }
-        
-         form.searchForm::after {
-            content: "";
-            clear: both;
-            display: table;
-        }
-        
-        div.divSearchForm{
-            
-            margin-left:250px ;
-            margin-top: 80px;
-            display:inline-block;
-        }
         div.pagination {
-       
-          margin-left:240px ;
-          margin-top: 80px;
-		  display: inline-block;
-		  
-		}
-		
-		.pagination a {
-		  color: black;
-		  float: left;
-		  padding: 8px 16px;
-		  text-decoration: none;
-		  border-radius: 5px;
-		  border: 1px solid #ddd;
-		 
-		}
-		
-		.pagination a.active {
-		  background-color: #4CAF50;
-		  color: white;
-		  border-radius: 5px;
-		}
-		
-		.pagination a:hover:not(.active) {
-		  background-color: #ddd;
-		  border-radius: 5px;
-		}
-	
-	 /* =====================aside區域========================*/
+
+            margin-left: 600px;
+            margin-top: 80px;
+            display: inline-block;
+
+        }
+
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .pagination a.active {
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .pagination a:hover:not(.active) {
+            background-color: #ddd;
+            border-radius: 5px;
+        }
+
+        /* 填寫營地上架資訊 */
+        .camp_shelves {
+            border-collapse:separate;
+            border-spacing:0px 0px;
+            width: 750px;
+            font-size: 16px;
+            margin-left: 350px;
+        }
+
+        .sumit_form {
+            display: inline;
+        }
+
+        	 /* =====================aside區域========================*/
 		
 	 
     aside.aside{            
@@ -602,10 +539,7 @@
     }
 
     /* =====================footer區域========================*/
-    
-     
-    
-    
+      
         footer {
             position: absolute;
             text-align: center;
@@ -615,7 +549,7 @@
             transform: translateX(-50%);
             /* border: 1px black solid; */
             width: 100%;
-            background-color: rgb(116, 190, 116);
+            background-color:#d7ab75;
             /* color: #FFFFFF; */
             font-size:16px;
             font-weight: bold;

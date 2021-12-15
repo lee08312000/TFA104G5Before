@@ -1,6 +1,7 @@
 package com.campOrder.model;
 
 import java.sql.Connection;
+import java.util.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,7 +16,15 @@ import com.campBooking.model.CampBookingDAO;
 import com.campBooking.model.CampBookingDAOImpl;
 import com.campBooking.model.CampBookingVO;
 
+<<<<<<< HEAD
 import util.DiffDays;
+=======
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+>>>>>>> Alice
 import util.Util;
 
 public class CampOrderDAOImpl implements CampOrderDAO {
@@ -30,13 +39,22 @@ public class CampOrderDAOImpl implements CampOrderDAO {
 
 	private static final String FIND_BY_PK = "SELECT * FROM camp_order WHERE camp_order_id= ?";
 	private static final String GET_ALL = "SELECT * FROM camp_order";
+<<<<<<< HEAD
 	private static final String FIND_HOTCAMP = "SELECT camp_id,(sum(camp_comment_star)/count(*)) as 'avg_star',count(*) as 'compl_ordernum' FROM campingParadise.camp_order where camp_order_completed_time is not null group by camp_id order by compl_ordernum desc,avg_star desc";
 
+=======
+	private static final String FIND_BY_PARAMS = "SELECT * FROM camp_order where  camp_order_confirmed_time >=? and camp_order_confirmed_time <= ? and camp_order_status=? ";
+	private static final String FIND_BY_PARAMS_NO_STATUS = "SELECT * FROM camp_order where  camp_order_confirmed_time >=? and camp_order_confirmed_time <= ? ";
+	
+	private static DataSource ds = null;
+>>>>>>> Alice
 	static {
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			Context ctx = new InitialContext();
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/David");
+			Class.forName(Util.DRIVER);
+		} catch (ClassNotFoundException | NamingException ce) {
+			ce.printStackTrace();
 		}
 	}
 
@@ -47,6 +65,7 @@ public class CampOrderDAOImpl implements CampOrderDAO {
 		PreparedStatement pstmt2 = null;
 		PreparedStatement pstmt3 = null;
 		try {
+<<<<<<< HEAD
 			con = DriverManager.getConnection(Util.URL, Util.USER, Util.PASSWORD);
 			pstmt1 = con.prepareStatement(INSERTORDER_STMT, PreparedStatement.RETURN_GENERATED_KEYS);
 			con.setAutoCommit(false);
@@ -128,6 +147,25 @@ public class CampOrderDAOImpl implements CampOrderDAO {
 			pstmt3.executeBatch();
 
 			con.commit();
+=======
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(INSERT_STMT);
+			pstmt.setInt(1, campOrderVO.getCampId());
+			pstmt.setInt(2, campOrderVO.getMemberId());
+			pstmt.setInt(3, campOrderVO.getCampOrderStatus());
+			pstmt.setInt(4, campOrderVO.getCampOrderTotalAmount());
+			pstmt.setDate(5, campOrderVO.getCampCheckOutDate());
+			pstmt.setDate(6, campOrderVO.getCampCheckInDate());
+			pstmt.setString(7, campOrderVO.getCreditCardNum());
+			pstmt.setString(8, campOrderVO.getPayerName());
+			pstmt.setString(9, campOrderVO.getPayerPhone());
+			pstmt.setTimestamp(10, campOrderVO.getCampOrderConfirmedTime());
+			pstmt.setTimestamp(11, campOrderVO.getCampOrderCompletedTime());
+			pstmt.setInt(12, campOrderVO.getCampCommentStar());
+			pstmt.setString(13, campOrderVO.getCampComment());
+			pstmt.setTimestamp(14, campOrderVO.getCampOrderCommentTime());
+			pstmt.executeUpdate();
+>>>>>>> Alice
 
 		} catch (Exception se) {
 			try {
@@ -180,7 +218,7 @@ public class CampOrderDAOImpl implements CampOrderDAO {
 		PreparedStatement pstmt = null;
 		try {
 
-			con = DriverManager.getConnection(Util.URL, Util.USER, Util.PASSWORD);
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(UPDATE_STMT);
 
 			pstmt.setInt(1, campOrderVO.getMemberId());
@@ -229,7 +267,7 @@ public class CampOrderDAOImpl implements CampOrderDAO {
 
 		try {
 
-			con = DriverManager.getConnection(Util.URL, Util.USER, Util.PASSWORD);
+			con = ds.getConnection();
 			con.setAutoCommit(false);
 			pstmt = con.prepareStatement(DELETE_ORDERDETAIL);
 			pstmt.setInt(1, campOrderId);
@@ -273,7 +311,7 @@ public class CampOrderDAOImpl implements CampOrderDAO {
 		CampOrderVO campOrderVO = null;
 		try {
 
-			con = DriverManager.getConnection(Util.URL, Util.USER, Util.PASSWORD);
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(FIND_BY_PK);
 			pstmt.setInt(1, campOrderId);
 			rs = pstmt.executeQuery();
@@ -325,6 +363,80 @@ public class CampOrderDAOImpl implements CampOrderDAO {
 
 		return campOrderVO;
 	}
+	
+	@Override
+	public List<CampOrderVO> findByParams(int statusnum,Date startDate,Date endDate) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<CampOrderVO> list = new ArrayList<>();
+		try {
+			con = ds.getConnection();
+			String sql= FIND_BY_PARAMS;
+			if (statusnum == -1) {
+				sql = FIND_BY_PARAMS_NO_STATUS;
+			}
+			pstmt = con.prepareStatement(sql);
+			java.sql.Date startSqlDate = new java.sql.Date(startDate.getTime());
+			pstmt.setDate(1, startSqlDate);
+			java.sql.Date endSqlDate = new java.sql.Date(endDate.getTime());
+			pstmt.setDate(2, endSqlDate);
+			if (statusnum != -1) {
+			  pstmt.setInt(3, statusnum);
+			}
+			
+			CampOrderVO campOrderVO = null;
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				campOrderVO = new CampOrderVO();
+				campOrderVO.setCampOrderId(rs.getInt(1));
+				campOrderVO.setCampId(rs.getInt(2));
+				campOrderVO.setMemberId(rs.getInt(3));
+				campOrderVO.setCampOrderStatus(rs.getInt(4));
+				campOrderVO.setCampOrderTotalAmount(rs.getInt(5));
+				campOrderVO.setCampCheckOutDate(rs.getDate(6));
+				campOrderVO.setCampCheckInDate(rs.getDate(7));
+				campOrderVO.setCreditCardNum(rs.getString(8));
+				campOrderVO.setPayerName(rs.getString(9));
+				campOrderVO.setPayerPhone(rs.getString(10));
+				campOrderVO.setCampOrderConfirmedTime(rs.getTimestamp(11));
+				campOrderVO.setCampOrderCompletedTime(rs.getTimestamp(12));
+				campOrderVO.setCampCommentStar(rs.getInt(13));
+				campOrderVO.setCampComment(rs.getString(14));
+				campOrderVO.setCampOrderCommentTime(rs.getTimestamp(15));
+				list.add(campOrderVO);
+			}
+		} catch (SQLException se) {
+			se.printStackTrace();
+			// Clean up JDBC resources
+		} finally {
+
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+
+		return list;
+	}
 
 	@Override
 	public List<CampOrderVO> getAll() {
@@ -334,8 +446,7 @@ public class CampOrderDAOImpl implements CampOrderDAO {
 		CampOrderVO campOrderVO = null;
 		List<CampOrderVO> list = new ArrayList<>();
 		try {
-
-			con = DriverManager.getConnection(Util.URL, Util.USER, Util.PASSWORD);
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ALL);
 			rs = pstmt.executeQuery();
 

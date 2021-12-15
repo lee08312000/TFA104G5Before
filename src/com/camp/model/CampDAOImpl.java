@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.sql.rowset.serial.SerialBlob;
@@ -31,6 +32,7 @@ public class CampDAOImpl implements CampDAO {
 	private static final String CLOUM_FOR_ALL = "camp_Id," + CLOUM_FOR_INSERT;
 	private static final String INSERT_STMT = "INSERT INTO camp (" + CLOUM_FOR_INSERT + ") "
 			+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?)";
+<<<<<<< HEAD:src/com/camp/model/CampDAOImpl.java
 
 	// 查詢營地基本資料(動態調整排序條件1.營地上架時間2.熱門排行)兩隻表camp left join camp_order
 	private static final String GET_ALL_STMT = "SELECT \r\n"
@@ -45,10 +47,16 @@ public class CampDAOImpl implements CampDAO {
 
 	private static String GET_BY_KEYWORDS = "SELECT  *  FROM camp where camp_name like '%%' ";
 	private static final String GET_ONE_STMT = "SELECT  *  FROM camp where camp_Id = ?";
+=======
+	private static final String GET_ALL_STMT = "SELECT " + CLOUM_FOR_ALL + " FROM camp order by camp_Id";
+	private static final String GET_ONE_STMT = "SELECT " +  CLOUM_FOR_ALL + " FROM camp where camp_Id = ?";
+	private static final String CAMPLIST = "SELECT " + CLOUM_FOR_ALL
+			+ " FROM camp where 1 = 1 and camp_launched_time  between ? and ? and camp_id like '%' ? '%'";
+>>>>>>> Alice:src/com/camp/model/CampDAOlmpl.java
 	private static final String DELETE = "DELETE FROM camp where camp_Id = ?";
 	private static final String UPDATE = "UPDATE camp set company_Id=?,camp_Status=?,camp_description=?,camp_Name=?,camp_Rule=?,camp_Pic_1=?,camp_Pic_2=?,camp_Pic_3=?,camp_Pic_4=?,camp_Pic_5=?,camp_Address=?,camp_Phone=?,certificate_Num=?,certificate_Pic=?,camp_Launched_Time=?,camp_Applied_Launch_Time=?,longitude=?,lattitude=? where camp_Id = ?";
 
-	@Override
+	@Override // 新增營地資料
 	public void insert(CampVO campVO) {
 
 		Connection con = null;
@@ -100,12 +108,18 @@ public class CampDAOImpl implements CampDAO {
 			}
 			pstmt.setTimestamp(15, campVO.getCampLaunchedTime());
 			pstmt.setTimestamp(16, campVO.getCampAppliedLaunchTime());
+<<<<<<< HEAD:src/com/camp/model/CampDAOImpl.java
 			pstmt.setBigDecimal(17, campVO.getLongitude());
 			pstmt.setBigDecimal(18, campVO.getLattitude());
+=======
+			pstmt.setDouble(17, campVO.getLongitude());
+			pstmt.setDouble(18, campVO.getLattitude());
+>>>>>>> Alice:src/com/camp/model/CampDAOlmpl.java
 
 			pstmt.executeUpdate();
 
 		} catch (SQLException se) {
+			se.printStackTrace();
 			throw new RuntimeException("A database error occured. " + se.getMessage());
 
 		} catch (ClassNotFoundException e) {
@@ -129,7 +143,7 @@ public class CampDAOImpl implements CampDAO {
 
 	}
 
-	@Override
+	@Override // 更新營地資料
 	public void update(CampVO campVO) {
 
 		Connection con = null;
@@ -188,11 +202,10 @@ public class CampDAOImpl implements CampDAO {
 			pstmt.setInt(19, campVO.getCampId());
 			pstmt.executeUpdate();
 
-		} catch (SQLException se) {
+		} catch (Exception se) {
+			se.printStackTrace();
 			throw new RuntimeException("A database error occured. " + se.getMessage());
 
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		} finally {
 			if (pstmt != null) {
 				try {
@@ -212,7 +225,7 @@ public class CampDAOImpl implements CampDAO {
 
 	}
 
-	@Override
+	@Override // 刪除營地資料
 	public void delete(Integer campId) {
 
 		Connection con = null;
@@ -252,7 +265,7 @@ public class CampDAOImpl implements CampDAO {
 
 	}
 
-	@Override
+	@Override // 查詢單筆營地資料
 	public CampVO findByPrimaryKey(Integer campId) {
 
 		CampVO CampVO = null;
@@ -273,6 +286,7 @@ public class CampDAOImpl implements CampDAO {
 
 				CampVO = new CampVO();
 				CampVO.setCampId(rs.getInt("camp_Id"));
+				CampVO.setCampName(rs.getString("camp_name"));
 				CampVO.setCompanyId(rs.getInt("company_Id"));
 				CampVO.setCampStatus(rs.getInt("camp_Status"));
 				CampVO.setCampDiscription(rs.getString("camp_description"));
@@ -285,6 +299,7 @@ public class CampDAOImpl implements CampDAO {
 				CampVO.setCampPic5(checkBlob(rs.getBlob("camp_Pic_5")));
 				CampVO.setCampAddress(rs.getString("camp_Address"));
 				CampVO.setCampPhone(rs.getString("camp_Phone"));
+<<<<<<< HEAD:src/com/camp/model/CampDAOImpl.java
 				CampVO.setCertificateNum(rs.getString("certificate_num"));
 				CampVO.setCertificatePic(checkBlob(rs.getBlob("certificate_pic")));
 				CampVO.setCampLaunchedTime(rs.getTimestamp("camp_launched_time"));
@@ -292,6 +307,16 @@ public class CampDAOImpl implements CampDAO {
 				CampVO.setLattitude(rs.getBigDecimal("lattitude"));
 				CampVO.setCampAppliedLaunchTime(rs.getTimestamp("camp_applied_launch_time"));
 
+=======
+				CampVO.setCertificateNum(rs.getString("certificate_Num"));
+				CampVO.setCertificatePic(checkBlob(rs.getBlob("certificate_Pic")));
+				CampVO.setCampLaunchedTime(rs.getTimestamp("camp_Launched_Time"));
+				CampVO.setCampAppliedLaunchTime(rs.getTimestamp("camp_Applied_Launch_Time"));
+				CampVO.setLongitude(rs.getDouble("longitude"));
+				CampVO.setLattitude(rs.getDouble("lattitude"));
+				CampVO.setCampDiscription(rs.getString("camp_description"));
+				CampVO.setCampRule(rs.getString("camp_rule"));
+>>>>>>> Alice:src/com/camp/model/CampDAOlmpl.java
 			}
 
 		} catch (SQLException se) {
@@ -341,8 +366,13 @@ public class CampDAOImpl implements CampDAO {
 
 	}
 
+<<<<<<< HEAD:src/com/camp/model/CampDAOImpl.java
 	@Override
 	public List<CampVO> getAll(Integer orderby) {
+=======
+	@Override // 查詢全部營位
+	public List<CampVO> getAll() {
+>>>>>>> Alice:src/com/camp/model/CampDAOlmpl.java
 		List<CampVO> list = new ArrayList<CampVO>();
 		CampVO campVO = null;
 		Connection con = null;
@@ -374,6 +404,7 @@ public class CampDAOImpl implements CampDAO {
 			while (rs.next()) {
 				campVO = new CampVO();
 				campVO.setCampId(rs.getInt("camp_Id"));
+				campVO.setCampName(rs.getString("camp_name"));
 				campVO.setCompanyId(rs.getInt("company_Id"));
 				campVO.setCampStatus(rs.getInt("camp_Status"));
 				campVO.setCampDiscription(rs.getString("camp_description"));
@@ -496,6 +527,100 @@ public class CampDAOImpl implements CampDAO {
 			}
 		}
 		return list;
+	}
+
+	@Override // 依營位狀態查詢
+	public List<CampVO> camplist(Integer campId, Date startime, Date endtime, String campIdsearch) {
+		List<CampVO> camplist = new ArrayList<CampVO>();
+		CampVO campVO = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+
+			StringBuilder sb = new StringBuilder(CAMPLIST);
+
+			// CAMPLIST+camp_status=字串相加
+			if (campId != 3) {
+				sb.append(" and camp_status = ?");
+			}
+			pstmt = con.prepareStatement(sb.toString());
+
+			// 依日期區間查詢營地
+			if (campId == 3) {
+				pstmt.setDate(1, new java.sql.Date(startime.getTime()));
+				pstmt.setDate(2, new java.sql.Date(endtime.getTime()));
+				pstmt.setString(3, campIdsearch);
+
+			} else {
+				pstmt.setDate(1,new java.sql.Date(startime.getTime()));
+				pstmt.setDate(2,new java.sql.Date(endtime.getTime()));
+				pstmt.setString(3,campIdsearch);
+				pstmt.setInt(4,campId);
+			}
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+
+				campVO = new CampVO();
+				campVO.setCampId(rs.getInt("camp_Id"));
+				campVO.setCompanyId(rs.getInt("company_Id"));
+				campVO.setCampName(rs.getString("camp_name"));
+				campVO.setCampStatus(rs.getInt("camp_Status"));
+				campVO.setCampPic1(checkBlob(rs.getBlob("camp_Pic_1")));
+				campVO.setCampPic2(checkBlob(rs.getBlob("camp_Pic_2")));
+				campVO.setCampPic3(checkBlob(rs.getBlob("camp_Pic_3")));
+				campVO.setCampPic4(checkBlob(rs.getBlob("camp_Pic_4")));
+				campVO.setCampPic5(checkBlob(rs.getBlob("camp_Pic_5")));
+				campVO.setCampAddress(rs.getString("camp_Address"));
+				campVO.setCampPhone(rs.getString("camp_Phone"));
+				campVO.setCertificateNum(rs.getString("certificate_Num"));
+				campVO.setCertificatePic(checkBlob(rs.getBlob("certificate_Pic")));
+				campVO.setCampLaunchedTime(rs.getTimestamp("camp_Launched_Time"));
+				campVO.setCampAppliedLaunchTime(rs.getTimestamp("camp_Applied_Launch_Time"));
+				campVO.setLongitude(rs.getDouble("longitude"));
+				campVO.setLattitude(rs.getDouble("lattitude"));
+				campVO.setCampRule(rs.getString("camp_rule"));
+				campVO.setCampDiscription(rs.getString("camp_description"));
+
+				camplist.add(campVO); // Store the row in the list
+			}
+
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return camplist;
 	}
 
 }

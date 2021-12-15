@@ -1,5 +1,6 @@
 package com.company.model;
 
+<<<<<<< HEAD
 import java.sql.Timestamp;
 
 // 廠商VO
@@ -126,3 +127,8 @@ public class CompanyVO implements java.io.Serializable{
 	}
 	
 }
+=======
+public class CompanyVO {
+
+}
+>>>>>>> Alice

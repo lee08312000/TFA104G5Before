@@ -1,5 +1,12 @@
 package com.campOrder.model;
 
+<<<<<<< HEAD
+=======
+
+
+
+import java.util.Date;
+>>>>>>> Alice
 import java.util.List;
 
 import com.campAreaOrderDetail.model.CampAreaOrderDetailVO;
@@ -30,5 +37,7 @@ public interface CampOrderDAO {
 	
 	
 	
+
+	List<CampOrderVO> findByParams(int statusnum, Date startDate, Date endDate);
 
 }

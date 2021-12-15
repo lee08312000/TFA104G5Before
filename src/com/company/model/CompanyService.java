@@ -1,5 +1,6 @@
 package com.company.model;
 
+<<<<<<< HEAD
 import java.sql.Timestamp;
 import java.util.List;
 import javafx.application.Application;
@@ -66,5 +67,8 @@ public class CompanyService {
 		return dao.getAll();
 	}
 
+=======
+public class CompanyService {
+>>>>>>> Alice
 
 }

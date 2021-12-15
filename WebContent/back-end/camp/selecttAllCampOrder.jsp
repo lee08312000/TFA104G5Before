@@ -1,9 +1,11 @@
- <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
+  <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="com.campOrder.model.*"%>
 <!DOCTYPE html>
 <%@ page import="java.util.*"%>
+<%@ page import="com.campOrder.model.*"%>
+
 
 <%
 	List<CampOrderVO> list = new ArrayList<CampOrderVO>();
@@ -27,12 +29,27 @@ $(document).ready(function() {
 	$( ".update" ).click(function() {
 		var campOrderId = $(this).attr("name");
 		param = {
+				data : {
+					"action":"GETONECAMP",
+					"campOrderId" : campOrderId
+				},
+				title : "營地訂單",
+				href : '<c:url value="/camp/campOrder.do" />',
+				innerHeight : 350,
+				innerWidth : 650,
+				opacity : 0.5,
+				top : 100
+			};
+		param = {
 			data : {
 				"action":"GETONECAMP",
 				"campOrderId" : campOrderId
 			},
+			type: 'POST',
 			title : "營地訂單",
-			href : '<c:url value="/camp/campOrder.do" />',
+			dataType: 'json',
+            contentType: 'application/json',
+			href : '<c:url value="'+ctx+'/back-end/camp/campOrder.do" />',
 			innerHeight : 350,
 			innerWidth : 650,
 			opacity : 0.5,
@@ -51,7 +68,7 @@ $(document).ready(function() {
 <link rel="stylesheet" href="<%=request.getContextPath()%>/back-end/css/campOrder.css">
 </head>
 <body>
-
+<!-- --------head區域------- -->
 	<header class="header-outer">
 		<div class="header-inner responsive-wrapper">
 			<div class="header-logo">
@@ -72,12 +89,13 @@ $(document).ready(function() {
 <div id="bodyCenter">
 	<!-- --------main區域------- -->
 	<h2>營地訂單查詢</h2>
+	
 <table>
 	<div class="divSearchForm">
 		<form class="searchForm"  method="post" ACTION="<%=request.getContextPath()%>/camp/campOrder.do"
 			style="margin: auto; max-width: 300px">
 			<div class="">
-			<label>訂單狀態</label>
+			<label>狀態</label>
 				<select>
 					<option value="-1">全部</option>
 					<option value="1">已處理</option>
@@ -90,7 +108,21 @@ $(document).ready(function() {
 				<input type="date" id="startDate" name="startDate"> -
 			    <input type="date" id="endDate" name="endDate">
 			</div>
-			
+			<div>
+				<label>付款人</label>
+			    <input type="text" placeholder="請輸入關鍵字" name="payerName">
+			</div>
+			    <div class="list">		
+				<label>訂單流水號</label>							
+			    <input type="text" placeholder="請輸入關鍵字" name="campOrderId">		
+             <div class="submit_button">			
+			 <input type="hidden" name="action"	value="SEARCHALL">
+			<button type="submit">
+				<i class="fa fa-search"></i>
+			</button>
+			</div>
+			<div style="clear: both;"></div>
+			</div>
 		</form>
 	</table>	
 

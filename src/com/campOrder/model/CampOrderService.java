@@ -1,6 +1,10 @@
 package com.campOrder.model;
+<<<<<<< HEAD
 
 import java.sql.Date;
+=======
+import java.util.Date;
+>>>>>>> Alice
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,16 +33,28 @@ public class CampOrderService {
 	}
 
 // 新增一筆訂單包含新增訂單明細&日程表訂位數量
+<<<<<<< HEAD
 	public void addOneOrder(CampOrderVO campOrderVO, CampAreaOrderDetailVO... DetailVOs) {
 
 		if (!(campOrderVO == null || DetailVOs.length == 0)) {
 
 			orderdao.add(campOrderVO, DetailVOs);
 
+=======
+	public void addOneOrder(CampOrderVO campOrderVO,CampAreaOrderDetailVO...DetailVOs) {
+	
+		if (!(campOrderVO==null||DetailVOs.length==0)) {
+			
+//
+//			orderdao.add(campOrderVO,DetailVOs);
+			
+			
+>>>>>>> Alice
 		}
 
 	}
 
+<<<<<<< HEAD
 	/********************************************
 	 * 更新訂單功能
 	 *****************************************/
@@ -61,6 +77,10 @@ public class CampOrderService {
 		order.setCampCommentStar(campCommentStar);
 		order.setCampComment(campComment);
 		order.setCampOrderCommentTime(campOrderCommentTime);
+=======
+//更新訂單
+	public void updateOrder(CampOrderVO order) {
+>>>>>>> Alice
 		orderdao.update(order);
 
 	}
@@ -93,41 +113,36 @@ public class CampOrderService {
 		orderdao.update(order);
 	}
 
+<<<<<<< HEAD
 	/********************************************
 	 * 查詢訂單功能
 	 *****************************************/
 //查詢訂單by訂單編號(廠商)
+=======
+//刪除訂單by訂單編號，且刪除此筆訂單的明細
+	public void deleteByOrderId(Integer campOrderId) {
+		orderdao.delete(campOrderId);
+	}
+
+//刪除訂單明細by訂單明細編號會問題(有可能需要修改訂單)
+
+	
+	
+	
+/********************************************查詢訂單功能*****************************************/
+    //查詢訂單by訂單編號(廠商)
+>>>>>>> Alice
 	public CampOrderVO findByCampOrderId(Integer campOrderId) {
 		return orderdao.findByPK(campOrderId);
 
 	}
 
-//查詢訂單by訂單狀態(廠商)
-	public List OrderByStatus(char statusnum) {
-		List<CampOrderVO> daolist = orderdao.getAll();
-		List<CampOrderVO> querylist = new ArrayList<CampOrderVO>();
-		for (CampOrderVO obj : daolist) {
-			if (obj.getCampOrderStatus() == statusnum) {
-				querylist.add(obj);
-			}
-		}
-
-		return querylist;
+    //查詢訂單by訂單狀態(廠商) 預計入住日期(廠商查詢當日的訂單)
+	public List<CampOrderVO> findByParams(int statusnum,Date startDate,Date endDate) {
+		List<CampOrderVO> daolist = orderdao.findByParams(statusnum, startDate, endDate);
+		return daolist;
 	}
 
-//查詢訂單by預計入住日期(廠商查詢當日的訂單)
-//參數日期要轉換java.sql.Date
-	public List OrderByCheckin(Date checkinDate) {
-		List<CampOrderVO> daolist = orderdao.getAll();
-		List<CampOrderVO> querylist = new ArrayList<CampOrderVO>();
-		for (CampOrderVO obj : daolist) {
-			if (obj.getCampCheckInDate() == checkinDate) {
-				querylist.add(obj);
-			}
-		}
-
-		return querylist;
-	}
 
 //查詢訂單by營地編號(廠商查自己營地所有訂單)
 	public List OrderByCompanyId(int companyId) {
