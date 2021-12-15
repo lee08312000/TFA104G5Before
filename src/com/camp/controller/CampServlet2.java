@@ -5,11 +5,9 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,9 +26,9 @@ import com.campTag.model.CampTagService;
 import com.campTagDetail.model.CampTagDetailService;
 import com.campTagDetail.model.CampTagDetailVO;
 
-@WebServlet("/CampServlet")
+@WebServlet("/CampServlet2")
 
-public class CampServlet extends HttpServlet {
+public class CampServlet2 extends HttpServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		doGet(req, res);
 	}
@@ -281,6 +279,8 @@ public class CampServlet extends HttpServlet {
 			res.getWriter().print(jsArray.toString());
 
 		}
-
 	}
 }
+
+	
+	
