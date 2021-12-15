@@ -5,9 +5,11 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,8 +23,8 @@ import com.camp.model.CampVO;
 import com.campArea.model.CampAreaService;
 import com.campArea.model.CampAreaVO;
 import com.campOrder.model.CampOrderService;
+import com.campOrder.model.CampOrderVO;
 import com.campTag.model.CampTagService;
-import com.campTag.model.CampTagVO;
 import com.campTagDetail.model.CampTagDetailService;
 import com.campTagDetail.model.CampTagDetailVO;
 
@@ -36,19 +38,20 @@ public class CampServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
 		req.setCharacterEncoding("utf-8");
-		String hot = req.getParameter("hotcamp");
-		System.out.println(hot);
 		String action = req.getParameter("action");
+		System.out.println(action);
+
 		res.setHeader("Access-Control-Allow-Origin", "*");
 		res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
 		res.setHeader("Access-Control-Max-Age", "300");
 		res.setHeader("Access-Control-Allow-Headers", "content-type, x-requested-with");
 		res.setHeader("Access-Control-Allow-Credentials", "true");
-		res.setContentType("text/html;charset=UTF-8");
+		res.setContentType("text/plain;charset=UTF-8");
 		PrintWriter out = res.getWriter();
-		System.out.println(action);
+
+
 ////////////////////////////////////////////首頁載入熱門營地八大/////////////////////////////////////////////////////////////////////////
-		if ("hotcamp".equals(hot)) {
+		if ("hotcamp".equals(action)) {
 
 			/*************************** 開始查詢資料 ****************************************/
 //step1 從訂單找熱門營地的id
@@ -78,6 +81,7 @@ public class CampServlet extends HttpServlet {
 				}
 
 				window.setTags(camptagsName);
+
 				// step4:物件轉換josn
 				addlist.add(window);
 
@@ -86,20 +90,62 @@ public class CampServlet extends HttpServlet {
 			JSONArray jsArray = new JSONArray(addlist);
 
 			res.getWriter().print(jsArray);
-
+			return;
 		}
 
 ////////////////////////////////////////////第二頁載入使用者篩選結果/////////////////////////////////////////////////////////////////////////
 
 		if ("selectedcamp".equals(action)) {
-			CampTagDetailService camptagdetailSvc = new CampTagDetailService();
-			CampTagService camptagSvc = new CampTagService();
-			CampService campSvc = new CampService();
 
-			/*************************** 開始查詢資料 ****************************************/
 			String[] section = req.getParameterValues("section");
 			String[] feature = req.getParameterValues("feature");
 			String orderby = req.getParameter("orderby");
+
+			/*************************** 開始查詢資料 ****************************************/
+			CampTagDetailService camptagdetailSvc = new CampTagDetailService();
+			CampTagService camptagSvc = new CampTagService();
+			CampService campSvc = new CampService();
+			
+			
+			/*************************** 分業顯示全部營地 ****************************************/
+		if(section==null&&section==null) {
+//檢視使用者需求的分頁頁數
+			String page=req.getParameter("page");
+			
+			System.out.println(page);
+//step2 撈營地資料 
+			List<CampVO> list=campSvc.getAllCampBypage(Integer.parseInt(page), 4, 1);
+
+//step3 撈標籤資料
+			List<CampWindow> selelist = new ArrayList<CampWindow>();
+			CampWindow window = null;
+			for (CampVO obj : list) {
+				List<String> camptagsName=camptagdetailSvc.findCampTagsByCampIdNames(obj.getCampId());
+				window = new CampWindow();
+				window.setCampId(obj.getCampId());
+				window.setName(obj.getCampName());
+				window.setAddress(obj.getCampAddress());
+				String Base64Str = Base64.getEncoder().encodeToString(obj.getCampPic1());
+				window.setImgBase64(Base64Str);
+				window.setTags(camptagsName);
+				selelist.add(window);
+
+				}
+				
+			JSONArray jsArray = new JSONArray(selelist);
+
+			out.print(jsArray);
+			return;
+
+		}
+			
+			
+		
+			
+			
+			
+			/*************************** 分業顯示全部營地 ****************************************/
+
 //step1 根據排序查詢全部營地
 			List<CampVO> list = campSvc.getAllCamp(Integer.parseInt(orderby));
 //step2 根據搜尋條件1.地區 2.特色標籤 開始篩選
@@ -118,7 +164,7 @@ public class CampServlet extends HttpServlet {
 
 			Set<CampTagDetailVO> result = camptagdetailSvc.findByMultireq(tagset);
 //step3 檢查返回是否有資料
-			if (!result.isEmpty()) {
+			if (result != null) {
 
 //step4 把篩選的條件加入，目標營地的bean抽出，開始包裝資料喽
 				List<CampWindow> selelist = new ArrayList<CampWindow>();
@@ -144,9 +190,12 @@ public class CampServlet extends HttpServlet {
 				}
 				JSONArray jsArray = new JSONArray(selelist);
 
-				res.getWriter().print(jsArray);
-			}
+				out.print(jsArray);
+				return;
+			}else {
 
+			out.print("查無資料");
+			}
 		}
 
 ////////////////////////////////////////////Search Bar功能/////////////////////////////////////////////////////////////////////////
@@ -179,7 +228,7 @@ public class CampServlet extends HttpServlet {
 					searchlist.add(window);
 				}
 				JSONArray jsArray = new JSONArray(searchlist);
-				res.getWriter().print(jsArray);
+				out.print(jsArray);
 
 			} else {
 				System.out.println("請輸入正確格式");
@@ -193,6 +242,8 @@ public class CampServlet extends HttpServlet {
 			CampTagService camptagSvc = new CampTagService();
 			CampService campSvc = new CampService();
 			CampAreaService campareaSvc = new CampAreaService();
+			CampOrderService camporderSvc = new CampOrderService();
+			List detaillist = new ArrayList();
 //step1 根據查詢的campid查詢相關營地資料
 			String campId = req.getParameter("campid");
 			System.out.println(campId);
@@ -210,16 +261,24 @@ public class CampServlet extends HttpServlet {
 				}
 
 //step5 查詢營位資料
-				List<CampAreaVO> list=campareaSvc.findCampAreaByCampId(camp.getCampId());
-				
-				
-				
-				
+				List<CampAreaVO> arealist = campareaSvc.findCampAreaByCampId(camp.getCampId());
+
+//step6 查詢這個營地所有訂單評論
+				List<CampOrderVO> orderlist = camporderSvc.OrderByCommented(camp.getCampId());
+
+//step7 開始包裝營地營位資料喽
+
+				detaillist.add(camp);
+				detaillist.add(tagnameslist);
+				detaillist.add(arealist);
+				detaillist.add(orderlist);
 
 			} catch (NullPointerException e) {
 				e.printStackTrace();
 
 			}
+			JSONArray jsArray = new JSONArray(detaillist);
+			res.getWriter().print(jsArray.toString());
 
 		}
 

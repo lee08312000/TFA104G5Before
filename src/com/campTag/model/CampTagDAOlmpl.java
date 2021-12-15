@@ -30,9 +30,6 @@ public class CampTagDAOlmpl implements CampTagDAO {
 	private static final String GET_ONE_STMT = "SELECT camp_Tag_Id,camp_Tag_Name "
 			+ " FROM camp_tag where camp_tag_id = ?";
 
-	private static final String GET_ALL_STMT = "SELECT ct.camp_tag_name campTagName ,ct.camp_tag_id campTagId,count(ctd.camp_id) countCampNum"
-			+ " FROM campingParadise.camp_tag ct "
-			+ "join camp_tag_detail ctd on ct.camp_tag_id = ctd.camp_tag_id group by ct.camp_tag_name,ct.camp_tag_id";
 	private static final String DELETE = "DELETE FROM camp_tag where camp_tag_id = ?";
 	private static final String UPDATE = "UPDATE camp_tag set camp_tag_name=? where camp_tag_id = ?";
 	private static final String GET_ALL = "SELECT * FROM camp_tag";
@@ -213,51 +210,7 @@ public class CampTagDAOlmpl implements CampTagDAO {
 		return campTagVO;
 	}
 
-	@Override
-	public List<CampTagVO> getAllTag() {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		List<CampTagVO> list = new ArrayList<CampTagVO>();
-		CampTagVO campTagVO = null;
-		try {
-			con = DriverManager.getConnection(Util.URL, Util.USER, Util.PASSWORD);
-			pstmt = con.prepareStatement(GET_ALL_STMT);
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				campTagVO = new CampTagVO();
-				campTagVO.setCampTagId(rs.getInt("campTagId"));
-				campTagVO.setCampTagName(rs.getString("campTagName"));
-				campTagVO.setCountCampNum(rs.getInt("countCampNum")); 
-				list.add(campTagVO);
-			}
-		} catch (SQLException se) {
-			se.printStackTrace();
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
-		}
-		return list;
-	}
+	
 
 	@Override
 	public List<CampTagVO> getAll() {
@@ -268,7 +221,7 @@ public class CampTagDAOlmpl implements CampTagDAO {
 		CampTagVO campTagVO = null;
 		try {
 			con = DriverManager.getConnection(Util.URL, Util.USER, Util.PASSWORD);
-			pstmt = con.prepareStatement(GET_ONE_STMT);
+			pstmt = con.prepareStatement(GET_ALL);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				campTagVO = new CampTagVO();

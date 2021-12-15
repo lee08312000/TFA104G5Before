@@ -1,7 +1,5 @@
 package com.campBooking.model;
 
-
-
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -11,8 +9,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-
+import java.util.TreeMap;
 
 import util.Util;
 
@@ -21,9 +20,12 @@ public class CampBookingDAOImpl implements CampBookingDAO {
 	private static final String UPDATE_STMT = "UPDATE camp_booking  SET camp_id=?,camp_area_id=?,date=?,booking_camp_area_max=?,booked_camp_area_num=?,closed_status=? WHERE camp_booking_id=?";
 	private static final String DELETE_STMT = "DELETE FROM camp_booking WHERE camp_booking_id= ?";
 	private static final String FIND_BY_PK = "SELECT * FROM camp_booking WHERE camp_booking_id=?";
-	private static final String FIND_BY_CampId = "SELECT * FROM camp_booking WHERE camp_id=? and date=?";
+	private static final String FIND_BY_ALLAREA = "SELECT * FROM camp_booking WHERE camp_id=? and date=?";
 	private static final String GET_ALL = "SELECT * FROM camp_area_order_detail";
-
+	private static final String FIND_BY_CampId = "SELECT \r\n" + "    camp_id,\r\n" + "    date,\r\n"
+			+ "    SUM(camp_area_max - booked_camp_area_num) AS remain_num,\r\n" + "    close_status\r\n" + "    \r\n"
+			+ "FROM\r\n" + "    campingParadise.camp_booking\r\n" + "WHERE\r\n" + "    date = ?\r\n"
+			+ "GROUP BY camp_id , date, close_status\r\n" + "HAVING camp_id = ?";
 	static {
 		try {
 			Class.forName(Util.DRIVER);
@@ -81,7 +83,7 @@ public class CampBookingDAOImpl implements CampBookingDAO {
 				campBookingVO.setDate(rs.getDate(4));
 				campBookingVO.setBookingCampAreaMax(rs.getInt(5));
 				campBookingVO.setBookedCampAreaNum(rs.getInt(6));
-				campBookingVO.setClosedStatus(rs.getString(7).charAt(0));
+				campBookingVO.setClosedStatus(rs.getBoolean(7));
 				list.add(campBookingVO);
 			}
 
@@ -125,7 +127,7 @@ public class CampBookingDAOImpl implements CampBookingDAO {
 			pstmt.setDate(3, campBookingVO.getDate());
 			pstmt.setInt(4, campBookingVO.getBookingCampAreaMax());
 			pstmt.setInt(5, campBookingVO.getBookedCampAreaNum());
-			pstmt.setString(6, String.valueOf(campBookingVO.getClosedStatus()));
+			pstmt.setBoolean(6, campBookingVO.getClosedStatus());
 			int suc_row = pstmt.executeUpdate();
 			System.out.println("成功更新" + suc_row + "筆");
 		} catch (SQLException se) {
@@ -134,7 +136,7 @@ public class CampBookingDAOImpl implements CampBookingDAO {
 		} finally {
 			if (pstmt != null) {
 				try {
-					
+
 					pstmt.close();
 				} catch (SQLException se) {
 					se.printStackTrace(System.err);
@@ -162,7 +164,7 @@ public class CampBookingDAOImpl implements CampBookingDAO {
 			pstmt.setDate(3, campBookingVO.getDate());
 			pstmt.setInt(4, campBookingVO.getBookingCampAreaMax());
 			pstmt.setInt(5, campBookingVO.getBookedCampAreaNum());
-			pstmt.setInt(6, campBookingVO.getClosedStatus());
+			pstmt.setBoolean(6, campBookingVO.getClosedStatus());
 			pstmt.setInt(7, campBookingVO.getCampBookingId());
 			int suc_row = pstmt.executeUpdate();
 			System.out.println("成功更新" + suc_row + "筆");
@@ -206,7 +208,7 @@ public class CampBookingDAOImpl implements CampBookingDAO {
 				campBookingVO.setDate(rs.getDate(4));
 				campBookingVO.setBookingCampAreaMax(rs.getInt(5));
 				campBookingVO.setBookedCampAreaNum(rs.getInt(6));
-				campBookingVO.setClosedStatus(rs.getString(7).charAt(0));
+				campBookingVO.setClosedStatus(rs.getBoolean(7));
 			}
 		} catch (SQLException se) {
 			se.printStackTrace();
@@ -237,29 +239,29 @@ public class CampBookingDAOImpl implements CampBookingDAO {
 	}
 
 	@Override
-	public Set<CampBookingVO> findByCampId(Integer campId, Date date) {
+	public List<CampBookingVO> findByAllArea(Integer campId, String date) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		CampBookingVO campBookingVO=null;
-		Set<CampBookingVO> set=new HashSet<CampBookingVO>();
+		CampBookingVO campBookingVO = null;
+		List<CampBookingVO> list = new ArrayList<CampBookingVO>();
 		try {
 			con = DriverManager.getConnection(Util.URL, Util.USER, Util.PASSWORD);
-			pstmt = con.prepareStatement(FIND_BY_CampId);
+			pstmt = con.prepareStatement(FIND_BY_ALLAREA);
 			pstmt.setInt(1, campId);
-			pstmt.setDate(2, date);
+			pstmt.setDate(2, java.sql.Date.valueOf(date));
 
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				campBookingVO=new CampBookingVO();
+				campBookingVO = new CampBookingVO();
 				campBookingVO.setCampBookingId(rs.getInt(1));
 				campBookingVO.setCampId(rs.getInt(2));
 				campBookingVO.setCampAreaId(rs.getInt(3));
 				campBookingVO.setDate(rs.getDate(4));
 				campBookingVO.setBookingCampAreaMax(rs.getInt(5));
 				campBookingVO.setBookedCampAreaNum(rs.getInt(6));
-				campBookingVO.setClosedStatus(rs.getString(7).charAt(0));
-				set.add(campBookingVO);
+				campBookingVO.setClosedStatus(rs.getBoolean(7));
+				list.add(campBookingVO);
 			}
 		} catch (SQLException se) {
 			se.printStackTrace();
@@ -286,12 +288,55 @@ public class CampBookingDAOImpl implements CampBookingDAO {
 				}
 			}
 		}
-		return set;
-	}
-		
-		
-		
-		
+		return list;
 	}
 
+	@Override
+	public Map<String, Integer> findByCampId(Integer campId, String date) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Map<String, Integer> map = new TreeMap<String, Integer>();
+		try {
+			con = DriverManager.getConnection(Util.URL, Util.USER, Util.PASSWORD);
+			pstmt = con.prepareStatement(FIND_BY_CampId);
+			pstmt.setDate(1, java.sql.Date.valueOf(date));
+			pstmt.setInt(2, campId);
+			rs = pstmt.executeQuery();
 
+			// key="2021-11-01" value=2
+			while (rs.next()) {
+				if (rs.getBoolean(4)) {
+					map.put(rs.getString(2), -1);
+				} else {
+					map.put(rs.getString(2), rs.getInt(3));
+				}
+			}
+		} catch (SQLException se) {
+			se.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return map;
+	}
+}

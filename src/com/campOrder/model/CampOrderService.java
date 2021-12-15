@@ -130,7 +130,7 @@ public class CampOrderService {
 	}
 
 //查詢訂單by營地編號(廠商查自己營地所有訂單)
-	public List OrderByCompanyId(int companyId) {
+	public List OrderByCompanyId(Integer companyId) {
 		List<CampOrderVO> daolist = orderdao.getAll();
 		List<CampOrderVO> querylist = new ArrayList<CampOrderVO>();
 
@@ -144,8 +144,22 @@ public class CampOrderService {
 		return querylist;
 	}
 
+//查詢已完成評論的訂單(給使用者觀看訂單評價)評論時間排序(新到舊)
+	public List OrderByCommented(Integer campId) {
+		List<CampOrderVO> daolist = orderdao.getAll(4);
+		List<CampOrderVO> querylist = new ArrayList<CampOrderVO>();
+		for (CampOrderVO obj : daolist) {
+			if (obj.getCampId()==campId && obj.getCampOrderCommentTime() != null) {
+				querylist.add(obj);
+			}
+
+		}
+		return querylist;
+
+	}
+
 //查詢訂單by會員編號(使用者)
-	public List<CampOrderVO> OrderByUserId(int memberId) {
+	public List<CampOrderVO> OrderByUserId(Integer memberId) {
 		List<CampOrderVO> daolist = orderdao.getAll();
 		List<CampOrderVO> querylist = new ArrayList<CampOrderVO>();
 		for (CampOrderVO obj : daolist) {
@@ -159,7 +173,7 @@ public class CampOrderService {
 
 //查詢訂單明細by訂單編號(使用者)
 
-	public List<CampOrderVO> OrderByOrderId(int orderId, int memberId) {
+	public List<CampOrderVO> OrderByOrderId(Integer orderId, Integer memberId) {
 		List<CampOrderVO> daolist = orderdao.getAll();
 		List<CampOrderVO> querylist = new ArrayList<CampOrderVO>();
 		for (CampOrderVO obj : daolist) {
@@ -171,13 +185,10 @@ public class CampOrderService {
 		return querylist;
 	}
 
-
-
 //查詢熱門營地排行(for訂單)
 	public List<Integer> findhotcamp() {
 
-	return 	orderdao.findhotcamp();
-		
-		
+		return orderdao.findhotcamp();
+
 	}
 }

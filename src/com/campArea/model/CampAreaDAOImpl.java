@@ -21,7 +21,7 @@ public class CampAreaDAOImpl implements CampAreaDAO {
 	private static final String CLOUM_FOR_ALL = "camp_Area_Id," + CLOUM_FOR_INSERT;
 	private static final String INSERT_STMT = "INSERT INTO camp_area (" + CLOUM_FOR_INSERT + ") "
 			+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-	private static final String GET_ALL_STMT = "SELECT " + CLOUM_FOR_INSERT + " FROM camp_area order by camp_Area_Id";
+	private static final String GET_ALL_STMT = "SELECT * FROM camp_area order by camp_Area_Id";
 	private static final String GET_ONE_STMT = "SELECT " + CLOUM_FOR_INSERT + " FROM camp_area where camp_Area_Id = ?";
 	private static final String DELETE = "DELETE FROM camp_area where camp_Area_Id = ?";
 	private static final String UPDATE = "UPDATE camp_area set camp_Id=?,camp_Area_Name=?,camp_Area_Max=?,weekday_Price=?,holiday_Price=?,capitation_Max=?,per_Capitation_Fee=?,camp_Area_Pic=? where camp_Area_Id = ?";
@@ -263,6 +263,7 @@ public class CampAreaDAOImpl implements CampAreaDAO {
 
 			while (rs.next()) {
 				CampAreaVO = new CampAreaVO();
+				CampAreaVO.setCampAreaId(rs.getInt("camp_area_id"));
 				CampAreaVO.setCampId(rs.getInt("camp_Id"));
 				CampAreaVO.setCampAreaName(rs.getString("camp_Area_Name"));
 				CampAreaVO.setCampAreaMax(rs.getInt("camp_Area_Max"));
