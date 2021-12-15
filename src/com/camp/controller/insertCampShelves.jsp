@@ -54,7 +54,7 @@
 							min="2021-11-01" max="2021-11-30"></td>
 				</tr>
 				<tr>
-					<td><label>營地標籤:</label></td>
+					<td><label>營地分類:</label></td>
 
 					<td><select class="selector" name="CampStatus">
 							<option>北部</option>
@@ -68,8 +68,8 @@
 				<tr>
 					<td><label>營地名稱:</label></td>
 						<td>
-						<input type="text" id="campany_id" name="campany_id"  >
-						<input type="text" id="camp_name" name="camp_name" value="">
+						<input type="text" id="campany_id" name="campany_id">
+						<input type="text" id="camp_name" name="camp_name">
 						</td>
 
 				</tr>

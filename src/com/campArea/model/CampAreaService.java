@@ -3,6 +3,7 @@ package com.campArea.model;
 import java.util.List;
 
 
+
 public class CampAreaService {
 private   CampAreaDAO   campareadao;
 	
@@ -24,20 +25,7 @@ private   CampAreaDAO   campareadao;
 	
 	
 	//更新營位
-	public void  updateCampArea(Integer campAreaId, Integer campId, String campAreaName,Integer campAreaMax,Integer weekdayPrice,
-		     Integer holidayPrice,Integer capitationMax,Integer perCapitationFee,byte[]campAreaPic) {
-		 
-		CampAreaVO campareaVO  = new  CampAreaVO();
-		
-		campareaVO.setCampAreaId(campAreaId);
-		campareaVO.setCampId(campId);
-		campareaVO.setCampAreaName(campAreaName);
-		campareaVO.setCampAreaMax(campAreaMax);
-		campareaVO.setWeekdayPrice(weekdayPrice);
-		campareaVO.setHolidayPrice(holidayPrice);
-		campareaVO.setCapitationMax(capitationMax);
-		campareaVO.setPerCapitationFee(perCapitationFee);
-		campareaVO.setCampAreaPic(campAreaPic);
+	public void  updateCampArea(CampAreaVO campareaVO) {
 		
 		campareadao.update(campareaVO);
 	

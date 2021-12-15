@@ -6,7 +6,13 @@
 <!DOCTYPE html>
 <%@ page import="java.util.*"%>
 
-
+<%
+CampAreaVO cv = new CampAreaVO();
+if (request.getAttribute("campAreaVO") != null) {
+	cv = (CampAreaVO) request.getAttribute("campAreaVO");
+}
+pageContext.setAttribute("campAreaVO", cv);
+%>
 
 <html>
 <head>
@@ -51,39 +57,39 @@
 		
 			<tr>
 				<td>營地流水號:</td>
-				<td><input type="hidden" id="campId" name="campId" value="${campId}">${campId}</td>
+				<td><input type="hidden" id="campId" name="campId" value="${campAreaVO.campId}">${campAreaVO.campId}</td>
 			</tr>
 
 			<tr>
 				<td><label>營位名稱:</label></td>
-				<td><input type="text" id="campAreaName" name="campAreaName"></td>
+				<td><input type="text" id="campAreaName" name="campAreaName" value="${campAreaVO.campAreaName}"></td>
 			</tr>
 
 			<tr>
 				<td><label>平日單價:</label></td>
-				<td><input type="text" id="weekdayPrice" name="weekdayPrice"></td>
+				<td><input type="text" id="weekdayPrice" name="weekdayPrice" value="${campAreaVO.weekdayPrice}"></td>
 			</tr>
 
 
 
 			<tr>
 				<td><label>假日單價:</label></td>
-				<td><input type="text" id="holidayPrice"name="holidayPrice"></td>
+				<td><input type="text" id="holidayPrice"name="holidayPrice" value="${campAreaVO.holidayPrice}"></td>
 			</tr>
 
 			<tr>
 				<td><label>每帳人頭加購上限:</label></td>
-				<td><input type="text" id="capitationmax"name="capitationMax"></td>
+				<td><input type="text" id="capitationmax"name="capitationMax"  value="${campAreaVO.capitationMax}"></td>
 			</tr>
 			
 			<tr>
 				<td><label>加購人頭價格:</label></td>
-				<td><input type="text" id="perCapitationFee"name="perCapitationFee"></td>
+				<td><input type="text" id="perCapitationFee"name="perCapitationFee" value="${campAreaVO.perCapitationFee}"></td>
 			</tr>
 
 			<tr>
 				<td><label>帳數上限:</label></td>
-				<td><input type="text" id="campAreaMax" name="campAreaMax"></td>
+				<td><input type="text" id="campAreaMax" name="campAreaMax" value="${campAreaVO.campAreaMax}"></td>
 			</tr>
 
 			<tr>
@@ -106,9 +112,9 @@
 			</tr>
 			
 			<tr>
-
-				<td colspan="2"><input type="hidden" name="action" value="INSERT" /> 
-				<input type="submit" value="確認新增"style="margin-left: 250px;"> <input type="submit" value="取消"></td>
+				<td colspan="2"><input type="hidden" name="action" value="UPDATE" /> 
+				<input type="hidden" id="campAreaId" name="campAreaId" value="${campAreaVO.campAreaId}">
+				<input type="submit" value="確認修改" style="margin-left: 250px;"> <input type="submit" value="取消"></td>
 			</tr>
 
 		</table>

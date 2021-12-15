@@ -2,9 +2,9 @@ package com.company.model;
 
 import com.campTagDetail.model.CampTagDetailVO;
 
-public class CompanyDAO {
+public interface CompanyDAO {
 
-	public static void main(String[] args) {
+	
 		void insert(CompanyVO companyVO );
 
 		void update(CampTagDetailVO campTagDetailVO);
@@ -13,6 +13,6 @@ public class CompanyDAO {
 
 		CampTagDetailVO findByPrimaryKey(Integer campTagId, Integer campId);
 
-	}
+	
 
 }

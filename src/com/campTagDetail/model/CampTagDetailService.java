@@ -1,6 +1,6 @@
 package com.campTagDetail.model;
 
-
+import java.util.List;
 
 public class CampTagDetailService {
 	private CampTagDetailDAO  camptagdetaildao;
@@ -37,5 +37,30 @@ public class CampTagDetailService {
 		return camptagdetaildao.findByPrimaryKey(campTagId,campId);
 
 	}
+	
+	public List<CampTagDetailVO> findByCampId(Integer campId) {
+		return camptagdetaildao.findByCampId(campId);
+
+	}
+	
+	
+	public List<CampTagDetailVO> getAll() {
+		return camptagdetaildao.getAll();
+
+	}
+
+	public void update(List<String> updateCampList, Integer campId) {
+			camptagdetaildao.deleteByKey(campId);
+			
+			for(String s :updateCampList) {
+				CampTagDetailVO campTagDetailVO = new CampTagDetailVO();
+				campTagDetailVO.setCampId(campId);
+				campTagDetailVO.setCampTagId(Integer.valueOf(s));
+				camptagdetaildao.insert(campTagDetailVO);
+			}
+	
+	}
 }
+
+
 

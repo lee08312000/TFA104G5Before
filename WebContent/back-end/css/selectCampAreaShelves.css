@@ -142,7 +142,7 @@
         
         .selectors{
             width: 850px;
-            margin-left:290px ;
+            margin-left:0 ;
             margin-top: 1000px;
             font-size:16px; 
             padding:5px;
@@ -159,7 +159,7 @@
         table {
             border: 1px solid black;
             border-collapse: collapse;
-            margin-left: 290px;
+            margin-right:0;
             margin-top: 10px;
             table-layout: fixed;
             width: 70%;
@@ -170,6 +170,7 @@
             border: 1px solid black;
             text-align: center;
             width: 100px;
+           
 
         }
 
@@ -206,7 +207,7 @@
 
         div.pagination {
 			
-            margin-left: 290px;
+            margin-left: 0px;
             margin-top: 10px;
             display: inline-block;
 

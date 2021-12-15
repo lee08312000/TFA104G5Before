@@ -11,6 +11,8 @@ public class CampTagDetailVO implements Serializable{
 	private Integer campId;      //營地流水號
 	private Integer campTagIdNew;
 	private Integer campIdNew;
+	
+	private	String campTagName;   //營地標籤名稱
 	public CampTagDetailVO() {
 
 	}
@@ -38,11 +40,14 @@ public class CampTagDetailVO implements Serializable{
 	public void setCampIdNew(Integer campIdNew) {
 		this.campIdNew = campIdNew;
 	}
-	@Override
-	public String toString() {
-		return "CampTagDetailVO [campTagId=" + campTagId + ", campId=" + campId + ", campTagIdNew=" + campTagIdNew
-				+ ", campIdNew=" + campIdNew + "]";
+	public String getCampTagName() {
+		return campTagName;
 	}
+	public void setCampTagName(String campTagName) {
+		this.campTagName = campTagName;
+	}
+	
+	
 	
 	
 	

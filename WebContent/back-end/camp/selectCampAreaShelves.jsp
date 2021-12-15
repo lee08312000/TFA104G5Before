@@ -18,7 +18,16 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<script type="text/javascript">
+  function deleteCheck() {
+	  var msg = "您真的確定要刪除嗎？\n\n請確認！";
+	  if (confirm(msg)==true){
+	  return true;
+	  }else{
+	  return false;
+	  }
+  }
+</script>
 <title>campAreaShelves</title>
 <link rel="stylesheet"
 	href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
@@ -51,15 +60,34 @@
 	<!-- --------main區域------- -->
 	
 	<h1>營位列表 ${errorMsgs}</h1>
-<form method="post" ACTION="<%=request.getContextPath()%>/camp/campareashelves.do">
-	<div class="selectors">		 
-		 <input type="text" placeholder="請輸入關鍵字" name="campId"> 
+	<form method="post" ACTION="<%=request.getContextPath()%>/camp/shelves.do">
+		<div class="selectors">		 
+		     <input type="hidden" name="campstatus" value="3">
+		     <input type="hidden" name="campIdsearch" value="">
+			 <input type="hidden" name="action" value="SEARCHALL">
+			<button type="submit">
+				<i class="fas fa-home"></i>
+			</button>
+		</div>
+	
+	</form>
+    <form method="post" ACTION="<%=request.getContextPath()%>/camp/campareashelves.do">
+		<div class="selectors">		 
+			 <input type="hidden" name="action" value="INSERTPAGE">
+			  <input type="hidden" name="campId" value="${campId}">		 
+			<button type="submit">新增</button>
+		</div>
+	
+	</form>
+	<form method="post" ACTION="<%=request.getContextPath()%>/camp/campareashelves.do" >
+		<div class="selectors">				
 		 <input type="hidden" name="action" value="SEARCHALL">
-		<button type="submit">
-			<i class="fa fa-search"></i>
-		</button>
-	</div>
-</form>
+		 <input type="hidden" name="campId" value="${campId}">
+		<button type="submit"><i class="fa fa-search"></i></button>
+		
+		</div>
+					
+	</form>	
 
 	<div class="pagination">
 		<%@ include file="pages/page1.jsp" %>
@@ -71,12 +99,12 @@
 				<th>營位名稱</th>
 				<th>平日單價</th>
 				<th>價日單價</th>
-				<th>每帳加購人頭上限</th>
+				<th>每帳加購<br>人頭上限</th>
 				<th>加購人頭價格</th>
 				<th>帳數上限</th>
 				<th>庫存帳數</th>
 				<th>營位美照</th>
-				<th>編輯</th>
+				<th colspan="2">編輯</th>
 
 			</tr>
 		</thead>
@@ -95,9 +123,21 @@
 					<td>${campareaVO.campAreaMax}</td>
 					<td></td>
 					<td></td>
-					
-					<td><input type="button" value="修改" name="${campareaVO.campAreaId}"
-						class="update" /></td>
+					<td>
+						<form method="post" ACTION="<%=request.getContextPath()%>/camp/campareashelves.do">
+						<input type="hidden" name="campAreaId"  value="${campareaVO.campAreaId}" class="update" />
+						<input type="hidden" name="action"  value="UPDATEFINDBYKEY" class="update" />
+						<input type="submit" value="修改"  />
+						</form>
+					</td>
+					<td>
+						<form method="post" ACTION="<%=request.getContextPath()%>/camp/campareashelves.do">
+						<input type="hidden" name="campAreaId"  value="${campareaVO.campAreaId}" class="delete"/>
+						<input type="hidden" name="action"  value="DELETE" class="delete" />
+						<input type="hidden" name="camp_Id"  value="${campareaVO.campId}" class="delete"/>
+						<input type="submit" onclick="deleteCheck()" value="刪除"  />
+						</form>
+					</td>
 				</tr>
 			</c:forEach>
 

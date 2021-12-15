@@ -1,5 +1,6 @@
 package com.camp.model;
 
+import java.util.Date;
 import java.util.List;
 
 import com.campArea.model.CampAreaVO;
@@ -14,7 +15,11 @@ public interface CampDAO {
 
 	CampVO findByPrimaryKey(Integer campId);
 	
+	List<CampVO> camplist(Integer campId, Date startime, Date endtime,String campIdsearchs);
+	
 
 	List<CampVO> getAll();
+	
+
 
 }

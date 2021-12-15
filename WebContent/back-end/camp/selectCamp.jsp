@@ -1,16 +1,27 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ page import="com.campArea.model.*"%>
+<%@ page import="com.camp.model.*"%>
 <!DOCTYPE html>
 <%@ page import="java.util.*"%>
 
+
 <%
-	List<CampAreaVO> list = new ArrayList<CampAreaVO>();
+	List<CampVO> list = new ArrayList<CampVO>();
 	if (request.getAttribute("list") != null) {
-		list = (ArrayList<CampAreaVO>) request.getAttribute("list");
+		list = (ArrayList<CampVO>) request.getAttribute("list");
 	}
 	pageContext.setAttribute("list", list);
+	
+	Calendar startimeCalendar = Calendar.getInstance();
+	startimeCalendar.add(Calendar.DATE, -90);
+	pageContext.setAttribute("startime", startimeCalendar.getTime());
+	
+	
+	Calendar endtimeCalendar = Calendar.getInstance();
+	
+	pageContext.setAttribute("endtime", endtimeCalendar.getTime());
+	
 %>
 
 <html>
@@ -27,7 +38,7 @@
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/back-end/css/selectCamp.css">
 </head>
-<body>
+<body >
 	<!-- --------head區域------- -->
 	<header class="header-outer">
 		<div class="header-inner responsive-wrapper">
@@ -51,21 +62,26 @@
 	<!-- --------main區域------- -->
 	<h1>營地列表 </h1>
     <h2>${errorMsgs}</h2>
-
+<form method="post" ACTION="<%=request.getContextPath()%>/camp/shelves.do"  >
 	<div class="selector">
-		<label>營地狀態</label> <select>
-			<option>全部</option>
-			<option>上架</option>
-			<option>下架</option>
-		</select> <label>日期區間</label> <input type="date" id="startDate"
-			name="startDate"> <input type="date" id="endDate"
-			name="endDate"> <input type="text" placeholder="請輸入關鍵字"
-			name="campOrderId"> <input type="hidden" name="action"
-			value="SEARCHALL">
-		<button type="submit">
+		<label>營地狀態</label> 
+		<select name="campstatus">
+			<option value="3">全部</option>
+			<option value="1">上架</option>
+			<option value="0">下架</option>
+		</select> 
+		<label>日期區間</label>
+		 <input type="date" id="startDate" name="startDate" value="<fmt:formatDate value='${startime}' pattern='yyyy-MM-dd'/>"/>
+		  <input type="date" id="endDate"name="endDate" value="<fmt:formatDate value='${endtime}' pattern='yyyy-MM-dd'/>">
+		   <input type="text" placeholder="請輸入關鍵字"name="campIdsearch">
+		    <input type="hidden" name="action" value="SEARCHALL">
+		    <button type="submit" id="searchSubmit">
 			<i class="fa fa-search"></i>
-		</button>
+		   </button>
 	</div>
+</form>
+
+
 
 	<div class="pagination">
 		<%@ include file="pages/page1.jsp" %>
@@ -73,8 +89,9 @@
 	<table class="camp_table">
 		<tbody>
 			<tr>
-				 <th>上架日期</th>
+				<th>上架日期</th>
                 <th>營地流水號</th>
+                <th>營地名稱</th>
                 <th>營地電話</th>
                 <th>經度</th>
                 <th>緯度</th>
@@ -82,8 +99,9 @@
                 <th>營地敘述</th>
                 <th>營地<br>租借規則</th>
                 <th>營地美照</th>
+                <th>營地狀態</th>
+                <th>營位詳請</th>
                 <th>編輯</th>
-
 			</tr>
 		</thead>
 
@@ -93,18 +111,40 @@
 				end="<%=pageIndex+rowsPerPage-1%>">
 
 				<tr>
-					<td><fmt:formatDate value="${campVO.campConfirmedTime}"
+					<td><fmt:formatDate value="${campVO.campLaunchedTime}"
 							pattern="yyyy-MM-dd" /></td>
 					<td>${campVO.campId}</td>
+					<td>${campVO.campName}</td>
 					<td>${campVO.campPhone}</td>
 					<td>${campVO.longitude}</td>
 					<td>${campVO.lattitude}</td>
 					<td>${campVO.campAddress}</td>
 					<td>${campVO.campDiscription}</td>
-					<td>${campVO.campPic1}</td>
+					<td>${campVO.campRule}</td>
+					<td>${campVO.campPic1}</td>					
+					<td>${campVO.campStatus==1?"上架":"下架"}</td>
+					
+			         
+					<td>
+					<form method="post" ACTION="<%=request.getContextPath()%>/camp/campareashelves.do">
+					  <input type="hidden" name="action"value="SEARCHALL">
+					  <input type="hidden" name="campId" value="${campVO.campId}">
+					<button type="submit" ><i class="fas fa-file-alt"></i> </button>
+				
+					</form>
+					</td>						
+					
+					
+					<td> 
+					<form method="post" ACTION="<%=request.getContextPath()%>/camp/shelves.do" >				
+					 <input type="hidden" name="action" value="UPDATEFINDBYKEY">
+					 <input type="hidden" name="campId" value="${campVO.campId}">
+					<button type="submit">修改</button>
+						</form>	
+				</td>
 			
-					<td><input type="button" value="修改" name="${campVO.campId}"
-						class="update" /></td>
+						
+						
 				</tr>
 			</c:forEach>
 
@@ -175,9 +215,6 @@
 	</footer>
 </body>
 </html>
-
-
-
 
 
 
